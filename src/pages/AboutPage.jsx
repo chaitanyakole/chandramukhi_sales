@@ -49,15 +49,16 @@ function LogoTile({ item, dark = false }) {
         transition: 'all 0.2s',
       }}
     >
-      {logo && !logoBroken ? (
-        <img
-          src={logo}
-          alt={name}
-          loading="lazy"
-          onError={() => setLogoBroken(true)}
-          style={{ maxWidth: '100%', maxHeight: 52, objectFit: 'contain', filter: 'grayscale(100%) brightness(1.15)' }}
-        />
-      ) : (
+      <div style={{ display: 'grid', placeItems: 'center', gap: 10, width: '100%' }}>
+        {logo && !logoBroken && (
+          <img
+            src={logo}
+            alt={name}
+            loading="lazy"
+            onError={() => setLogoBroken(true)}
+            style={{ maxWidth: '100%', maxHeight: 52, objectFit: 'contain', filter: 'grayscale(100%) brightness(1.15)' }}
+          />
+        )}
         <span
           style={{
             color: 'var(--steel-light)',
@@ -67,16 +68,24 @@ function LogoTile({ item, dark = false }) {
             textTransform: 'uppercase',
             textAlign: 'center',
             lineHeight: 1.35,
+            fontSize: 13,
           }}
         >
           {name}
         </span>
-      )}
+      </div>
     </div>
   );
 }
 
 export default function AboutPage() {
+  const normalizedMajorClients = MAJOR_CLIENTS.map((c) =>
+    typeof c === 'string' ? { name: c, logo: '' } : c
+  );
+  const normalizedGovernmentWorks = GOVERNMENT_WORKS_CONTRACTOR.map((c) =>
+    typeof c === 'string' ? { name: c, logo: '' } : c
+  );
+
   return (
     <div style={{ paddingTop: 72 }}>
       <SEO
@@ -206,7 +215,7 @@ export default function AboutPage() {
         <div className="max-w">
           <SectionHeader eyebrow="Trusted By" title="MAJOR CLIENTS" subtitle="Recognized by leading developers and builders across Pune." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 16 }}>
-            {MAJOR_CLIENTS.map((c, i) => (
+            {normalizedMajorClients.map((c, i) => (
               <Reveal key={c.name} delay={i * 40}>
                 <div
                   onMouseEnter={(e) => {
@@ -232,7 +241,7 @@ export default function AboutPage() {
         <div className="max-w">
           <SectionHeader eyebrow="Credentials" title="GOVERNMENT WORKS CONTRACTOR" subtitle="Experienced in executing works for government departments and civic bodies." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16 }}>
-            {GOVERNMENT_WORKS_CONTRACTOR.map((c, i) => (
+            {normalizedGovernmentWorks.map((c, i) => (
               <Reveal key={c.name} delay={i * 50}>
                 <LogoTile item={c} dark />
               </Reveal>

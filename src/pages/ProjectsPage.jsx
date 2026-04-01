@@ -58,13 +58,19 @@ export default function ProjectsPage() {
   const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
   const clientsAndPartners = useMemo(() => {
+    const governmentNames = GOVERNMENT_WORKS_CONTRACTOR.map((c) =>
+      typeof c === 'string' ? c : c.name
+    );
+    const majorClientNames = MAJOR_CLIENTS.map((c) =>
+      typeof c === 'string' ? c : c.name
+    );
     const combined = [
       'NHAI',
       'MSRDC',
       'PMRDA',
       'PCMC',
-      ...GOVERNMENT_WORKS_CONTRACTOR.map((c) => c.name),
-      ...MAJOR_CLIENTS.map((c) => c.name),
+      ...governmentNames,
+      ...majorClientNames,
       ...PARTNERS,
     ];
     const seen = new Set();

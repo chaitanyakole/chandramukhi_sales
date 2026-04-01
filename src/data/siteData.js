@@ -1,7 +1,7 @@
 // ─── Site Configuration ──────────────────────────────────────────────────────
 export const SITE = {
   name: 'Chandramukhi Sales',
-  tagline: 'Building Strong Foundations Since 2006',
+  tagline: 'Building Strong Foundations Since 2002',
 
   // Primary contact (Sales)
   phone: '+91 99231 57599',
@@ -9,15 +9,15 @@ export const SITE = {
   salesPhones: ['+91 99231 57599'],
   officeTel: '020-65422422',
   whatsapp: '919923157599',
-  emails: ['chandramukhisales99@gmail.com', 'chandramukhisales99@gmail.com'],
-  email: 'chandramukhisales99@gmail.com',
+  emails: ['chandramukhisales.pune@gmail.com', 'chandramukhisales.pune@gmail.com'],
+  email: 'chandramukhisales.pune@gmail.com',
   address:
     'Sr.No.511, Pune–Nagar Road, Opp. John Deere Training Center, Wagholi, Tal.: Haveli, Dist. Pune – 412207',
   city: 'Pune',
   state: 'Maharashtra',
-  established: 2006,
+  established: 2002,
   milestones: {
-    aggregateStarted: 2006,
+    aggregateStarted: 2002,
     rmcStarted: 2015,
   },
   gstin: '27AGRPJ6635R1ZD',
