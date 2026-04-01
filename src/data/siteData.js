@@ -4,17 +4,13 @@ export const SITE = {
   tagline: 'Building Strong Foundations Since 2006',
 
   // Primary contact (Sales)
-  phone: '+91 70309 51070',
-  phoneRaw: '+917030951070',
-  salesPhones: ['+91 70309 51070', '+91 70309 51075', '+91 70309 51080'],
+  phone: '+91 99231 57599',
+  phoneRaw: '+919923157599',
+  salesPhones: ['+91 99231 57599'],
   officeTel: '020-65422422',
-
-  // WhatsApp not explicitly provided in the PDF; using Sales primary number.
-  whatsapp: '917030951070',
-
-  emails: ['Sales@chandramukhisales.com', 'chandramukhisales.rmcdiv@gmail.com'],
-  email: 'Sales@chandramukhisales.com',
-
+  whatsapp: '919923157599',
+  emails: ['chandramukhisales99@gmail.com', 'chandramukhisales99@gmail.com'],
+  email: 'chandramukhisales99@gmail.com',
   address:
     'Sr.No.511, Pune–Nagar Road, Opp. John Deere Training Center, Wagholi, Tal.: Haveli, Dist. Pune – 412207',
   city: 'Pune',
