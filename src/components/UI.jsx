@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useReveal, useCounter } from '../hooks';
-import { SITE, TICKER_ITEMS } from '../data/siteData';
+import { SITE, TICKER_ITEMS, getWhatsAppLink } from '../data/siteData';
 
 // ─── Reveal wrapper ───────────────────────────────────────────────────────────
 export function Reveal({ children, delay = 0, direction = 'up', className = '', style = {} }) {
@@ -78,7 +78,7 @@ export function CTABanner({ title = "LET'S BUILD YOUR PROJECT", subtitle = 'Talk
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact" className="btn" style={{ background: '#fff', color: 'var(--orange)', fontWeight: 800, padding: '16px 36px', fontSize: 15 }}>🏗️ {btnText}</Link>
             <a href={`tel:${SITE.phone}`} className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '2px solid rgba(255,255,255,0.5)', padding: '16px 32px' }}>📞 {SITE.phone}</a>
-            <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn" style={{ background: 'rgba(37,211,102,0.2)', color: '#fff', border: '2px solid rgba(37,211,102,0.5)', padding: '16px 32px' }}>💬 WhatsApp Us</a>
+            <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn" style={{ background: 'rgba(37,211,102,0.2)', color: '#fff', border: '2px solid rgba(37,211,102,0.5)', padding: '16px 32px' }}>💬 WhatsApp Us</a>
           </div>
         </Reveal>
       </div>
@@ -111,7 +111,7 @@ export function Ticker() {
 export function FloatingButtons() {
   const [tooltip, setTooltip] = useState(null);
   const buttons = [
-    { id: 'wa',   icon: '💬', label: 'WhatsApp Us', href: `https://wa.me/${SITE.whatsapp}`, bg: '#25D366', shadow: 'rgba(37,211,102,0.5)', external: true },
+    { id: 'wa',   icon: '💬', label: 'WhatsApp Us', href: getWhatsAppLink(), bg: '#25D366', shadow: 'rgba(37,211,102,0.5)', external: true },
     { id: 'call', icon: '📞', label: 'Call Us',     href: `tel:${SITE.phone}`, bg: 'var(--orange)', shadow: 'rgba(249,115,22,0.5)' },
   ];
   return (

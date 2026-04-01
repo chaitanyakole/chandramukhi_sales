@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, FAQItem } from '../components/UI';
 import { useForm } from '../hooks';
-import { SITE, FAQS } from '../data/siteData';
+import { SITE, FAQS, getWhatsAppLink } from '../data/siteData';
 
 function validate(values) {
   const errors = {};
@@ -42,7 +42,7 @@ function ContactForm() {
       `Budget: ${vals.budget || 'Not specified'}`,
       `Requirement: ${vals.message}`,
     ].join('\n');
-    const waUrl = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
+    const waUrl = getWhatsAppLink(message);
     window.open(waUrl, '_blank', 'noopener,noreferrer');
     await new Promise((r) => setTimeout(r, 250));
   }, []);
@@ -55,7 +55,7 @@ function ContactForm() {
         <p style={{ color: 'var(--steel)', fontSize: 16, lineHeight: 1.7, marginBottom: 32 }}>Thank you for reaching out. Our team will contact you within <strong style={{ color: 'var(--orange)' }}>2 business hours</strong>.</p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <button onClick={reset} className="btn btn-outline">Send Another</button>
-          <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn btn-green">💬 Chat on WhatsApp</a>
+          <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green">💬 Chat on WhatsApp</a>
         </div>
       </div>
     );
@@ -138,7 +138,7 @@ export default function ContactPage() {
   const QUICK_CONTACTS = [
     { icon: '☎️', label: 'Office Tel', value: SITE.officeTel, sub: 'Mon–Sat, 9AM–6PM', href: `tel:${SITE.officeTel}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
     { icon: '📞', label: 'Sales', value: salesPhones[0], sub: 'For quotations & orders', href: `tel:${salesPhones[0]}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
-    { icon: '💬', label: 'WhatsApp', value: 'Chat Now', sub: 'Instant response', href: `https://wa.me/${SITE.whatsapp}`, color: '#25D366', shadow: 'rgba(37,211,102,0.3)', external: true },
+    { icon: '💬', label: 'WhatsApp', value: 'Chat Now', sub: 'Instant response', href: getWhatsAppLink(), color: '#25D366', shadow: 'rgba(37,211,102,0.3)', external: true },
     { icon: '✉️', label: 'Email', value: emailPrimary, sub: 'Sales inquiries', href: `mailto:${emailPrimary}`, color: '#818CF8', shadow: 'rgba(129,140,248,0.3)' },
     ...(emailSecondary ? [{ icon: '✉️', label: 'Alt Email', value: emailSecondary, sub: 'RMC Division', href: `mailto:${emailSecondary}`, color: '#818CF8', shadow: 'rgba(129,140,248,0.3)' }] : []),
     { icon: '📍', label: 'Office', value: 'Wagholi', sub: 'Pune – 412207', href: 'https://maps.google.com', color: '#EC4899', shadow: 'rgba(236,72,153,0.3)', external: true },
@@ -245,7 +245,7 @@ export default function ContactPage() {
             <Reveal delay={120}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(170px,1fr))', gap: 12 }}>
                 <a href={`tel:${SITE.phone}`} className="btn btn-primary" style={{ justifyContent: 'center', textDecoration: 'none', padding: '16px' }}>📞 Call Now</a>
-                <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn btn-green" style={{ justifyContent: 'center', textDecoration: 'none', padding: '16px' }}>💬 WhatsApp</a>
+                <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green" style={{ justifyContent: 'center', textDecoration: 'none', padding: '16px' }}>💬 WhatsApp</a>
               </div>
             </Reveal>
 
@@ -278,7 +278,7 @@ export default function ContactPage() {
           </div>
           <Reveal style={{ textAlign: 'center', marginTop: 40 }}>
             <p style={{ color: 'var(--steel)', fontSize: 16, marginBottom: 20 }}>Still have a question?</p>
-            <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn btn-green" style={{ textDecoration: 'none' }}>💬 Ask on WhatsApp</a>
+            <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green" style={{ textDecoration: 'none' }}>💬 Ask on WhatsApp</a>
           </Reveal>
         </div>
       </section>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
-import { SERVICES, SITE } from '../data/siteData';
+import { SERVICES, SITE, getWhatsAppLink } from '../data/siteData';
 
 function ServiceDetail({ service, flipped }) {
   return (
@@ -72,7 +72,7 @@ function ServiceDetail({ service, flipped }) {
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--white)', letterSpacing: '0.05em' }}>GET A QUOTE</h3>
               <p style={{ color: 'var(--steel)', fontSize: 14, lineHeight: 1.7 }}>Detailed estimate for your {service.shortTitle} requirement within 24 hours.</p>
               <Link to="/contact" className="btn btn-primary" style={{ textDecoration: 'none', width: '100%', justifyContent: 'center' }}>Request Estimate</Link>
-              <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn btn-green btn-sm" style={{ width: '100%', justifyContent: 'center' }}>💬 WhatsApp Us</a>
+              <a href={getWhatsAppLink(`Hello Chandramukhi Sales, I need a quote for ${service.title}.`)} target="_blank" rel="noreferrer" className="btn btn-green btn-sm" style={{ width: '100%', justifyContent: 'center' }}>💬 WhatsApp Us</a>
               <a href={`tel:${SITE.phone}`} style={{ color: 'var(--orange)', fontSize: 13, fontFamily: 'var(--font-condensed)', fontWeight: 700, letterSpacing: '0.05em' }}>{SITE.phone}</a>
             </div>
           </Reveal>

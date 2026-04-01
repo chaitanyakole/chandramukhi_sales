@@ -23,6 +23,13 @@ export const SITE = {
   gstin: '27AGRPJ6635R1ZD',
 };
 
+export const WHATSAPP_DEFAULT_MESSAGE =
+  'Hello Chandramukhi Sales, I would like to know more about your services.';
+
+export function getWhatsAppLink(message = WHATSAPP_DEFAULT_MESSAGE) {
+  return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
+}
+
 // ─── Company Profile (from PDF) ───────────────────────────────────────────────
 export const COMPANY_PROFILE = {
   about: [

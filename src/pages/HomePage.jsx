@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, StatCard, CTABanner, Ticker } from '../components/UI';
 import { useReveal, useIsMobile } from '../hooks';
-import { STATS, SERVICES, TESTIMONIALS, PROCESS, INDUSTRIES, SITE } from '../data/siteData';
+import { STATS, SERVICES, TESTIMONIALS, PROCESS, INDUSTRIES, SITE, getWhatsAppLink } from '../data/siteData';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -119,7 +119,7 @@ function Hero() {
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 56 }}>
               <Link to="/contact" className="btn btn-primary btn-lg">🏗️ Get Free Quote</Link>
               <a href={`tel:${SITE.phone}`} className="btn btn-ghost btn-lg">📞 {SITE.phone}</a>
-              <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn btn-green btn-lg">💬 WhatsApp</a>
+              <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green btn-lg">💬 WhatsApp</a>
             </div>
           </Reveal>
 

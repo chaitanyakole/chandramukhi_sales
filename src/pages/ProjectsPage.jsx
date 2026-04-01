@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
-import { GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS, PROJECTS, SITE } from '../data/siteData';
+import { GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS, PROJECTS, SITE, getWhatsAppLink } from '../data/siteData';
 
 const CATS = ['All', 'RMC', 'Roads', 'Civil'];
 
@@ -44,7 +44,7 @@ function ProjectCard({ project, delay }) {
               <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'var(--font-condensed)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Project Value</div>
               <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: '0.05em' }}>{project.value}</div>
             </div>
-            <a href={`https://wa.me/${SITE.whatsapp}?text=Hi, I'd like a similar project: ${project.title}`} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>
+            <a href={getWhatsAppLink(`Hi, I'd like a similar project: ${project.title}`)} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>
               Similar Project?
             </a>
           </div>

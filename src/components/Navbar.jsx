@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { NAV_LINKS, SITE } from '../data/siteData';
+import { NAV_LINKS, SITE, getWhatsAppLink } from '../data/siteData';
 import { useScroll } from '../hooks';
 
 export default function Navbar() {
@@ -139,7 +139,7 @@ export default function Navbar() {
 
           <div style={{ display: 'flex', gap: 16, marginTop: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
             <a href={`tel:${SITE.phone}`} className="btn btn-primary">📞 Call Now</a>
-            <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noreferrer" className="btn btn-green">💬 WhatsApp</a>
+            <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green">💬 WhatsApp</a>
           </div>
         </div>
       )}
