@@ -31,40 +31,34 @@ export default function Navbar() {
         <div className="max-w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72, padding: '0 5%' }}>
 
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
-            <div style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
-              {/* Outer ring */}
-              <div style={{
-                position: 'absolute', inset: 0,
-                borderRadius: 14,
-                background: 'radial-gradient(circle at 30% 0%, #FBBF24, transparent 60%)',
-                opacity: 0.16,
-              }} />
-              {/* Core badge */}
-              <div style={{
-                position: 'absolute', inset: 3,
-                borderRadius: 12,
-                background: 'conic-gradient(from 210deg, #F97316, #FB923C, #F97316)',
-                boxShadow: '0 10px 30px rgba(249,115,22,0.55)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <div style={{
-                  borderRadius: 10,
-                  padding: '2px 6px',
-                  background: 'rgba(0,0,0,0.35)',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 18,
-                  letterSpacing: '0.18em',
-                  color: '#fff',
-                }}>
-                  CS
-                </div>
-              </div>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }} aria-label={`${SITE.name} home`}>
+            <div
+              style={{
+                height: 50,
+                padding: '5px 10px',
+                borderRadius: 10,
+                background: 'rgba(147, 150, 156, 0.85)',
+                border: '1px solid rgba(148,163,184,0.55)',
+                boxShadow: '0 10px 28px rgba(70, 55, 55, 0.45)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <img
+                src="/logo.png"
+                alt="Chandramukhi Sales logo"
+                style={{
+                  height: 50,
+                  width: 'auto',
+                  objectFit: 'contain',
+                  display: 'block',
+                }}
+              />
             </div>
             <div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 19, letterSpacing: '0.12em', color: 'var(--white)', lineHeight: 1.1 }}>CHANDRAMUKHI</div>
-              <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 10, letterSpacing: '0.3em', color: 'var(--orange)', textTransform: 'uppercase' }}>{estText}</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 19, letterSpacing: '0.15em', color: 'var(--white)', lineHeight: 1.1 }}>CHANDRAMUKHI</div>
+              <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 10, letterSpacing: '0.4em', color: 'var(--orange)', textTransform: 'uppercase' }}>{estText}</div>
             </div>
           </Link>
 
