@@ -12,6 +12,9 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const SitemapPage = lazy(() => import('./pages/SitemapPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Scroll to top on route change
@@ -70,6 +73,9 @@ function AppRoutes() {
               <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
               <Route path="/projects" element={<PageWrapper><ProjectsPage /></PageWrapper>} />
               <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
+              <Route path="/privacy-policy" element={<PageWrapper><PrivacyPolicyPage /></PageWrapper>} />
+              <Route path="/terms" element={<PageWrapper><TermsPage /></PageWrapper>} />
+              <Route path="/sitemap" element={<PageWrapper><SitemapPage /></PageWrapper>} />
               <Route path="*" element={<PageWrapper><NotFoundPage /></PageWrapper>} />
             </Routes>
           </AnimatePresence>

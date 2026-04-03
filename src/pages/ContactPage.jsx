@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, FAQItem } from '../components/UI';
 import { useForm } from '../hooks';
-import { SITE, FAQS, getWhatsAppLink } from '../data/siteData';
+import { SITE, FAQS, getWhatsAppLink, getGmailComposeLink } from '../data/siteData';
+import { submitLead } from '../utils/leadApi';
+import { trackEvent } from '../utils/analytics';
 
 function validate(values) {
   const errors = {};
@@ -43,7 +45,33 @@ function ContactForm() {
       `Requirement: ${vals.message}`,
     ].join('\n');
     const waUrl = getWhatsAppLink(message);
-    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    // Open immediately in the user click context to avoid popup blockers.
+    const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+    const payload = {
+      source: 'website-contact-form',
+      page: '/contact',
+      submittedAt: new Date().toISOString(),
+      name: vals.name,
+      phone: vals.phone,
+      email: vals.email,
+      service: vals.service,
+      budget: vals.budget || 'Not specified',
+      message: vals.message,
+    };
+
+    try {
+      const result = await submitLead(payload);
+      trackEvent('lead_submit', {
+        method: result.skipped ? 'whatsapp_only' : 'webhook_and_whatsapp',
+        service: vals.service,
+      });
+    } catch (_) {
+      trackEvent('lead_submit_error', { service: vals.service });
+      if (!waWindow || waWindow.closed || typeof waWindow.closed === 'undefined') {
+        window.location.href = waUrl;
+      }
+    }
     await new Promise((r) => setTimeout(r, 250));
   }, []);
 
@@ -136,12 +164,12 @@ export default function ContactPage() {
   const salesPhones = SITE.salesPhones?.length ? SITE.salesPhones : [SITE.phone];
 
   const QUICK_CONTACTS = [
-    { icon: '☎️', label: 'Office Tel', value: SITE.officeTel, sub: 'Mon–Sat, 9AM–6PM', href: `tel:${SITE.officeTel}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
+    // { icon: '☎️', label: 'Office Tel', value: SITE.officeTel, sub: 'Mon–Sat, 9AM–6PM', href: `tel:${SITE.officeTel}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
     { icon: '📞', label: 'Sales', value: salesPhones[0], sub: 'For quotations & orders', href: `tel:${salesPhones[0]}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
     { icon: '💬', label: 'WhatsApp', value: 'Chat Now', sub: 'Instant response', href: getWhatsAppLink(), color: '#25D366', shadow: 'rgba(37,211,102,0.3)', external: true },
-    { icon: '✉️', label: 'Email', value: emailPrimary, sub: 'Sales inquiries', href: `mailto:${emailPrimary}`, color: '#818CF8', shadow: 'rgba(129,140,248,0.3)' },
-    ...(emailSecondary ? [{ icon: '✉️', label: 'Alt Email', value: emailSecondary, sub: 'RMC Division', href: `mailto:${emailSecondary}`, color: '#818CF8', shadow: 'rgba(129,140,248,0.3)' }] : []),
-    { icon: '📍', label: 'Office', value: 'Wagholi', sub: 'Pune – 412207', href: 'https://maps.google.com', color: '#EC4899', shadow: 'rgba(236,72,153,0.3)', external: true },
+    { icon: '✉️', label: 'Email', value: emailPrimary, sub: 'Sales inquiries', href: getGmailComposeLink(emailPrimary), color: '#818CF8', shadow: 'rgba(129,140,248,0.3)', external: true },
+    ...(emailSecondary ? [{ icon: '✉️', label: 'Alt Email', value: emailSecondary, sub: 'RMC Division', href: getGmailComposeLink(emailSecondary), color: '#818CF8', shadow: 'rgba(129,140,248,0.3)', external: true }] : []),
+    { icon: '📍', label: 'Office', value: 'Wagholi', sub: 'Pune – 412207', href: 'https://maps.app.goo.gl/eHSnNXzGvpGAL1RQA', color: '#EC4899', shadow: 'rgba(236,72,153,0.3)', external: true },
   ];
 
   return (
@@ -150,10 +178,29 @@ export default function ContactPage() {
         title="Contact"
         description="Contact Chandramukhi Sales for a free quote on RMC, road construction, and civil contracting projects."
         path="/contact"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'ContactPage',
+          name: 'Contact Chandramukhi Sales',
+          url: 'https://chandramukhi-sales.com/contact',
+          about: {
+            '@type': 'Organization',
+            name: 'Chandramukhi Sales',
+          },
+        }}
       />
       {/* Hero */}
-      <section style={{ background: 'var(--navy)', padding: '80px 5%', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
+      <section style={{
+        background: 'var(--navy)',
+        backgroundImage: 'linear-gradient(rgba(7,15,27,0.5), rgba(7,15,27,0.62)), url("/hero-bg.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        padding: '80px 5%',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
         <div style={{ position: 'absolute', bottom: 0, right: 0, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)' }} />
         <div className="max-w" style={{ position: 'relative', zIndex: 2 }}>
           <Reveal>
@@ -220,7 +267,7 @@ export default function ContactPage() {
                 }}>
                   <div style={{ fontSize: 52 }}>🗺️</div>
                   <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, color: 'var(--white)', letterSpacing: '0.1em' }}>PUNE, MAHARASHTRA</div>
-                  <a href="https://maps.google.com" target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>Open in Google Maps</a>
+                  <a href="https://maps.app.goo.gl/eHSnNXzGvpGAL1RQA" target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>Open in Google Maps</a>
                 </div>
                 <div style={{ padding: 28 }}>
                   <h3 style={{ fontFamily: 'var(--font-condensed)', fontSize: 16, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--white)', marginBottom: 20 }}>BUSINESS DETAILS</h3>

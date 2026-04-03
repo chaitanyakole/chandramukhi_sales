@@ -43,13 +43,22 @@ function Hero() {
   return (
     <section style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column',
-      background: 'var(--navy)',
+      backgroundImage: 'linear-gradient(rgba(7,15,27,0.4), rgba(7,15,27,0.56)), url("/hero-bg.png")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
       position: 'relative', overflow: 'hidden',
     }}>
+      {/* Contrast layer for readability over image */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(100deg, rgba(7,15,27,0.58) 0%, rgba(7,15,27,0.36) 45%, rgba(7,15,27,0.64) 100%)',
+      }} />
       {/* Animated grid */}
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)',
         backgroundSize: '64px 64px',
       }} />
 
@@ -60,7 +69,7 @@ function Hero() {
       {/* Diagonal decorative slab */}
       <div style={{
         position: 'absolute', top: 0, right: 0, width: '45%', height: '100%',
-        background: 'linear-gradient(135deg, rgba(22,40,64,0.6), rgba(30,58,92,0.3))',
+        background: 'linear-gradient(135deg, rgba(22,40,64,0.32), rgba(30,58,92,0.12))',
         clipPath: 'polygon(12% 0, 100% 0, 100% 100%, 0% 100%)',
         borderLeft: '1px solid rgba(249,115,22,0.1)',
         pointerEvents: 'none',
@@ -110,7 +119,7 @@ function Hero() {
 
           <Reveal delay={420}>
             <p style={{ color: 'var(--steel-light)', fontSize: 19, lineHeight: 1.8, margin: '32px 0 44px', maxWidth: 580 }}>
-              Pune's leading provider of <strong style={{ color: 'var(--white)' }}>Ready Mix Concrete</strong>, <strong style={{ color: 'var(--white)' }}>Road Construction</strong>, and <strong style={{ color: 'var(--white)' }}>Civil Contracting</strong> since 2015. Quality-driven, deadline-committed.
+              Pune's leading provider of <strong style={{ color: 'var(--white)' }}>Ready Mix Concrete</strong>, <strong style={{ color: 'var(--white)' }}>Road Construction</strong>, and <strong style={{ color: 'var(--white)' }}>Civil Contracting</strong> since 2002. Quality-driven, deadline-committed.
             </p>
           </Reveal>
 
@@ -126,7 +135,7 @@ function Hero() {
           {/* Mini stats */}
           <Reveal delay={600}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(130px,1fr))', gap: 16, borderTop: '1px solid var(--navy-border)', paddingTop: 36 }}>
-              {[{ n: '10+', l: 'Years' }, { n: '500+', l: 'Projects' }, { n: '200+', l: 'Clients' }, { n: '98%', l: 'On-Time' }].map(({ n, l }, i) => (
+              {[{ n: '20+', l: 'Years' }, { n: '500+', l: 'Projects' }, { n: '200+', l: 'Clients' }, { n: '98%', l: 'On-Time' }].map(({ n, l }, i) => (
                 <div key={l} style={{ paddingRight: i < 3 ? 18 : 0, borderRight: i < 3 ? '1px solid var(--navy-border)' : 'none', paddingBottom: 8 }}>
                   <div className="text-display text-orange" style={{ fontSize: 44, lineHeight: 1 }}>{n}</div>
                   <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--steel)', marginTop: 4 }}>{l}</div>
@@ -309,7 +318,7 @@ export default function HomePage() {
       {/* ── Services ─────────────────────────────────────────── */}
       <section className="section-pad" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w">
-          <SectionHeader eyebrow="What We Do" title="CORE SERVICES" subtitle="Three pillars of construction excellence backed by a decade of expertise and cutting-edge machinery." />
+          <SectionHeader eyebrow="What We Do" title="CORE SERVICES" subtitle="Three pillars of construction excellence backed by 20+ years of expertise and cutting-edge machinery." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 28 }}>
             {SERVICES.map((s, i) => <ServiceCard key={s.id} service={s} index={i} />)}
           </div>
@@ -334,7 +343,7 @@ export default function HomePage() {
       <section className="section-pad" style={{ background: 'var(--navy)' }}>
         <div className="max-w" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 72, alignItems: 'center' }}>
           <div>
-            <SectionHeader eyebrow="Why Choose Us" title="A DECADE OF BUILDING TRUST" subtitle="Since 2015, we've been the backbone of infrastructure across Pune and Maharashtra." center={false} />
+            <SectionHeader eyebrow="Why Choose Us" title="OVER TWO DECADES OF BUILDING TRUST" subtitle="Since 2002, we've been the backbone of infrastructure across Pune and Maharashtra." center={false} />
             {[
               { icon: '✅', title: 'IS-Grade Quality Materials', desc: 'All concrete mixes and road materials meet Indian Standards. We conduct third-party lab testing on every major project.' },
               { icon: '🚛', title: 'Modern Fleet & Technology', desc: 'Computerized batching plants, GPS-tracked transit mixers, automated asphalt pavers — built for precision.' },

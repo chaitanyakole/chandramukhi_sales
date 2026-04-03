@@ -95,9 +95,16 @@ export default function AboutPage() {
       />
       {/* ── Hero ──────────────────────────────────────────────── */}
       <section style={{
-        background: 'var(--navy)', padding: '80px 5% 80px', position: 'relative', overflow: 'hidden',
+        background: 'var(--navy)',
+        backgroundImage: 'linear-gradient(rgba(7,15,27,0.5), rgba(7,15,27,0.62)), url("/hero-bg.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        padding: '80px 5% 80px',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
         <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.09) 0%, transparent 70%)' }} />
         <div className="max-w" style={{ position: 'relative', zIndex: 2 }}>
           <Reveal>

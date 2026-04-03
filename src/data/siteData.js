@@ -9,7 +9,7 @@ export const SITE = {
   salesPhones: ['+91 99231 57599'],
   officeTel: '020-65422422',
   whatsapp: '919923157599',
-  emails: ['chandramukhisales.pune@gmail.com', 'chandramukhisales.pune@gmail.com'],
+  emails: ['chandramukhisales99@gmail.com'],
   email: 'chandramukhisales.pune@gmail.com',
   address:
     'Sr.No.511, Pune–Nagar Road, Opp. John Deere Training Center, Wagholi, Tal.: Haveli, Dist. Pune – 412207',
@@ -28,6 +28,17 @@ export const WHATSAPP_DEFAULT_MESSAGE =
 
 export function getWhatsAppLink(message = WHATSAPP_DEFAULT_MESSAGE) {
   return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`;
+}
+
+// Opens Gmail compose window (web) with recipient prefilled.
+export function getGmailComposeLink(to, { subject = '', body = '' } = {}) {
+  const params = [];
+  if (to) params.push(`to=${encodeURIComponent(to)}`);
+  if (subject) params.push(`su=${encodeURIComponent(subject)}`);
+  if (body) params.push(`body=${encodeURIComponent(body)}`);
+
+  const query = params.length ? `&${params.join('&')}` : '';
+  return `https://mail.google.com/mail/?view=cm&fs=1${query}`;
 }
 
 // ─── Company Profile (from PDF) ───────────────────────────────────────────────
@@ -220,7 +231,7 @@ export const SERVICES = [
       { label: 'Project Value', val: 'Up to ₹50 Cr' },
       { label: 'Team Size', val: '100+ Professionals' },
       { label: 'Certifications', val: 'IS / BIS Compliant' },
-      { label: 'Experience', val: '10+ Years' },
+      { label: 'Experience', val: '20+ Years' },
     ],
     emoji: '🏢',
   },
@@ -330,7 +341,7 @@ export const TICKER_ITEMS = [
   '🏗️ Ready Mix Concrete',
   '🛣️ Road Construction',
   '🏢 Civil Contracting',
-  '📞 Call: +91 70309 51070',
+  '📞 Call: +91 99231 57599',
   '⭐ ISO-Grade Quality',
   '🚛 On-Time Delivery',
   '📍 Serving All Maharashtra',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SITE, NAV_LINKS, SERVICES } from '../data/siteData';
+import { SITE, NAV_LINKS, SERVICES, getGmailComposeLink } from '../data/siteData';
 import { useReveal } from '../hooks';
 
 function RevealDiv({ children, delay = 0, style = {} }) {
@@ -21,10 +21,9 @@ export default function Footer() {
   const salesPhones = SITE.salesPhones?.length ? SITE.salesPhones : [SITE.phone];
 
   const socials = [
-    { label: 'Facebook', short: 'FB', href: '#' },
-    { label: 'LinkedIn', short: 'IN', href: '#' },
-    { label: 'YouTube', short: 'YT', href: '#' },
-    { label: 'Instagram', short: 'IG', href: '#' },
+    { label: 'WhatsApp', short: 'WA', href: 'https://wa.me/919923157599' },
+    { label: 'Email', short: 'EM', href: getGmailComposeLink(emailPrimary) },
+    { label: 'Maps', short: 'MP', href: 'https://maps.app.goo.gl/eHSnNXzGvpGAL1RQA' },
   ];
 
   return (
@@ -125,15 +124,15 @@ export default function Footer() {
               { icon: '☎️', text: `Office: ${SITE.officeTel}`, href: `tel:${SITE.officeTel}` },
               { icon: '📞', text: `Sales: ${salesPhones[0]}`, href: `tel:${salesPhones[0]}` },
               ...(salesPhones.length > 1 ? [{ icon: '📞', text: `Sales (Alt): ${salesPhones[1]}`, href: `tel:${salesPhones[1]}` }] : []),
-              { icon: '✉️', text: emailPrimary, href: `mailto:${emailPrimary}` },
-              ...(emailSecondary ? [{ icon: '✉️', text: emailSecondary, href: `mailto:${emailSecondary}` }] : []),
+              { icon: '✉️', text: emailPrimary, href: getGmailComposeLink(emailPrimary) },
+              ...(emailSecondary ? [{ icon: '✉️', text: emailSecondary, href: getGmailComposeLink(emailSecondary) }] : []),
               { icon: '⏰', text: 'Mon – Sat: 9:00 AM – 6:00 PM' },
               { icon: '🏢', text: `GSTIN: ${SITE.gstin}` },
             ].map(({ icon, text, href }) => (
               <div key={text} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 12 }}>
                 <span style={{ fontSize: 15, flexShrink: 0 }}>{icon}</span>
                 {href ? (
-                  <a href={href} style={{ color: 'var(--steel)', fontSize: 13, lineHeight: 1.6, textDecoration: 'none', transition: 'color 0.2s' }}
+                  <a href={href} target={href.startsWith('https://') ? '_blank' : undefined} rel={href.startsWith('https://') ? 'noreferrer' : undefined} style={{ color: 'var(--steel)', fontSize: 13, lineHeight: 1.6, textDecoration: 'none', transition: 'color 0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.color = 'var(--orange)'}
                     onMouseLeave={e => e.currentTarget.style.color = 'var(--steel)'}
                   >{text}</a>
@@ -153,11 +152,15 @@ export default function Footer() {
             © {new Date().getFullYear()} Chandramukhi Sales. All Rights Reserved.
           </p>
           <div style={{ display: 'flex', gap: 20 }}>
-            {['Privacy Policy', 'Terms of Service', 'Sitemap'].map(l => (
-              <a key={l} href="#" style={{ color: 'var(--muted)', fontSize: 12, textDecoration: 'none', transition: 'color 0.2s' }}
+            {[
+              { label: 'Privacy Policy', to: '/privacy-policy' },
+              { label: 'Terms of Service', to: '/terms' },
+              { label: 'Sitemap', to: '/sitemap' },
+            ].map(({ label, to }) => (
+              <Link key={label} to={to} style={{ color: 'var(--muted)', fontSize: 12, textDecoration: 'none', transition: 'color 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.color = 'var(--orange)'}
                 onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}
-              >{l}</a>
+              >{label}</Link>
             ))}
           </div>
         </div>
