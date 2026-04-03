@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
-import { SERVICES, SITE, getWhatsAppLink } from '../data/siteData';
+import { PROJECTS, SERVICES, SITE, getWhatsAppLink } from '../data/siteData';
+import { trackEvent } from '../utils/analytics';
 
 function ServiceDetail({ service, flipped }) {
   return (
@@ -71,9 +72,31 @@ function ServiceDetail({ service, flipped }) {
               <div style={{ fontSize: 52 }}>📞</div>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 28, color: 'var(--white)', letterSpacing: '0.05em' }}>GET A QUOTE</h3>
               <p style={{ color: 'var(--steel)', fontSize: 14, lineHeight: 1.7 }}>Detailed estimate for your {service.shortTitle} requirement within 24 hours.</p>
-              <Link to="/contact" className="btn btn-primary" style={{ textDecoration: 'none', width: '100%', justifyContent: 'center' }}>Request Estimate</Link>
-              <a href={getWhatsAppLink(`Hello Chandramukhi Sales, I need a quote for ${service.title}.`)} target="_blank" rel="noreferrer" className="btn btn-green btn-sm" style={{ width: '100%', justifyContent: 'center' }}>💬 WhatsApp Us</a>
-              <a href={`tel:${SITE.phone}`} style={{ color: 'var(--orange)', fontSize: 13, fontFamily: 'var(--font-condensed)', fontWeight: 700, letterSpacing: '0.05em' }}>{SITE.phone}</a>
+              <Link
+                to="/contact"
+                className="btn btn-primary"
+                style={{ textDecoration: 'none', width: '100%', justifyContent: 'center' }}
+                onClick={() => trackEvent('service_quote_click', { service: service.title, source: 'services-page' })}
+              >
+                Request Estimate
+              </Link>
+              <a
+                href={getWhatsAppLink(`Hello Chandramukhi Sales, I need a quote for ${service.title}.`)}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-green btn-sm"
+                style={{ width: '100%', justifyContent: 'center' }}
+                onClick={() => trackEvent('service_whatsapp_click', { service: service.title })}
+              >
+                💬 WhatsApp Us
+              </a>
+              <a
+                href={`tel:${SITE.phone}`}
+                style={{ color: 'var(--orange)', fontSize: 13, fontFamily: 'var(--font-condensed)', fontWeight: 700, letterSpacing: '0.05em' }}
+                onClick={() => trackEvent('service_call_click', { service: service.title })}
+              >
+                {SITE.phone}
+              </a>
             </div>
           </Reveal>
         </div>
@@ -83,12 +106,30 @@ function ServiceDetail({ service, flipped }) {
 }
 
 export default function ServicesPage() {
+  const proofByCategory = useMemo(() => {
+    return {
+      RMC: PROJECTS.filter((p) => p.cat === 'RMC').length,
+      Roads: PROJECTS.filter((p) => p.cat === 'Roads').length,
+      Civil: PROJECTS.filter((p) => p.cat === 'Civil').length,
+    };
+  }, []);
+
   return (
     <div style={{ paddingTop: 72 }}>
       <SEO
         title="Services"
         description="Explore Chandramukhi Sales services: Ready Mix Concrete, Road Construction, and Civil Contracting."
         path="/services"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          serviceType: 'Construction Services',
+          provider: {
+            '@type': 'Organization',
+            name: 'Chandramukhi Sales',
+          },
+          areaServed: 'Maharashtra',
+        }}
       />
       {/* Hero */}
       <section style={{
@@ -134,8 +175,47 @@ export default function ServicesPage() {
       {/* Service sections */}
       {SERVICES.map((s, i) => <ServiceDetail key={s.id} service={s} flipped={i % 2 === 1} />)}
 
+      <section className="section-pad-sm cv-auto" style={{ background: 'var(--navy)', borderTop: '1px solid var(--navy-border)' }}>
+        <div className="max-w">
+          <SectionHeader eyebrow="Trust Signals" title="WHY CLIENTS CHOOSE THESE SERVICES" subtitle="Execution quality, verified standards, and delivery discipline at every stage." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16 }}>
+            {[
+              { title: 'RMC Delivery Proof', value: `${proofByCategory.RMC}+ portfolio projects`, note: 'Batch consistency with monitored dispatch flow.' },
+              { title: 'Road Execution Proof', value: `${proofByCategory.Roads}+ road assignments`, note: 'IRC/NHAI-aligned procedures and field checks.' },
+              { title: 'Civil Works Proof', value: `${proofByCategory.Civil}+ civil works`, note: 'Engineer-led supervision with milestone tracking.' },
+              { title: 'Quote Commitment', value: 'Within 24 business hours', note: 'Scope review, call-back, then estimate submission.' },
+            ].map((item) => (
+              <Reveal key={item.title}>
+                <div className="card" style={{ padding: 20 }}>
+                  <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-condensed)', fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>{item.title}</div>
+                  <div style={{ color: 'var(--white)', fontFamily: 'var(--font-display)', fontSize: 24, lineHeight: 1.1, marginBottom: 8 }}>{item.value}</div>
+                  <div style={{ color: 'var(--steel)', fontSize: 13, lineHeight: 1.6 }}>{item.note}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-pad-sm cv-auto" style={{ background: 'var(--navy-mid)' }}>
+        <div className="max-w">
+          <SectionHeader eyebrow="Local SEO" title="SERVICE AREAS" subtitle="Find pages specific to your location and requirement." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 14 }}>
+            {[
+              { title: 'Ready Mix Concrete in Pune', path: '/rmc-pune' },
+              { title: 'Road Contractor in Pune', path: '/road-contractor-pune' },
+              { title: 'Civil Contractor in Maharashtra', path: '/civil-contractor-maharashtra' },
+            ].map((item) => (
+              <Link key={item.path} to={item.path} className="card" style={{ textDecoration: 'none', padding: 16, color: 'var(--steel-light)' }}>
+                {item.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Comparison table */}
-      <section className="section-pad" style={{ background: 'var(--navy-mid)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Overview" title="SERVICE COMPARISON" subtitle="Not sure which service you need? Here's a quick overview." />
           <Reveal>

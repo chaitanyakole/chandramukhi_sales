@@ -507,3 +507,18 @@ select.form-input option { background: var(--navy-light); color: var(--white); }
   .section-pad    { padding: 104px 5%; }
   .section-pad-sm { padding: 72px 5%; }
 }
+
+/* ─── Reduced motion override ───────────────────────────────────── */
+.reduce-motion * ,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Skip paint/layout for below-fold blocks until needed */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 720px;
+}

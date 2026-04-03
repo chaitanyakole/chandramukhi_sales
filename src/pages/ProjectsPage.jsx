@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
 import { GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS, PROJECTS, SITE, getWhatsAppLink } from '../data/siteData';
+import { trackEvent } from '../utils/analytics';
 
 const CATS = ['All', 'RMC', 'Roads', 'Civil'];
 
@@ -38,13 +39,49 @@ function ProjectCard({ project, delay }) {
             <span style={{ color: 'var(--steel)', fontSize: 12, fontFamily: 'var(--font-condensed)' }}>{project.year}</span>
           </div>
           <h3 style={{ fontFamily: 'var(--font-condensed)', fontWeight: 700, fontSize: 18, color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 12, lineHeight: 1.3 }}>{project.title}</h3>
-          <p style={{ color: 'var(--steel)', fontSize: 14, lineHeight: 1.7, flex: 1, marginBottom: 20 }}>{project.desc}</p>
+          <p style={{ color: 'var(--steel)', fontSize: 14, lineHeight: 1.7, marginBottom: 14 }}>{project.desc}</p>
+          {Array.isArray(project.proof) && project.proof.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+              {project.proof.map((item) => (
+                <span
+                  key={item}
+                  style={{
+                    border: '1px solid var(--navy-border)',
+                    background: 'var(--navy)',
+                    borderRadius: 999,
+                    padding: '5px 10px',
+                    color: 'var(--steel-light)',
+                    fontSize: 11,
+                    fontFamily: 'var(--font-condensed)',
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          )}
+          {project.outcome && (
+            <div style={{ color: 'var(--steel-light)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
+              <span style={{ color: 'var(--orange)', fontWeight: 700 }}>Outcome: </span>
+              {project.outcome}
+            </div>
+          )}
+          <div style={{ flex: 1 }} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid var(--navy-border)' }}>
             <div>
               <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'var(--font-condensed)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Project Value</div>
               <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: '0.05em' }}>{project.value}</div>
             </div>
-            <a href={getWhatsAppLink(`Hi, I'd like a similar project: ${project.title}`)} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>
+            <a
+              href={getWhatsAppLink(`Hi, I'd like a similar project: ${project.title}`)}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-outline btn-sm"
+              style={{ textDecoration: 'none' }}
+              onClick={() => trackEvent('project_similar_click', { project: project.title, category: project.cat })}
+            >
               Similar Project?
             </a>
           </div>
@@ -103,6 +140,13 @@ export default function ProjectsPage() {
         title="Projects"
         description="Browse Chandramukhi Sales project portfolio across roads, RMC, and civil infrastructure projects."
         path="/projects"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: 'Chandramukhi Sales Projects',
+          about: 'Road, RMC and civil infrastructure portfolio in Maharashtra',
+          url: 'https://chandramukhi-sales.com/projects',
+        }}
       />
       {/* Hero */}
       <section style={{
@@ -160,8 +204,23 @@ export default function ProjectsPage() {
       </section>
 
       {/* Grid */}
-      <section className="section-pad" style={{ background: 'var(--navy)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy)' }}>
         <div className="max-w">
+          <Reveal>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 12, marginBottom: 26 }}>
+              {[
+                { k: '500+', l: 'Projects Delivered' },
+                { k: '98%', l: 'On-Time Completion' },
+                { k: '200+', l: 'Repeat Clients' },
+                { k: '24h', l: 'Estimate Turnaround' },
+              ].map((item) => (
+                <div key={item.l} className="card" style={{ padding: 14 }}>
+                  <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-display)', fontSize: 24 }}>{item.k}</div>
+                  <div style={{ color: 'var(--steel)', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-condensed)' }}>{item.l}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
           {filtered.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px 0' }}>
               <div style={{ fontSize: 60, marginBottom: 20 }}>🔍</div>
@@ -182,7 +241,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Clients strip */}
-      <section className="section-pad-sm" style={{ background: 'var(--navy-mid)', borderTop: '1px solid var(--navy-border)' }}>
+      <section className="section-pad-sm cv-auto" style={{ background: 'var(--navy-mid)', borderTop: '1px solid var(--navy-border)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Trusted By" title="CLIENTS & PARTNERS" subtitle="We've worked with leading developers, government bodies, and industrial groups." />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>

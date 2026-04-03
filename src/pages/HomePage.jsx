@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
+import { useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, StatCard, CTABanner, Ticker } from '../components/UI';
@@ -11,13 +12,15 @@ import 'swiper/css/pagination';
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
-  const [typed, setTyped] = useState('');
   const words = ['Roads', 'Bridges', 'Townships', 'Highways', 'Futures'];
+  const reducedMotion = useReducedMotion();
+  const [typed, setTyped] = useState(words[0]);
   const [wordIdx, setWordIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    if (reducedMotion) return undefined;
     const current = words[wordIdx];
     const timeout = setTimeout(() => {
       if (!deleting) {
@@ -38,7 +41,7 @@ function Hero() {
       }
     }, deleting ? 60 : 110);
     return () => clearTimeout(timeout);
-  }, [charIdx, deleting, wordIdx]);
+  }, [charIdx, deleting, wordIdx, reducedMotion]);
 
   return (
     <section style={{
@@ -260,15 +263,18 @@ function ProcessStep({ step, index, total }) {
 // ─── Testimonials Carousel (Swiper) ─────────────────────────────────────────────
 function TestimonialsCarousel() {
   const isMobile = useIsMobile();
+  const reducedMotion = useReducedMotion();
+  const modules = reducedMotion ? [Pagination] : [Pagination, Autoplay];
+  const autoplay = reducedMotion ? undefined : { delay: isMobile ? 6000 : 6500, disableOnInteraction: false };
 
   if (isMobile) {
     return (
       <Swiper
-        modules={[Pagination, Autoplay]}
+        modules={modules}
         spaceBetween={20}
         slidesPerView={1}
         loop
-        autoplay={{ delay: 6000, disableOnInteraction: false }}
+        autoplay={autoplay}
         pagination={{ clickable: true }}
         style={{ paddingBottom: 32 }}
       >
@@ -283,11 +289,11 @@ function TestimonialsCarousel() {
 
   return (
     <Swiper
-      modules={[Pagination, Autoplay]}
+      modules={modules}
       spaceBetween={24}
       slidesPerView={2}
       loop
-      autoplay={{ delay: 6500, disableOnInteraction: false }}
+      autoplay={autoplay}
       pagination={{ clickable: true }}
       breakpoints={{
         1024: { slidesPerView: 3 },
@@ -311,6 +317,14 @@ export default function HomePage() {
         title="Home"
         description="Chandramukhi Sales delivers ready mix concrete, road construction, and civil contracting services across Maharashtra."
         path="/"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Chandramukhi Sales',
+          url: 'https://chandramukhi-sales.com/',
+          areaServed: 'Maharashtra',
+          serviceType: ['Ready Mix Concrete', 'Road Construction', 'Civil Contracting'],
+        }}
       />
       <Hero />
       <Ticker />
@@ -340,7 +354,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Why Choose Us ──────────────────────────────────────── */}
-      <section className="section-pad" style={{ background: 'var(--navy)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy)' }}>
         <div className="max-w" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: 72, alignItems: 'center' }}>
           <div>
             <SectionHeader eyebrow="Why Choose Us" title="OVER TWO DECADES OF BUILDING TRUST" subtitle="Since 2002, we've been the backbone of infrastructure across Pune and Maharashtra." center={false} />
@@ -406,7 +420,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Process ────────────────────────────────────────────── */}
-      <section className="section-pad" style={{ background: 'var(--navy-mid)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))', gap: 72, alignItems: 'flex-start' }}>
           <div>
             <SectionHeader eyebrow="How We Work" title="OUR PROVEN PROCESS" subtitle="A transparent, step-by-step workflow that keeps you informed and in control at every stage." center={false} />
@@ -441,7 +455,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Testimonials ───────────────────────────────────────── */}
-      <section className="section-pad" style={{ background: 'var(--navy)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Testimonials" title="WHAT OUR CLIENTS SAY" subtitle="Words from the developers, engineers, and contractors who trust us with their most critical projects." />
           <div className="card" style={{ padding: '28px 20px 8px', borderRadius: 'var(--radius-xl)' }}>
@@ -451,7 +465,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Recent Projects Preview ─────────────────────────────── */}
-      <section className="section-pad" style={{ background: 'var(--navy-mid)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Portfolio" title="RECENT PROJECTS" subtitle="A glimpse of what we've built — from city roads to towering structures." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 24, marginBottom: 48 }}>
@@ -483,6 +497,23 @@ export default function HomePage() {
           <Reveal style={{ textAlign: 'center' }}>
             <Link to="/projects" className="btn btn-outline" style={{ textDecoration: 'none', fontSize: 15 }}>View All Projects →</Link>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="section-pad-sm cv-auto" style={{ background: 'var(--navy)' }}>
+        <div className="max-w">
+          <SectionHeader eyebrow="Location Pages" title="SERVING PUNE & MAHARASHTRA" subtitle="Explore service pages tailored for your region." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 14 }}>
+            {[
+              { title: 'RMC in Pune', path: '/rmc-pune' },
+              { title: 'Road Contractor in Pune', path: '/road-contractor-pune' },
+              { title: 'Civil Contractor in Maharashtra', path: '/civil-contractor-maharashtra' },
+            ].map((item) => (
+              <Link key={item.path} to={item.path} className="card" style={{ padding: 18, textDecoration: 'none', color: 'var(--steel-light)' }}>
+                {item.title}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

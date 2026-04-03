@@ -90,8 +90,19 @@ export default function AboutPage() {
     <div style={{ paddingTop: 72 }}>
       <SEO
         title="About Us"
-        description="Learn about Chandramukhi Sales, our journey, values, team, and infrastructure experience since 2006."
+        description="Learn about Chandramukhi Sales, our journey, values, team, and infrastructure experience since 2002."
         path="/about"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'AboutPage',
+          name: 'About Chandramukhi Sales',
+          url: 'https://chandramukhi-sales.com/about',
+          about: {
+            '@type': 'Organization',
+            name: 'Chandramukhi Sales',
+            foundingDate: '2002',
+          },
+        }}
       />
       {/* ── Hero ──────────────────────────────────────────────── */}
       <section style={{

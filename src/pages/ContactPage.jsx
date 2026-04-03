@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, FAQItem } from '../components/UI';
@@ -7,8 +7,25 @@ import { SITE, FAQS, getWhatsAppLink, getGmailComposeLink } from '../data/siteDa
 import { submitLead } from '../utils/leadApi';
 import { trackEvent } from '../utils/analytics';
 
+const SELECT_INPUT_STYLE = {
+  appearance: 'none',
+  backgroundImage:
+    'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' fill=\'%2394A3B8\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z\'/%3E%3C/svg%3E")',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'right 16px center',
+};
+
+const TWO_COLUMN_GRID_STYLE = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))',
+  gap: 20,
+};
+
 function validate(values) {
   const errors = {};
+  if (!values.city.trim()) errors.city = 'Project city is required.';
+  if (!values.timeline) errors.timeline = 'Please select a timeline.';
+  if (!values.projectScale) errors.projectScale = 'Please select project scale.';
   if (!values.name.trim()) errors.name = 'Full name is required.';
   if (!values.phone.trim()) errors.phone = 'Phone number is required.';
   else if (!/^[+\d][\d\s\-]{7,}$/.test(values.phone)) errors.phone = 'Please enter a valid phone number.';
@@ -18,6 +35,17 @@ function validate(values) {
   if (!values.message.trim()) errors.message = 'Please describe your requirement.';
   else if (values.message.trim().length < 20) errors.message = 'Please provide a bit more detail (min 20 chars).';
   return errors;
+}
+
+function getStartingEstimate({ service, projectScale }) {
+  const baseByScale = {
+    Small: 'From Rs 5-15 Lakhs',
+    Medium: 'From Rs 15 Lakhs-1 Crore',
+    Large: 'From Rs 1 Crore+',
+  };
+  const serviceLabel = service || 'Your selected service';
+  const scaleLabel = projectScale || 'project scale';
+  return `${serviceLabel}: ${baseByScale[scaleLabel] || 'Custom quote'} (${scaleLabel})`;
 }
 
 function FormField({ label, error, children }) {
@@ -31,8 +59,30 @@ function FormField({ label, error, children }) {
 }
 
 function ContactForm() {
-  const initialValues = { name: '', phone: '', email: '', service: '', budget: '', message: '' };
+  const initialValues = {
+    city: '',
+    timeline: '',
+    projectScale: '',
+    name: '',
+    phone: '',
+    email: '',
+    service: '',
+    budget: '',
+    message: '',
+  };
   const { values, errors, touched, submitting, submitted, handleChange, handleBlur, handleSubmit, reset } = useForm(initialValues, validate);
+  const [step, setStep] = useState(1);
+  const [stepOneHint, setStepOneHint] = useState('');
+
+  const goToStepTwo = useCallback(() => {
+    if (!values.city.trim() || !values.timeline || !values.projectScale || !values.service) {
+      setStepOneHint('Please complete service, city, timeline, and project scale to continue.');
+      return;
+    }
+    setStepOneHint('');
+    setStep(2);
+    trackEvent('lead_step_complete', { step: 1, service: values.service });
+  }, [values]);
 
   const onSubmit = useCallback(async (vals) => {
     const message = [
@@ -41,17 +91,22 @@ function ContactForm() {
       `Phone: ${vals.phone}`,
       `Email: ${vals.email}`,
       `Service: ${vals.service}`,
+      `City: ${vals.city}`,
+      `Timeline: ${vals.timeline}`,
+      `Project Scale: ${vals.projectScale}`,
       `Budget: ${vals.budget || 'Not specified'}`,
       `Requirement: ${vals.message}`,
     ].join('\n');
     const waUrl = getWhatsAppLink(message);
-    // Open immediately in the user click context to avoid popup blockers.
     const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
 
     const payload = {
       source: 'website-contact-form',
       page: '/contact',
       submittedAt: new Date().toISOString(),
+      city: vals.city,
+      timeline: vals.timeline,
+      projectScale: vals.projectScale,
       name: vals.name,
       phone: vals.phone,
       email: vals.email,
@@ -65,6 +120,7 @@ function ContactForm() {
       trackEvent('lead_submit', {
         method: result.skipped ? 'whatsapp_only' : 'webhook_and_whatsapp',
         service: vals.service,
+        projectScale: vals.projectScale,
       });
     } catch (_) {
       trackEvent('lead_submit_error', { service: vals.service });
@@ -80,9 +136,18 @@ function ContactForm() {
       <div style={{ textAlign: 'center', padding: '56px 24px', animation: 'slideUp 0.5s ease' }}>
         <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'rgba(74,222,128,0.1)', border: '1px solid rgba(74,222,128,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: 36 }}>✅</div>
         <h3 className="text-display" style={{ fontSize: 36, color: 'var(--white)', marginBottom: 12 }}>MESSAGE SENT!</h3>
-        <p style={{ color: 'var(--steel)', fontSize: 16, lineHeight: 1.7, marginBottom: 32 }}>Thank you for reaching out. Our team will contact you within <strong style={{ color: 'var(--orange)' }}>2 business hours</strong>.</p>
+        <p style={{ color: 'var(--steel)', fontSize: 16, lineHeight: 1.7, marginBottom: 24 }}>Thank you for reaching out. Our team will contact you within <strong style={{ color: 'var(--orange)' }}>2 business hours</strong>.</p>
+        <div className="card" style={{ marginBottom: 24, textAlign: 'left', padding: 18, maxWidth: 560, marginInline: 'auto' }}>
+          <div style={{ color: 'var(--orange)', fontWeight: 700, marginBottom: 6 }}>What happens next</div>
+          <div style={{ color: 'var(--steel-light)', fontSize: 14, lineHeight: 1.7 }}>
+            1) Technical team review and feasibility check.<br />
+            2) Call-back for site details and quantity confirmation.<br />
+            3) Initial quote and delivery timeline shared within 24 business hours.
+          </div>
+        </div>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button onClick={reset} className="btn btn-outline">Send Another</button>
+          <button onClick={() => { reset(); setStep(1); }} className="btn btn-outline">Send Another</button>
+          <a href={`tel:${SITE.phone}`} className="btn btn-primary">📞 Call Sales Now</a>
           <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green">💬 Chat on WhatsApp</a>
         </div>
       </div>
@@ -91,65 +156,117 @@ function ContactForm() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 20 }}>
-        <FormField label="Full Name *" error={touched.name && errors.name}>
-          <input name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Rajesh Patil"
-            className={`form-input ${touched.name && errors.name ? 'error' : ''}`} />
-        </FormField>
-        <FormField label="Phone Number *" error={touched.phone && errors.phone}>
-          <input name="phone" value={values.phone} onChange={handleChange} onBlur={handleBlur} placeholder="+91 98765 43210"
-            className={`form-input ${touched.phone && errors.phone ? 'error' : ''}`} />
-        </FormField>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <span className="badge badge-orange">Step {step} of 2</span>
+        <span style={{ color: 'var(--muted)', fontSize: 13 }}>{step === 1 ? 'Project qualification' : 'Contact details and requirement'}</span>
       </div>
 
-      <FormField label="Email Address *" error={touched.email && errors.email}>
-        <input name="email" type="email" value={values.email} onChange={handleChange} onBlur={handleBlur} placeholder="you@company.com"
-          className={`form-input ${touched.email && errors.email ? 'error' : ''}`} />
-      </FormField>
+      {step === 1 ? (
+        <>
+          <div style={TWO_COLUMN_GRID_STYLE}>
+            <FormField label="Service Required *" error={touched.service && errors.service}>
+              <select name="service" value={values.service} onChange={handleChange} onBlur={handleBlur}
+                className={`form-input ${touched.service && errors.service ? 'error' : ''}`} style={SELECT_INPUT_STYLE}>
+                <option value="">Select a service...</option>
+                <option>Ready Mix Concrete (RMC)</option>
+                <option>Road Construction</option>
+                <option>Civil Contracting</option>
+                <option>Multiple Services</option>
+                <option>Site Consultation</option>
+              </select>
+            </FormField>
+            <FormField label="Project City *" error={touched.city && errors.city}>
+              <input name="city" value={values.city} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Pune"
+                className={`form-input ${touched.city && errors.city ? 'error' : ''}`} />
+            </FormField>
+          </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 20 }}>
-        <FormField label="Service Required *" error={touched.service && errors.service}>
-          <select name="service" value={values.service} onChange={handleChange} onBlur={handleBlur}
-            className={`form-input ${touched.service && errors.service ? 'error' : ''}`} style={{ appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 16px center' }}>
-            <option value="">Select a service...</option>
-            <option>Ready Mix Concrete (RMC)</option>
-            <option>Road Construction</option>
-            <option>Civil Contracting</option>
-            <option>Multiple Services</option>
-            <option>Site Consultation</option>
-          </select>
-        </FormField>
+          <div style={TWO_COLUMN_GRID_STYLE}>
+            <FormField label="Expected Timeline *" error={touched.timeline && errors.timeline}>
+              <select name="timeline" value={values.timeline} onChange={handleChange} onBlur={handleBlur}
+                className={`form-input ${touched.timeline && errors.timeline ? 'error' : ''}`} style={SELECT_INPUT_STYLE}>
+                <option value="">Select timeline...</option>
+                <option>Immediate (within 2 weeks)</option>
+                <option>1-3 Months</option>
+                <option>3-6 Months</option>
+                <option>6+ Months</option>
+              </select>
+            </FormField>
+            <FormField label="Project Scale *" error={touched.projectScale && errors.projectScale}>
+              <select name="projectScale" value={values.projectScale} onChange={handleChange} onBlur={handleBlur}
+                className={`form-input ${touched.projectScale && errors.projectScale ? 'error' : ''}`} style={SELECT_INPUT_STYLE}>
+                <option value="">Select scale...</option>
+                <option>Small</option>
+                <option>Medium</option>
+                <option>Large</option>
+              </select>
+            </FormField>
+          </div>
 
-        <FormField label="Project Budget (Optional)">
-          <select name="budget" value={values.budget} onChange={handleChange}
-            className="form-input" style={{ appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 16px center' }}>
-            <option value="">Select range...</option>
-            <option>Under ₹10 Lakhs</option>
-            <option>₹10L – ₹50L</option>
-            <option>₹50L – ₹2 Crore</option>
-            <option>₹2Cr – ₹10 Crore</option>
-            <option>Above ₹10 Crore</option>
-          </select>
-        </FormField>
-      </div>
+          {(values.service || values.projectScale) && (
+            <div className="card" style={{ padding: 16 }}>
+              <div style={{ color: 'var(--orange)', fontWeight: 700, marginBottom: 4 }}>Approx. starting budget</div>
+              <div style={{ color: 'var(--steel-light)', fontSize: 14 }}>{getStartingEstimate(values)}</div>
+            </div>
+          )}
 
-      <FormField label="Project Description *" error={touched.message && errors.message}>
-        <textarea name="message" value={values.message} onChange={handleChange} onBlur={handleBlur} rows={5}
-          placeholder="Describe your project — location, scale, timeline, and any specific requirements..."
-          className={`form-input ${touched.message && errors.message ? 'error' : ''}`} style={{ resize: 'vertical', minHeight: 120 }} />
-      </FormField>
+          <button onClick={goToStepTwo} className="btn btn-primary" style={{ padding: '17px 32px', fontSize: 16, width: '100%', justifyContent: 'center' }}>
+            Continue to Contact Details →
+          </button>
+          {stepOneHint && <p className="form-error">{stepOneHint}</p>}
+        </>
+      ) : (
+        <>
+          <div style={TWO_COLUMN_GRID_STYLE}>
+            <FormField label="Full Name *" error={touched.name && errors.name}>
+              <input name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Rajesh Patil"
+                className={`form-input ${touched.name && errors.name ? 'error' : ''}`} />
+            </FormField>
+            <FormField label="Phone Number *" error={touched.phone && errors.phone}>
+              <input name="phone" value={values.phone} onChange={handleChange} onBlur={handleBlur} placeholder="+91 98765 43210"
+                className={`form-input ${touched.phone && errors.phone ? 'error' : ''}`} />
+            </FormField>
+          </div>
 
-      <button onClick={() => handleSubmit(onSubmit)} disabled={submitting}
-        className="btn btn-primary"
-        style={{ padding: '17px 32px', fontSize: 16, width: '100%', justifyContent: 'center', opacity: submitting ? 0.7 : 1, transition: 'all 0.25s' }}
-      >
-        {submitting ? (
-          <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #fff', borderRadius: '50%', animation: 'spin-slow 0.7s linear infinite', display: 'inline-block' }} />
-            Sending...
-          </span>
-        ) : '💬 Send on WhatsApp'}
-      </button>
+          <FormField label="Email Address *" error={touched.email && errors.email}>
+            <input name="email" type="email" value={values.email} onChange={handleChange} onBlur={handleBlur} placeholder="you@company.com"
+              className={`form-input ${touched.email && errors.email ? 'error' : ''}`} />
+          </FormField>
+
+          <FormField label="Project Budget (Optional)">
+            <select name="budget" value={values.budget} onChange={handleChange}
+              className="form-input" style={SELECT_INPUT_STYLE}>
+              <option value="">Select range...</option>
+              <option>Under ₹10 Lakhs</option>
+              <option>₹10L - ₹50L</option>
+              <option>₹50L - ₹2 Crore</option>
+              <option>₹2Cr - ₹10 Crore</option>
+              <option>Above ₹10 Crore</option>
+            </select>
+          </FormField>
+
+          <FormField label="Project Description *" error={touched.message && errors.message}>
+            <textarea name="message" value={values.message} onChange={handleChange} onBlur={handleBlur} rows={5}
+              placeholder="Describe your project - location, scale, timeline, and any specific requirements..."
+              className={`form-input ${touched.message && errors.message ? 'error' : ''}`} style={{ resize: 'vertical', minHeight: 120 }} />
+          </FormField>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <button onClick={() => setStep(1)} className="btn btn-outline">← Back</button>
+            <button onClick={() => handleSubmit(onSubmit)} disabled={submitting}
+              className="btn btn-primary"
+              style={{ padding: '17px 32px', fontSize: 16, width: '100%', justifyContent: 'center', opacity: submitting ? 0.7 : 1, transition: 'all 0.25s' }}
+            >
+              {submitting ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #fff', borderRadius: '50%', animation: 'spin-slow 0.7s linear infinite', display: 'inline-block' }} />
+                  Sending...
+                </span>
+              ) : '💬 Send Quote Request'}
+            </button>
+          </div>
+        </>
+      )}
 
       <p style={{ color: 'var(--muted)', fontSize: 12, textAlign: 'center' }}>
         🔒 Your information is secure and will never be shared.
