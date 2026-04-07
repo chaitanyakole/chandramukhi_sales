@@ -7,7 +7,7 @@ export const SITE = {
   phone: '+91 99231 57599',
   phoneRaw: '+919923157599',
   salesPhones: ['+91 99231 57599'],
-  officeTel: '020-65422422',
+  // officeTel: '020-65422422',
   whatsapp: '919923157599',
   emails: ['chandramukhisales99@gmail.com'],
   email: 'chandramukhisales.pune@gmail.com',

@@ -121,7 +121,7 @@ export default function Footer() {
             <h4 style={{ fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white)', marginBottom: 20 }}>CONTACT</h4>
             {[
               { icon: '📍', text: SITE.address },
-              { icon: '☎️', text: `Office: ${SITE.officeTel}`, href: `tel:${SITE.officeTel}` },
+              // { icon: '☎️', text: `Office: ${SITE.officeTel}`, href: `tel:${SITE.officeTel}` },
               { icon: '📞', text: `Sales: ${salesPhones[0]}`, href: `tel:${salesPhones[0]}` },
               ...(salesPhones.length > 1 ? [{ icon: '📞', text: `Sales (Alt): ${salesPhones[1]}`, href: `tel:${salesPhones[1]}` }] : []),
               { icon: '✉️', text: emailPrimary, href: getGmailComposeLink(emailPrimary) },

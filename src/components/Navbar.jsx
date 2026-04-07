@@ -57,8 +57,8 @@ export default function Navbar() {
               />
             </div>
             <div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 19, letterSpacing: '0.15em', color: 'var(--white)', lineHeight: 1.1 }}>CHANDRAMUKHI</div>
-              <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 10, letterSpacing: '0.4em', color: 'var(--orange)', textTransform: 'uppercase' }}>{estText}</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 21, letterSpacing: '0.15em', color: 'var(--white)', lineHeight: 1.1 }}>CHANDRAMUKHI</div>
+              <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 14, letterSpacing: '0.35em', color: 'var(--orange)', textTransform: 'uppercase' }}>{estText}</div>
             </div>
           </Link>
 
