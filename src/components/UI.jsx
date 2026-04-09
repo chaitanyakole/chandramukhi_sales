@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FiChevronDown, FiMessageCircle, FiPhone, FiTool } from 'react-icons/fi';
 import { useReveal, useCounter } from '../hooks';
 import { SITE, TICKER_ITEMS, getWhatsAppLink } from '../data/siteData';
 
@@ -76,9 +77,15 @@ export function CTABanner({ title = "LET'S BUILD YOUR PROJECT", subtitle = 'Talk
           <h2 className="text-display" style={{ fontSize: 'clamp(40px,6vw,76px)', color: '#fff', marginBottom: 20 }}>{title}</h2>
           <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 19, marginBottom: 44, maxWidth: 600, margin: '0 auto 44px', lineHeight: 1.7 }}>{subtitle}</p>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact" className="btn" style={{ background: '#fff', color: 'var(--orange)', fontWeight: 800, padding: '16px 36px', fontSize: 15 }}>🏗️ {btnText}</Link>
-            <a href={`tel:${SITE.phone}`} className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '2px solid rgba(255,255,255,0.5)', padding: '16px 32px' }}>📞 {SITE.phone}</a>
-            <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn" style={{ background: 'rgba(37,211,102,0.2)', color: '#fff', border: '2px solid rgba(37,211,102,0.5)', padding: '16px 32px' }}>💬 WhatsApp Us</a>
+            <Link to="/contact" className="btn" style={{ background: '#fff', color: 'var(--orange)', fontWeight: 800, padding: '16px 36px', fontSize: 15 }}>
+              <FiTool aria-hidden /> {btnText}
+            </Link>
+            <a href={`tel:${SITE.phone}`} className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '2px solid rgba(255,255,255,0.5)', padding: '16px 32px' }}>
+              <FiPhone aria-hidden /> {SITE.phone}
+            </a>
+            <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn" style={{ background: 'rgba(37,211,102,0.2)', color: '#fff', border: '2px solid rgba(37,211,102,0.5)', padding: '16px 32px' }}>
+              <FiMessageCircle aria-hidden /> WhatsApp Us
+            </a>
           </div>
         </Reveal>
       </div>
@@ -111,8 +118,8 @@ export function Ticker() {
 export function FloatingButtons() {
   const [tooltip, setTooltip] = useState(null);
   const buttons = [
-    { id: 'wa',   icon: '💬', label: 'WhatsApp Us', href: getWhatsAppLink(), bg: '#25D366', shadow: 'rgba(37,211,102,0.5)', external: true },
-    { id: 'call', icon: '📞', label: 'Call Us',     href: `tel:${SITE.phone}`, bg: 'var(--orange)', shadow: 'rgba(249,115,22,0.5)' },
+    { id: 'wa',   icon: <FiMessageCircle aria-hidden />, label: 'WhatsApp Us', href: getWhatsAppLink(), bg: '#25D366', shadow: 'rgba(37,211,102,0.5)', external: true },
+    { id: 'call', icon: <FiPhone aria-hidden />, label: 'Call Us',     href: `tel:${SITE.phone}`, bg: 'var(--orange)', shadow: 'rgba(249,115,22,0.5)' },
   ];
   return (
     <div style={{ position: 'fixed', bottom: 28, right: 22, zIndex: 800, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -174,7 +181,9 @@ export function FAQItem({ q, a, delay = 0 }) {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: open ? '#fff' : 'var(--steel)', fontSize: 16, flexShrink: 0,
             transform: open ? 'rotate(180deg)' : 'none', transition: 'all 0.25s',
-          }}>▾</span>
+          }}>
+            <FiChevronDown aria-hidden />
+          </span>
         </button>
         {open && (
           <div style={{ padding: '0 28px 22px', color: 'var(--steel)', fontSize: 15, lineHeight: 1.8, animation: 'slideUp 0.25s ease' }}>

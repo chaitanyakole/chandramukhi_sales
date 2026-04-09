@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" role="img" aria-label="Abstract construction background">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1920" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071224"/>
+      <stop offset="0.48" stop-color="#0B1730"/>
+      <stop offset="1" stop-color="#020617"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(380 160) rotate(45) scale(640 520)">
+      <stop stop-color="#F97316" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#F97316" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1550 260) rotate(30) scale(700 540)">
+      <stop stop-color="#818CF8" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#818CF8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(860 940) rotate(-10) scale(900 520)">
+      <stop stop-color="#25D366" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#25D366" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="rgba(255,255,255,0.045)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="slab" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="rgba(255,162,74,0.16)"/>
+      <stop offset="1" stop-color="rgba(99,102,241,0.10)"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#glow1)"/>
+  <rect width="1920" height="1080" fill="url(#glow2)"/>
+  <rect width="1920" height="1080" fill="url(#glow3)"/>
+  <rect width="1920" height="1080" fill="url(#grid)" opacity="0.9"/>
+
+  <path d="M1200 0H1920V1080H1000L1200 0Z" fill="url(#slab)" opacity="0.9"/>
+
+  <g opacity="0.14">
+    <path d="M210 820L360 670L520 820" stroke="rgba(255,255,255,0.35)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M194 820H536" stroke="rgba(255,255,255,0.28)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g opacity="0.12">
+    <path d="M1480 820L1630 670L1790 820" stroke="rgba(255,255,255,0.32)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1464 820H1806" stroke="rgba(255,255,255,0.25)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

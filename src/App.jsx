@@ -97,9 +97,7 @@ function AppRoutes() {
 
 function RouteLoader() {
   return (
-    <div style={{ minHeight: '50vh', display: 'grid', placeItems: 'center' }}>
-      <div className="badge badge-orange">Loading page...</div>
-    </div>
+    <LoadingScreen show />
   );
 }
 

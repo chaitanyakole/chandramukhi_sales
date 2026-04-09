@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { FiArrowRight, FiCheckCircle, FiMessageCircle, FiPhone } from 'react-icons/fi';
+import { FaAward, FaFlask, FaHandshake, FaIndustry, FaMapMarkedAlt, FaRegClipboard, FaRoad, FaTruck, FaWarehouse } from 'react-icons/fa';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, StatCard, CTABanner, Ticker } from '../components/UI';
 import { useReveal, useIsMobile } from '../hooks';
@@ -44,115 +46,135 @@ function Hero() {
   }, [charIdx, deleting, wordIdx, reducedMotion]);
 
   return (
-    <section style={{
-      minHeight: '100vh', display: 'flex', flexDirection: 'column',
-      backgroundImage: 'linear-gradient(rgba(7,15,27,0.4), rgba(7,15,27,0.56)), url("/hero-bg.png")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      position: 'relative', overflow: 'hidden',
-    }}>
-      {/* Contrast layer for readability over image */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'linear-gradient(100deg, rgba(7,15,27,0.58) 0%, rgba(7,15,27,0.36) 45%, rgba(7,15,27,0.64) 100%)',
-      }} />
-      {/* Animated grid */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px)',
-        backgroundSize: '64px 64px',
-      }} />
+    <section
+      className="hero"
+      style={{
+        backgroundImage: 'linear-gradient(rgba(7,15,27,0.30), rgba(7,15,27,0.58)), url("/hero-bg.png")',
+      }}
+    >
+      <div className="hero__overlay" aria-hidden />
+      <div className="hero__grid" aria-hidden />
+      <div className="hero__blob hero__blob--a" aria-hidden />
+      <div className="hero__blob hero__blob--b" aria-hidden />
+      <div className="hero__slab" aria-hidden />
 
-      {/* Orange glow blobs */}
-      <div style={{ position: 'absolute', top: '15%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: '5%', left: '5%', width: 350, height: 350, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-      {/* Diagonal decorative slab */}
-      <div style={{
-        position: 'absolute', top: 0, right: 0, width: '45%', height: '100%',
-        background: 'linear-gradient(135deg, rgba(22,40,64,0.32), rgba(30,58,92,0.12))',
-        clipPath: 'polygon(12% 0, 100% 0, 100% 100%, 0% 100%)',
-        borderLeft: '1px solid rgba(249,115,22,0.1)',
-        pointerEvents: 'none',
-      }} />
-
-      {/* Floating construction emoji */}
-      <div style={{ position: 'absolute', top: '18%', right: '20%', fontSize: 80, opacity: 0.06, animation: 'float 6s ease-in-out infinite' }}>🏗️</div>
-      <div style={{ position: 'absolute', bottom: '25%', right: '8%', fontSize: 60, opacity: 0.05, animation: 'float 8s ease-in-out infinite 2s' }}>🛣️</div>
-
-      {/* Content */}
-      <div className="max-w" style={{ padding: '140px 5% 80px', flex: 1, display: 'flex', alignItems: 'center', position: 'relative', zIndex: 2 }}>
-        <div style={{ maxWidth: 740 }}>
+      <div className="max-w hero__inner">
+        <div className="hero__copy">
           {/* Badge */}
           <Reveal>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 10,
-              background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.3)',
-              borderRadius: 100, padding: '8px 20px', marginBottom: 32,
-            }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--orange)', display: 'inline-block', animation: 'pulse-ring 2s infinite' }} />
-              <span style={{ fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--orange)' }}>
-                Trusted Construction Partner · Pune, MH
-              </span>
+            <div className="hero__badge">
+              <span className="hero__badge-dot" aria-hidden />
+              <span className="hero__badge-text">Trusted Construction Partner · Pune, MH</span>
             </div>
           </Reveal>
 
           {/* Main headline */}
           <Reveal delay={100}>
-            <h1 className="text-display" style={{ fontSize: 'clamp(60px,9vw,110px)', color: 'var(--white)', marginBottom: 16, lineHeight: 0.9 }}>
+            <h1 className="text-display hero__h1">
               WE BUILD
             </h1>
           </Reveal>
           <Reveal delay={200}>
-            <h1 className="text-display gradient-text" style={{ fontSize: 'clamp(60px,9vw,110px)', marginBottom: 16, lineHeight: 0.9 }}>
+            <h1 className="text-display gradient-text hero__h1">
               STRONG
             </h1>
           </Reveal>
           <Reveal delay={300}>
-            <h1 className="text-display" style={{ fontSize: 'clamp(60px,9vw,110px)', color: 'var(--white)', marginBottom: 0, lineHeight: 0.9, display: 'flex', alignItems: 'baseline', gap: 16, flexWrap: 'wrap' }}>
-              <span style={{ color: 'var(--steel)', fontSize: 'clamp(36px,5vw,64px)' }}>BETTER</span>
-              <span style={{ color: 'var(--orange)', minWidth: '2em' }}>
+            <h1 className="text-display hero__h1 hero__h1--wrap">
+              <span className="hero__h1-muted">BETTER</span>
+              <span className="hero__typed">
                 {typed}
-                <span style={{ animation: 'blink 1s step-end infinite', color: 'var(--orange-light)', fontSize: '0.9em' }}>|</span>
+                <span className="hero__caret" aria-hidden>|</span>
               </span>
             </h1>
           </Reveal>
 
           <Reveal delay={420}>
-            <p style={{ color: 'var(--steel-light)', fontSize: 19, lineHeight: 1.8, margin: '32px 0 44px', maxWidth: 580 }}>
-              Pune's leading provider of <strong style={{ color: 'var(--white)' }}>Ready Mix Concrete</strong>, <strong style={{ color: 'var(--white)' }}>Road Construction</strong>, and <strong style={{ color: 'var(--white)' }}>Civil Contracting</strong> since 2002. Quality-driven, deadline-committed.
+            <p className="hero__lead">
+              Pune&apos;s leading provider of <strong>Ready Mix Concrete</strong>, <strong>Road Construction</strong>, and{' '}
+              <strong>Civil Contracting</strong> since 2002. Quality-driven, deadline-committed.
             </p>
+          </Reveal>
+
+          <Reveal delay={480}>
+            <ul className="hero__highlights">
+              {[
+                'IS-Grade materials & testing',
+                'Modern fleet & batching technology',
+                'On-time delivery and transparent reporting',
+              ].map((t) => (
+                <li key={t} className="hero__highlight">
+                  <FiCheckCircle aria-hidden className="hero__highlight-icon" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
 
           {/* CTAs */}
           <Reveal delay={520}>
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 56 }}>
-              <Link to="/contact" className="btn btn-primary btn-lg">🏗️ Get Free Quote</Link>
-              <a href={`tel:${SITE.phone}`} className="btn btn-ghost btn-lg">📞 {SITE.phone}</a>
-              <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green btn-lg">💬 WhatsApp</a>
+            <div className="hero__ctas">
+              <Link to="/contact" className="btn btn-primary btn-lg">
+                Get Free Quote <FiArrowRight aria-hidden />
+              </Link>
+              <a href={`tel:${SITE.phone}`} className="btn btn-ghost btn-lg">
+                <FiPhone aria-hidden /> {SITE.phone}
+              </a>
+              <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green btn-lg">
+                <FiMessageCircle aria-hidden /> WhatsApp
+              </a>
             </div>
           </Reveal>
 
           {/* Mini stats */}
           <Reveal delay={600}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(130px,1fr))', gap: 16, borderTop: '1px solid var(--navy-border)', paddingTop: 36 }}>
+            <div className="hero__mini-stats">
               {[{ n: '20+', l: 'Years' }, { n: '500+', l: 'Projects' }, { n: '200+', l: 'Clients' }, { n: '98%', l: 'On-Time' }].map(({ n, l }, i) => (
-                <div key={l} style={{ paddingRight: i < 3 ? 18 : 0, borderRight: i < 3 ? '1px solid var(--navy-border)' : 'none', paddingBottom: 8 }}>
-                  <div className="text-display text-orange" style={{ fontSize: 44, lineHeight: 1 }}>{n}</div>
-                  <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--steel)', marginTop: 4 }}>{l}</div>
+                <div key={l} className="hero__mini-stat" style={{ borderRight: i < 3 ? '1px solid var(--navy-border)' : 'none' }}>
+                  <div className="text-display text-orange hero__mini-number">{n}</div>
+                  <div className="hero__mini-label">{l}</div>
                 </div>
               ))}
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={220} direction="scale">
+          <div className="hero__visual card noise-overlay">
+            <div className="hero__visual-top">
+              <div className="hero__visual-title">
+                <span className="badge badge-orange">Since {SITE.established}</span>
+                <div className="text-display" style={{ fontSize: 34, lineHeight: 1, marginTop: 12 }}>Built for Scale</div>
+                <div style={{ color: 'var(--steel)', marginTop: 10, lineHeight: 1.7 }}>
+                  RMC • Roads • Civil contracting across Maharashtra
+                </div>
+              </div>
+              <div className="hero__visual-mark" aria-hidden>
+                <img src="/logo.png" alt="" />
+              </div>
+            </div>
+
+            <div className="hero__visual-grid">
+              {[
+                { k: 'RMC', v: 'M15–M60 Grade' },
+                { k: 'Roads', v: 'IRC compliant' },
+                { k: 'Quality', v: 'IS standards' },
+                { k: 'Support', v: 'Post-handover' },
+              ].map((x) => (
+                <div key={x.k} className="hero__pill">
+                  <div className="hero__pill-k">{x.k}</div>
+                  <div className="hero__pill-v">{x.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </div>
 
       {/* Scroll indicator */}
-      <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, animation: 'float 2s ease-in-out infinite', zIndex: 2 }}>
-        <span style={{ fontFamily: 'var(--font-condensed)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)' }}>Scroll</span>
-        <div style={{ width: 1, height: 36, background: 'linear-gradient(to bottom, var(--orange), transparent)' }} />
+      <div className="hero__scroll" aria-hidden>
+        <span className="hero__scroll-text">Scroll</span>
+        <div className="hero__scroll-line" />
       </div>
     </section>
   );
@@ -359,14 +381,16 @@ export default function HomePage() {
           <div>
             <SectionHeader eyebrow="Why Choose Us" title="OVER TWO DECADES OF BUILDING TRUST" subtitle="Since 2002, we've been the backbone of infrastructure across Pune and Maharashtra." center={false} />
             {[
-              { icon: '✅', title: 'IS-Grade Quality Materials', desc: 'All concrete mixes and road materials meet Indian Standards. We conduct third-party lab testing on every major project.' },
-              { icon: '🚛', title: 'Modern Fleet & Technology', desc: 'Computerized batching plants, GPS-tracked transit mixers, automated asphalt pavers — built for precision.' },
-              { icon: '📋', title: 'Transparent Project Management', desc: 'Daily progress reports, live photo updates, and direct engineer access. You\'re never in the dark.' },
-              { icon: '🤝', title: 'Post-Handover Support', desc: 'Annual maintenance contracts and defect liability support. We stand behind our work, long after handover.' },
+              { icon: <FiCheckCircle aria-hidden />, title: 'IS-Grade Quality Materials', desc: 'All concrete mixes and road materials meet Indian Standards. We conduct third-party lab testing on every major project.' },
+              { icon: <FaTruck aria-hidden />, title: 'Modern Fleet & Technology', desc: 'Computerized batching plants, GPS-tracked transit mixers, automated asphalt pavers — built for precision.' },
+              { icon: <FaRegClipboard aria-hidden />, title: 'Transparent Project Management', desc: 'Daily progress reports, live photo updates, and direct engineer access. You\'re never in the dark.' },
+              { icon: <FaHandshake aria-hidden />, title: 'Post-Handover Support', desc: 'Annual maintenance contracts and defect liability support. We stand behind our work, long after handover.' },
             ].map((item, i) => (
               <Reveal key={item.title} delay={i * 100}>
                 <div style={{ display: 'flex', gap: 18, marginBottom: 28, alignItems: 'flex-start' }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{item.icon}</div>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(249,115,22,0.1)', border: '1px solid rgba(249,115,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
+                    {item.icon}
+                  </div>
                   <div>
                     <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{item.title}</div>
                     <div style={{ color: 'var(--steel)', fontSize: 14, lineHeight: 1.7 }}>{item.desc}</div>
@@ -383,10 +407,10 @@ export default function HomePage() {
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
-                { emoji: '🏗️', label: 'Ready Mix Concrete', sub: 'M15–M60 Grade' },
-                { emoji: '🛣️', label: 'Road Construction', sub: 'IRC Compliant' },
-                { emoji: '🔬', label: 'Quality Testing', sub: 'IS Standards' },
-                { emoji: '📦', label: 'Fleet of 20+', sub: 'Transit Mixers' },
+                { icon: <FaIndustry aria-hidden />, label: 'Ready Mix Concrete', sub: 'M15–M60 Grade' },
+                { icon: <FaRoad aria-hidden />, label: 'Road Construction', sub: 'IRC Compliant' },
+                { icon: <FaFlask aria-hidden />, label: 'Quality Testing', sub: 'IS Standards' },
+                { icon: <FaWarehouse aria-hidden />, label: 'Fleet of 20+', sub: 'Transit Mixers' },
               ].map((item, i) => (
                 <Reveal key={item.label} delay={i * 100} direction="scale">
                   <div style={{
@@ -398,7 +422,7 @@ export default function HomePage() {
                     onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'}
                     onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                   >
-                    <div style={{ fontSize: 40, marginBottom: 10 }}>{item.emoji}</div>
+                    <div style={{ fontSize: 40, marginBottom: 10, display: 'flex', justifyContent: 'center' }}>{item.icon}</div>
                     <div style={{ fontFamily: 'var(--font-condensed)', fontWeight: 700, color: 'var(--white)', fontSize: 15, marginBottom: 4 }}>{item.label}</div>
                     <div style={{ color: 'var(--orange)', fontSize: 12, fontFamily: 'var(--font-condensed)', letterSpacing: '0.1em' }}>{item.sub}</div>
                   </div>
@@ -408,7 +432,7 @@ export default function HomePage() {
             {/* Certification badge */}
             <Reveal delay={400}>
               <div style={{ marginTop: 20, background: 'var(--navy-mid)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-md)', padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-                <div style={{ fontSize: 36 }}>🏅</div>
+                <div style={{ fontSize: 34, color: 'var(--orange)' }}><FaAward aria-hidden /></div>
                 <div>
                   <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 15 }}>NHAI Empanelled Contractor</div>
                   <div style={{ color: 'var(--steel)', fontSize: 13 }}>Eligible for national highway projects across India</div>
@@ -470,9 +494,9 @@ export default function HomePage() {
           <SectionHeader eyebrow="Portfolio" title="RECENT PROJECTS" subtitle="A glimpse of what we've built — from city roads to towering structures." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 24, marginBottom: 48 }}>
             {[
-              { emoji: '🛣️', title: 'Pune–Nashik Expressway Stretch', cat: 'Roads', year: 2023, val: '₹8.2 Cr' },
-              { emoji: '🏗️', title: 'Amanora Township Phase 3', cat: 'RMC', year: 2023, val: '₹3.4 Cr' },
-              { emoji: '🏭', title: 'MIDC Industrial Shed Complex', cat: 'Civil', year: 2022, val: '₹5.1 Cr' },
+              { icon: <FaRoad aria-hidden />, title: 'Pune–Nashik Expressway Stretch', cat: 'Roads', year: 2023, val: '₹8.2 Cr' },
+              { icon: <FaIndustry aria-hidden />, title: 'Amanora Township Phase 3', cat: 'RMC', year: 2023, val: '₹3.4 Cr' },
+              { icon: <FaMapMarkedAlt aria-hidden />, title: 'MIDC Industrial Shed Complex', cat: 'Civil', year: 2022, val: '₹5.1 Cr' },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 120}>
                 <div style={{
@@ -483,7 +507,7 @@ export default function HomePage() {
                   onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'var(--navy-border)'; e.currentTarget.style.boxShadow = 'none'; }}
                 >
                   <div style={{ background: 'linear-gradient(135deg, var(--navy-light), var(--navy-mid))', height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72, position: 'relative' }}>
-                    {p.emoji}
+                    <span style={{ color: 'rgba(255,255,255,0.88)', filter: 'drop-shadow(0 16px 30px rgba(0,0,0,0.45))' }}>{p.icon}</span>
                     <span className="badge badge-orange" style={{ position: 'absolute', top: 14, right: 14 }}>{p.cat}</span>
                   </div>
                   <div style={{ padding: 24 }}>

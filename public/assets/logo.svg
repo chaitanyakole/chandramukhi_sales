@@ -1,0 +1,23 @@
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chandramukhi Sales logo">
+  <defs>
+    <linearGradient id="g" x1="44" y1="34" x2="202" y2="212" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F97316"/>
+      <stop offset="0.55" stop-color="#FFA24A"/>
+      <stop offset="1" stop-color="#818CF8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20" y="-20" width="280" height="280" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M52 70C52 58.9543 60.9543 50 72 50H168C179.046 50 188 58.9543 188 70V170C188 181.046 179.046 190 168 190H72C60.9543 190 52 181.046 52 170V70Z" fill="#071224" stroke="rgba(255,255,255,0.14)"/>
+    <path d="M72 175H168" stroke="rgba(255,255,255,0.16)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M78 164H162" stroke="rgba(255,255,255,0.10)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M78 86C78 82.6863 80.6863 80 84 80H156C159.314 80 162 82.6863 162 86V110C162 113.314 159.314 116 156 116H84C80.6863 116 78 113.314 78 110V86Z" fill="url(#g)" opacity="0.92"/>
+    <path d="M94 140L112 124H128L146 140" stroke="rgba(255,255,255,0.80)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M92 140H148" stroke="rgba(255,255,255,0.70)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M108 124V108" stroke="rgba(255,255,255,0.80)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M132 124V108" stroke="rgba(255,255,255,0.80)" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="120" cy="98" r="7" fill="rgba(255,255,255,0.85)"/>
+  </g>
+</svg>

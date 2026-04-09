@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { FiArrowRight, FiMenu, FiMessageCircle, FiPhone, FiX } from 'react-icons/fi';
 import { NAV_LINKS, SITE, getWhatsAppLink } from '../data/siteData';
 import { useScroll } from '../hooks';
 
@@ -7,6 +9,7 @@ export default function Navbar() {
   const { scrolled } = useScroll();
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const reducedMotion = useReducedMotion();
   const estText = `Sales · Est. ${SITE.established}`;
 
   // Close mobile on route change
@@ -18,125 +21,103 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  const mobilePanel = {
+    hidden: { opacity: 0, y: reducedMotion ? 0 : -8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.24, ease: [0.4, 0, 0.2, 1] } },
+    exit: { opacity: 0, y: reducedMotion ? 0 : -8, transition: { duration: 0.18, ease: [0.4, 0, 1, 1] } },
+  };
+
+  const itemWrap = {
+    hidden: {},
+    show: { transition: { staggerChildren: reducedMotion ? 0 : 0.045, delayChildren: 0.04 } },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: reducedMotion ? 0 : 10 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.4, 0, 0.2, 1] } },
+  };
+
   return (
     <>
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 900,
-        transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)',
-        background: scrolled ? 'rgba(7,18,36,0.78)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(18px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.1)' : 'none',
-        boxShadow: scrolled ? '0 8px 34px rgba(0,0,0,0.34)' : 'none',
-      }}>
-        <div className="max-w" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72, padding: '0 5%' }}>
+      <nav className={`site-nav ${scrolled ? 'site-nav--scrolled' : ''}`}>
+        <div className="max-w site-nav__inner">
 
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }} aria-label={`${SITE.name} home`}>
-            <div
-              style={{
-                height: 50,
-                padding: '5px 10px',
-                borderRadius: 10,
-                background: 'rgba(147, 150, 156, 0.85)',
-                border: '1px solid rgba(148,163,184,0.55)',
-                boxShadow: '0 10px 28px rgba(70, 55, 55, 0.45)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <img
-                src="/logo.png"
-                alt="Chandramukhi Sales logo"
-                style={{
-                  height: 50,
-                  width: 'auto',
-                  objectFit: 'contain',
-                  display: 'block',
-                }}
-              />
-            </div>
-            <div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 21, letterSpacing: '0.15em', color: 'var(--white)', lineHeight: 1.1 }}>CHANDRAMUKHI</div>
-              <div style={{ fontFamily: 'var(--font-condensed)', fontSize: 14, letterSpacing: '0.35em', color: 'var(--orange)', textTransform: 'uppercase' }}>{estText}</div>
-            </div>
+          <Link to="/" className="nav-brand" aria-label={`${SITE.name} home`}>
+            <span className="nav-brand-logo">
+              <img src="/logo.png" alt="Chandramukhi Sales logo" />
+            </span>
+            <span className="nav-brand-text">
+              <span className="nav-brand-title">CHANDRAMUKHI</span>
+              <span className="nav-brand-subtitle">{estText}</span>
+            </span>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div className="hide-mobile site-nav__links">
             {NAV_LINKS.map(({ label, path }) => (
-              <NavLink key={path} to={path} end={path === '/'}
-                style={({ isActive }) => ({
-                  padding: '8px 16px', borderRadius: 999,
-                  fontFamily: 'var(--font-condensed)', fontSize: 14,
-                  fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
-                  color: isActive ? 'var(--orange)' : 'var(--steel-light)',
-                  background: isActive ? 'rgba(249,115,22,0.12)' : 'rgba(255,255,255,0.02)',
-                  border: isActive ? '1px solid rgba(249,115,22,0.3)' : '1px solid rgba(255,255,255,0.06)',
-                  transition: 'all 0.22s',
-                  textDecoration: 'none',
-                })}
-                onMouseEnter={e => {
-                  if (location.pathname !== path) {
-                    e.currentTarget.style.color = 'var(--white)';
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (location.pathname !== path) {
-                    e.currentTarget.style.color = 'var(--steel-light)';
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
-                  }
-                }}
-              >{label}</NavLink>
+              <NavLink
+                key={path}
+                to={path}
+                end={path === '/'}
+                className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}
+              >
+                {label}
+              </NavLink>
             ))}
-            <Link to="/contact" className="btn btn-primary btn-sm" style={{ marginLeft: 8, textDecoration: 'none' }}>
-              Get Quote
+            <Link to="/contact" className="btn btn-primary btn-sm site-nav__cta">
+              Get Quote <FiArrowRight aria-hidden />
             </Link>
           </div>
 
           {/* Hamburger */}
-          <button className="show-mobile"
+          <button
+            className="show-mobile icon-btn"
             onClick={() => setOpen(!open)}
-            style={{ background: 'none', border: 'none', color: 'var(--white)', fontSize: 26, padding: 4, lineHeight: 1 }}
-            aria-label="Toggle menu"
-          >{open ? '✕' : '☰'}</button>
+            aria-label={open ? 'Close menu' : 'Open menu'}
+          >
+            {open ? <FiX aria-hidden /> : <FiMenu aria-hidden />}
+          </button>
         </div>
       </nav>
 
       {/* Mobile overlay */}
-      {open && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 850,
-          background: 'rgba(10,22,40,0.98)',
-          backdropFilter: 'blur(20px)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8,
-          animation: 'fadeIn 0.25s ease',
-        }}>
-          {/* Decorative */}
-          <div style={{ position: 'absolute', top: '10%', right: '5%', fontSize: 120, opacity: 0.03 }}>🏗️</div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="mobile-nav"
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            variants={mobilePanel}
+          >
+            <div className="mobile-nav__bg" aria-hidden />
 
-          {NAV_LINKS.map(({ label, path }, i) => (
-            <NavLink key={path} to={path} end={path === '/'}
-              style={({ isActive }) => ({
-                fontFamily: 'var(--font-display)', fontSize: 'clamp(40px,8vw,64px)',
-                letterSpacing: '0.06em', textTransform: 'uppercase',
-                color: isActive ? 'var(--orange)' : 'var(--steel-light)',
-                textDecoration: 'none',
-                transition: 'color 0.2s',
-                animationDelay: `${i * 60}ms`,
-              })}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--orange)'}
-              onMouseLeave={e => e.currentTarget.style.color = location.pathname === path ? 'var(--orange)' : 'var(--steel-light)'}
-            >{label}</NavLink>
-          ))}
+            <motion.div className="mobile-nav__content" variants={itemWrap} initial="hidden" animate="show">
+              {NAV_LINKS.map(({ label, path }) => (
+                <motion.div key={path} variants={item}>
+                  <NavLink
+                    to={path}
+                    end={path === '/'}
+                    className={({ isActive }) => `mobile-nav__link ${isActive ? 'is-active' : ''}`}
+                  >
+                    {label}
+                  </NavLink>
+                </motion.div>
+              ))}
 
-          <div style={{ display: 'flex', gap: 16, marginTop: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a href={`tel:${SITE.phone}`} className="btn btn-primary">📞 Call Now</a>
-            <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green">💬 WhatsApp</a>
-          </div>
-        </div>
-      )}
+              <motion.div className="mobile-nav__actions" variants={item}>
+                <a href={`tel:${SITE.phone}`} className="btn btn-primary">
+                  <FiPhone aria-hidden /> Call Now
+                </a>
+                <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green">
+                  <FiMessageCircle aria-hidden /> WhatsApp
+                </a>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
