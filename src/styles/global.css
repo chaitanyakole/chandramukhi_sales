@@ -263,7 +263,7 @@ img { display: block; max-width: 100%; }
 /* ─── Site Navbar (layout + motion) ───────────────────────────────────────── */
 .site-nav{
   position: fixed;
-  top: 10px;
+  top: 0px;
   left: 0;
   right: 0;
   z-index: 900;
@@ -286,7 +286,7 @@ img { display: block; max-width: 100%; }
 .site-nav__links{
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 .site-nav__cta{
   margin-left: 8px;
