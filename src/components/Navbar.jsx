@@ -10,7 +10,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const reducedMotion = useReducedMotion();
-  const estText = `Sales · Est. ${SITE.established}`;
+  const estText = `Est. ${SITE.established}`;
 
   // Close mobile on route change
   useEffect(() => { setOpen(false); window.scrollTo(0, 0); }, [location.pathname]);
