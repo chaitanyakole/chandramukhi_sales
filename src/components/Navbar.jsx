@@ -48,7 +48,7 @@ export default function Navbar() {
               <img src="/logo.png" alt="Chandramukhi Sales logo" />
             </span>
             <span className="nav-brand-text">
-              <span className="nav-brand-title">CHANDRAMUKHI</span>
+              <span className="nav-brand-title">CHANDRAMUKHI SALES</span>
               <span className="nav-brand-subtitle">{estText}</span>
             </span>
           </Link>
