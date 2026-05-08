@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
-import { useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiCheckCircle, FiMessageCircle, FiPhone } from 'react-icons/fi';
 import { FaAward, FaFlask, FaHandshake, FaIndustry, FaMapMarkedAlt, FaRegClipboard, FaRoad, FaTruck, FaWarehouse } from 'react-icons/fa';
@@ -15,22 +14,21 @@ import 'swiper/css/pagination';
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   const words = ['Roads', 'Bridges', 'Townships', 'Highways', 'Futures'];
-  const reducedMotion = useReducedMotion();
   const [typed, setTyped] = useState(words[0]);
   const [wordIdx, setWordIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (reducedMotion) return undefined;
     const current = words[wordIdx];
+    let holdTimeout;
     const timeout = setTimeout(() => {
       if (!deleting) {
         if (charIdx < current.length) {
           setTyped(current.slice(0, charIdx + 1));
           setCharIdx(c => c + 1);
         } else {
-          setTimeout(() => setDeleting(true), 1800);
+          holdTimeout = setTimeout(() => setDeleting(true), 1800);
         }
       } else {
         if (charIdx > 0) {
@@ -42,8 +40,11 @@ function Hero() {
         }
       }
     }, deleting ? 60 : 110);
-    return () => clearTimeout(timeout);
-  }, [charIdx, deleting, wordIdx, reducedMotion]);
+    return () => {
+      clearTimeout(timeout);
+      if (holdTimeout) clearTimeout(holdTimeout);
+    };
+  }, [charIdx, deleting, wordIdx]);
 
   return (
     <section
@@ -70,17 +71,17 @@ function Hero() {
 
           {/* Main headline */}
           <Reveal delay={100}>
-            <h1 className="text-display hero__h1">
+            <h1 className="text-display hero__h1 hero__h1--animate hero__h1--line1">
               WE BUILD
             </h1>
           </Reveal>
           <Reveal delay={200}>
-            <h1 className="text-display gradient-text hero__h1">
+            <h1 className="text-display gradient-text hero__h1 hero__h1--animate hero__h1--line2">
               STRONG
             </h1>
           </Reveal>
           <Reveal delay={300}>
-            <h1 className="text-display hero__h1 hero__h1--wrap">
+            <h1 className="text-display hero__h1 hero__h1--wrap hero__h1--animate hero__h1--line3">
               <span className="hero__h1-muted">BETTER</span>
               <span className="hero__typed">
                 {typed}
@@ -198,7 +199,7 @@ function ServiceCard({ service, index }) {
           background: hovered ? 'linear-gradient(160deg, var(--navy-light), var(--navy-mid))' : 'var(--navy-mid)',
           borderRadius: 'var(--radius-xl)', padding: 40,
           border: `1px solid ${hovered ? 'rgba(249,115,22,0.3)' : 'var(--navy-border)'}`,
-          transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+          transition: 'all 0.5s cubic-bezier(0.22,1,0.36,1)',
           transform: hovered ? 'translateY(-8px)' : 'none',
           boxShadow: hovered ? '0 24px 60px rgba(0,0,0,0.45)' : 'none',
           height: '100%', display: 'flex', flexDirection: 'column',
@@ -206,10 +207,10 @@ function ServiceCard({ service, index }) {
         }}
       >
         {/* Top accent */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, var(--orange), var(--orange-light))', transform: hovered ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.4s ease' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, var(--orange), var(--orange-light))', transform: hovered ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)' }} />
 
         {/* BG emoji */}
-        <div style={{ position: 'absolute', bottom: -10, right: -10, fontSize: 100, opacity: 0.04, transform: hovered ? 'scale(1.1) rotate(-5deg)' : 'none', transition: 'transform 0.4s' }}>{service.emoji}</div>
+        <div style={{ position: 'absolute', bottom: -10, right: -10, fontSize: 100, opacity: 0.04, transform: hovered ? 'scale(1.08) rotate(-4deg)' : 'none', transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)' }}>{service.emoji}</div>
 
         <div style={{ fontSize: 52, marginBottom: 24 }}>{service.icon}</div>
         <div className="badge badge-orange" style={{ marginBottom: 16, alignSelf: 'flex-start' }}>{service.shortTitle}</div>
@@ -285,9 +286,8 @@ function ProcessStep({ step, index, total }) {
 // ─── Testimonials Carousel (Swiper) ─────────────────────────────────────────────
 function TestimonialsCarousel() {
   const isMobile = useIsMobile();
-  const reducedMotion = useReducedMotion();
-  const modules = reducedMotion ? [Pagination] : [Pagination, Autoplay];
-  const autoplay = reducedMotion ? undefined : { delay: isMobile ? 6000 : 6500, disableOnInteraction: false };
+  const modules = [Pagination, Autoplay];
+  const autoplay = { delay: isMobile ? 6000 : 6500, disableOnInteraction: false };
 
   if (isMobile) {
     return (
@@ -417,7 +417,7 @@ export default function HomePage() {
                     background: i % 2 === 0 ? 'var(--navy-mid)' : 'linear-gradient(135deg, rgba(249,115,22,0.08), rgba(249,115,22,0.04))',
                     border: `1px solid ${i % 2 === 0 ? 'var(--navy-border)' : 'rgba(249,115,22,0.2)'}`,
                     borderRadius: 'var(--radius-lg)', padding: 28, textAlign: 'center',
-                    transition: 'transform 0.3s',
+                    transition: 'transform 0.45s cubic-bezier(0.22,1,0.36,1)',
                   }}
                     onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'}
                     onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -463,7 +463,7 @@ export default function HomePage() {
                     background: 'var(--navy)', border: '1px solid var(--navy-border)',
                     borderRadius: 'var(--radius-md)', padding: '16px 20px',
                     display: 'flex', alignItems: 'center', gap: 12,
-                    transition: 'all 0.25s', cursor: 'default',
+                    transition: 'all 0.42s cubic-bezier(0.22,1,0.36,1)', cursor: 'default',
                   }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(249,115,22,0.35)'; e.currentTarget.style.background = 'rgba(249,115,22,0.05)'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--navy-border)'; e.currentTarget.style.background = 'var(--navy)'; }}
@@ -501,7 +501,7 @@ export default function HomePage() {
               <Reveal key={p.title} delay={i * 120}>
                 <div style={{
                   background: 'var(--navy)', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
-                  border: '1px solid var(--navy-border)', transition: 'all 0.3s',
+                  border: '1px solid var(--navy-border)', transition: 'all 0.46s cubic-bezier(0.22,1,0.36,1)',
                 }}
                   onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.borderColor = 'rgba(249,115,22,0.3)'; e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)'; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'var(--navy-border)'; e.currentTarget.style.boxShadow = 'none'; }}
