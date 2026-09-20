@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
 import { PROJECTS, SERVICES, SITE, getWhatsAppLink } from '../data/siteData';
+import ConcreteGradeMatrix from '../components/ConcreteGradeMatrix';
 import { trackEvent } from '../utils/analytics';
 
 function ServiceDetail({ service, flipped }) {
@@ -11,6 +12,16 @@ function ServiceDetail({ service, flipped }) {
       <div className="max-w">
         {/* Header */}
         <Reveal>
+          {service.image && (
+            <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', height: 260, marginBottom: 36, border: '1.5px solid rgba(249,115,22,0.3)', position: 'relative', boxShadow: '0 16px 40px rgba(0,0,0,0.4)' }}>
+              <img src={service.image} alt={service.title} width="800" height="260" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.9) contrast(1.05)' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(7,15,27,0.15) 0%, rgba(7,15,27,0.8) 100%)' }} />
+              <div style={{ position: 'absolute', bottom: 16, left: 20, right: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                <span className="badge badge-orange" style={{ background: 'rgba(249,115,22,0.92)', color: '#fff' }}>{service.tagline}</span>
+                <span style={{ color: 'var(--white)', fontSize: 13, fontWeight: 700, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>Chandramukhi Sales Operations</span>
+              </div>
+            </div>
+          )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 48, flexWrap: 'wrap' }}>
             <div style={{ width: 72, height: 72, borderRadius: 20, background: 'linear-gradient(135deg, var(--orange), var(--orange-light))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, boxShadow: '0 6px 24px rgba(249,115,22,0.35)' }}>{service.icon}</div>
             <div>
@@ -106,24 +117,17 @@ function ServiceDetail({ service, flipped }) {
 }
 
 export default function ServicesPage() {
-  const proofByCategory = useMemo(() => {
-    return {
-      RMC: PROJECTS.filter((p) => p.cat === 'RMC').length,
-      Roads: PROJECTS.filter((p) => p.cat === 'Roads').length,
-      Civil: PROJECTS.filter((p) => p.cat === 'Civil').length,
-    };
-  }, []);
 
   return (
     <div style={{ paddingTop: 72 }}>
       <SEO
-        title="Services"
-        description="Explore Chandramukhi Sales services: Ready Mix Concrete, Road Construction, and Civil Contracting."
+        title="Services | RMC & Highway Road Construction | Chandramukhi Sales"
+        description="Explore Chandramukhi Sales services: Ready Mix Concrete (RMC), turnkey Road & Highway Construction building the Pune Ring Road, and specialized pumping solutions."
         path="/services"
         schema={{
           '@context': 'https://schema.org',
           '@type': 'Service',
-          serviceType: 'Construction Services',
+          serviceType: 'Construction and RMC Supply Services',
           provider: {
             '@type': 'Organization',
             name: 'Chandramukhi Sales',
@@ -146,12 +150,12 @@ export default function ServicesPage() {
         <div style={{ position: 'absolute', bottom: '-20%', right: '-8%', width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.09) 0%, transparent 70%)' }} />
         <div className="max-w" style={{ position: 'relative', zIndex: 2 }}>
           <Reveal>
-            <div className="eyebrow">What We Offer</div>
+            <div className="eyebrow">Expertise & Capabilities</div>
             <h1 className="text-display" style={{ fontSize: 'clamp(56px,9vw,100px)', color: 'var(--white)', marginBottom: 24, lineHeight: 0.9 }}>
               OUR<br /><span className="gradient-text">SERVICES</span>
             </h1>
             <p style={{ color: 'var(--steel-light)', fontSize: 19, maxWidth: 640, lineHeight: 1.8, marginBottom: 40 }}>
-              Three specialised construction services, one trusted partner. Delivered with precision, backed by technology.
+              Turnkey road construction actively building the Pune Ring Road, high-grade Ready Mix Concrete (RMC) batching, and high-pressure pumping solutions.
             </p>
           </Reveal>
 
@@ -180,10 +184,10 @@ export default function ServicesPage() {
           <SectionHeader eyebrow="Trust Signals" title="WHY CLIENTS CHOOSE THESE SERVICES" subtitle="Execution quality, verified standards, and delivery discipline at every stage." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16 }}>
             {[
-              { title: 'RMC Delivery Proof', value: `${proofByCategory.RMC}+ portfolio projects`, note: 'Batch consistency with monitored dispatch flow.' },
-              { title: 'Road Execution Proof', value: `${proofByCategory.Roads}+ road assignments`, note: 'IRC/NHAI-aligned procedures and field checks.' },
-              { title: 'Civil Works Proof', value: `${proofByCategory.Civil}+ civil works`, note: 'Engineer-led supervision with milestone tracking.' },
-              { title: 'Quote Commitment', value: 'Within 24 business hours', note: 'Scope review, call-back, then estimate submission.' },
+              { title: 'RMC Delivery Track Record', value: '500+ Projects Supplied', note: 'Consistent batching with computerized transit tracking across Pune.' },
+              { title: 'Highway Construction', value: 'Pune Ring Road Package', note: 'Active turnkey execution to strict IRC:15 & MSRDC standards.' },
+              { title: 'Volume Poured to Date', value: '1 Lac+ m³ Concrete', note: 'Over 100,000 cubic meters from M7.5 to M60 & PQC mixes.' },
+              { title: 'Quote Commitment', value: 'Within 24 business hours', note: 'Technical scope review, call-back, and customized estimate.' },
             ].map((item) => (
               <Reveal key={item.title}>
                 <div className="card" style={{ padding: 20 }}>
@@ -214,8 +218,15 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Technical Grade Matrix */}
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy)' }}>
+        <div className="max-w">
+          <ConcreteGradeMatrix />
+        </div>
+      </section>
+
       {/* Comparison table */}
-      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)' }}>
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)', borderTop: '1px solid var(--navy-border)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Overview" title="SERVICE COMPARISON" subtitle="Not sure which service you need? Here's a quick overview." />
           <Reveal>

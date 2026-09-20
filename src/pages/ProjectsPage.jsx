@@ -4,8 +4,6 @@ import { Reveal, SectionHeader, CTABanner } from '../components/UI';
 import { GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS, PROJECTS, SITE, getWhatsAppLink } from '../data/siteData';
 import { trackEvent } from '../utils/analytics';
 
-const CATS = ['All', 'RMC', 'Roads', 'Civil'];
-
 function ProjectCard({ project, delay }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -14,34 +12,192 @@ function ProjectCard({ project, delay }) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
-          background: 'var(--navy-mid)', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
-          border: `1px solid ${hovered ? 'rgba(249,115,22,0.3)' : 'var(--navy-border)'}`,
+          background: 'linear-gradient(180deg, #132742, #0d1b2e)',
+          borderRadius: 'var(--radius-xl)',
+          overflow: 'hidden',
+          border: `1.5px solid ${hovered ? 'var(--orange)' : 'rgba(249,115,22,0.4)'}`,
           transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
           transform: hovered ? 'translateY(-6px)' : 'none',
-          boxShadow: hovered ? '0 24px 60px rgba(0,0,0,0.45)' : 'none',
-          height: '100%', display: 'flex', flexDirection: 'column',
+          boxShadow: hovered ? '0 24px 60px rgba(0,0,0,0.5)' : '0 12px 36px rgba(0,0,0,0.3)',
+          maxWidth: 860,
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {/* Thumb placeholder */}
-        <div style={{ height: 180, background: hovered ? 'linear-gradient(135deg, #1d3358, rgba(249,115,22,0.18))' : 'linear-gradient(135deg, #182a46, #0b172d)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 80, position: 'relative', transition: 'background 0.35s', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)', backgroundSize: '28px 28px', opacity: 0.28 }} />
-          <div style={{ position: 'absolute', left: -24, right: -24, bottom: 36, height: 36, background: 'linear-gradient(90deg, rgba(249,115,22,0.35), rgba(249,115,22,0.08))', transform: 'skewY(-8deg)' }} />
-          <div style={{ position: 'absolute', right: 14, bottom: 10, color: 'rgba(255,255,255,0.75)', fontSize: 11, letterSpacing: '0.14em', fontFamily: 'var(--font-condensed)', textTransform: 'uppercase' }}>Project Preview</div>
-          {project.emoji}
-          <div className="badge badge-orange" style={{ position: 'absolute', top: 14, left: 14 }}>{project.cat}</div>
-          {project.featured && <div className="badge" style={{ position: 'absolute', top: 14, right: 14, background: 'rgba(251,191,36,0.15)', color: '#FBBF24', border: '1px solid rgba(251,191,36,0.3)' }}>⭐ Featured</div>}
+        {/* Thumb / Banner */}
+        <div
+          style={{
+            height: 320,
+            position: 'relative',
+            overflow: 'hidden',
+            background: 'linear-gradient(135deg, #182f50, #0a172c)',
+          }}
+        >
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              width="860"
+              height="320"
+              loading="lazy"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: 'brightness(0.9) contrast(1.05)',
+              }}
+            />
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: 80 }}>
+              {project.emoji}
+            </div>
+          )}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg, rgba(7,15,27,0.2) 0%, rgba(7,15,27,0.85) 100%)',
+            }}
+          />
+          <div className="badge badge-orange" style={{ position: 'absolute', top: 18, left: 18, background: 'rgba(249,115,22,0.92)', color: '#fff' }}>
+            🏛️ Govt Infrastructure Package
+          </div>
+          <div
+            className="badge"
+            style={{
+              position: 'absolute',
+              top: 18,
+              right: 18,
+              background: 'rgba(7,15,27,0.85)',
+              backdropFilter: 'blur(8px)',
+              color: '#4ADE80',
+              border: '1px solid rgba(34,197,94,0.45)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 14px',
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+          >
+            <span
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: '#22C55E',
+                display: 'inline-block',
+                boxShadow: '0 0 8px #22C55E',
+              }}
+            />
+            Currently Ongoing
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              left: 20,
+              bottom: 16,
+              color: 'var(--white)',
+              fontSize: 15,
+              fontWeight: 700,
+              textShadow: '0 2px 10px rgba(0,0,0,0.9)',
+            }}
+          >
+            Live Site Operations · PQC Concrete Paving Corridor
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              right: 20,
+              bottom: 16,
+              color: 'var(--orange)',
+              fontSize: 12,
+              letterSpacing: '0.14em',
+              fontFamily: 'var(--font-condensed)',
+              textTransform: 'uppercase',
+              fontWeight: 800,
+            }}
+          >
+            Turnkey Road Construction
+          </div>
         </div>
 
         {/* Content */}
-        <div style={{ padding: 28, flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-            <span style={{ color: 'var(--steel)', fontSize: 12, fontFamily: 'var(--font-condensed)', letterSpacing: '0.1em' }}>{project.loc}</span>
-            <span style={{ color: 'var(--steel)', fontSize: 12, fontFamily: 'var(--font-condensed)' }}>{project.year}</span>
+        <div style={{ padding: '36px 32px', display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10,
+              flexWrap: 'wrap',
+              gap: 8,
+            }}
+          >
+            <span
+              style={{
+                color: 'var(--steel-light)',
+                fontSize: 13,
+                fontFamily: 'var(--font-condensed)',
+                letterSpacing: '0.1em',
+              }}
+            >
+              📍 {project.loc}
+            </span>
+            <span
+              style={{
+                color: 'var(--orange)',
+                fontSize: 13,
+                fontFamily: 'var(--font-condensed)',
+                fontWeight: 700,
+              }}
+            >
+              🗓️ {project.year}
+            </span>
           </div>
-          <h3 style={{ fontFamily: 'var(--font-condensed)', fontWeight: 700, fontSize: 18, color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 12, lineHeight: 1.3 }}>{project.title}</h3>
-          <p style={{ color: 'var(--steel)', fontSize: 14, lineHeight: 1.7, marginBottom: 14 }}>{project.desc}</p>
+
+          <div style={{ marginBottom: 12 }}>
+            <span
+              style={{
+                display: 'inline-block',
+                background: 'rgba(249,115,22,0.12)',
+                color: 'var(--orange)',
+                border: '1px solid rgba(249,115,22,0.3)',
+                borderRadius: 6,
+                padding: '4px 10px',
+                fontSize: 12,
+                fontFamily: 'var(--font-condensed)',
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Scope: {project.role}
+            </span>
+          </div>
+
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 700,
+              fontSize: 'clamp(26px, 4vw, 38px)',
+              color: 'var(--white)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.03em',
+              marginBottom: 16,
+              lineHeight: 1.2,
+            }}
+          >
+            {project.title}
+          </h2>
+
+          <p style={{ color: 'var(--steel-light)', fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+            {project.desc}
+          </p>
+
           {Array.isArray(project.proof) && project.proof.length > 0 && (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 20 }}>
               {project.proof.map((item) => (
                 <span
                   key={item}
@@ -49,40 +205,126 @@ function ProjectCard({ project, delay }) {
                     border: '1px solid var(--navy-border)',
                     background: 'var(--navy)',
                     borderRadius: 999,
-                    padding: '5px 10px',
+                    padding: '6px 14px',
                     color: 'var(--steel-light)',
-                    fontSize: 11,
+                    fontSize: 12,
                     fontFamily: 'var(--font-condensed)',
                     letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
                   }}
                 >
-                  {item}
+                  ✓ {item}
                 </span>
               ))}
             </div>
           )}
+
           {project.outcome && (
-            <div style={{ color: 'var(--steel-light)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
-              <span style={{ color: 'var(--orange)', fontWeight: 700 }}>Outcome: </span>
+            <div
+              style={{
+                background: 'rgba(249,115,22,0.06)',
+                border: '1px solid rgba(249,115,22,0.18)',
+                borderRadius: 'var(--radius-md)',
+                padding: '14px 18px',
+                color: 'var(--steel-light)',
+                fontSize: 14,
+                lineHeight: 1.7,
+                marginBottom: 24,
+              }}
+            >
+              <strong style={{ color: 'var(--orange)' }}>Active Status: </strong>
               {project.outcome}
             </div>
           )}
-          <div style={{ flex: 1 }} />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16, borderTop: '1px solid var(--navy-border)' }}>
+
+          {/* Live Construction Milestones */}
+          {Array.isArray(project.stages) && project.stages.length > 0 && (
+            <div style={{ marginBottom: 24, background: 'var(--navy)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  📊 Execution Phases & Milestone Status
+                </div>
+                <span style={{ color: 'var(--steel)', fontSize: 11 }}>Weekly Field Updates</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+                {project.stages.map((st, i) => (
+                  <div key={st.name} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', padding: 12 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                      <span style={{ color: 'var(--orange)', fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-condensed)' }}>Phase 0{i + 1}</span>
+                      <span style={{ color: st.color, fontSize: 10, fontWeight: 700, background: `${st.color}15`, padding: '2px 6px', borderRadius: 99 }}>{st.badge}</span>
+                    </div>
+                    <div style={{ color: 'var(--white)', fontSize: 12, fontWeight: 700, marginBottom: 4 }}>{st.name}</div>
+                    <div style={{ color: 'var(--steel)', fontSize: 11, lineHeight: 1.4 }}>{st.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Heavy Equipment & Fleet */}
+          {Array.isArray(project.fleet) && project.fleet.length > 0 && (
+            <div style={{ marginBottom: 24, background: 'rgba(10,23,44,0.5)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+              <div style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
+                🚜 Dedicated Equipment & Batching Fleet Deployed
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 10 }}>
+                {project.fleet.map((eq) => (
+                  <div key={eq.name} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', padding: '10px 12px' }}>
+                    <span style={{ fontSize: 20 }}>{eq.icon}</span>
+                    <div>
+                      <div style={{ color: 'var(--white)', fontSize: 12, fontWeight: 700 }}>{eq.name}</div>
+                      <div style={{ color: 'var(--steel)', fontSize: 11 }}>{eq.role}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: 20,
+              borderTop: '1px solid var(--navy-border)',
+              flexWrap: 'wrap',
+              gap: 16,
+            }}
+          >
             <div>
-              <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'var(--font-condensed)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Project Value</div>
-              <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: '0.05em' }}>{project.value}</div>
+              <div
+                style={{
+                  color: 'var(--muted)',
+                  fontSize: 11,
+                  fontFamily: 'var(--font-condensed)',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Project Nature
+              </div>
+              <div
+                style={{
+                  color: 'var(--orange)',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 22,
+                  letterSpacing: '0.05em',
+                }}
+              >
+                {project.value}
+              </div>
             </div>
             <a
-              href={getWhatsAppLink(`Hi, I'd like a similar project: ${project.title}`)}
+              href={getWhatsAppLink(
+                `Hi Chandramukhi Sales, I would like to discuss road construction and infrastructure projects.`
+              )}
               target="_blank"
               rel="noreferrer"
-              className="btn btn-outline btn-sm"
+              className="btn btn-primary"
               style={{ textDecoration: 'none' }}
-              onClick={() => trackEvent('project_similar_click', { project: project.title, category: project.cat })}
+              onClick={() => trackEvent('project_inquire_click', { project: project.title })}
             >
-              Similar Project?
+              Discuss Road & Highway Projects →
             </a>
           </div>
         </div>
@@ -92,8 +334,6 @@ function ProjectCard({ project, delay }) {
 }
 
 export default function ProjectsPage() {
-  const [filter, setFilter] = useState('All');
-  const [search, setSearch] = useState('');
   const clientsAndPartners = useMemo(() => {
     const governmentNames = GOVERNMENT_WORKS_CONTRACTOR.map((c) =>
       typeof c === 'string' ? c : c.name
@@ -120,86 +360,111 @@ export default function ProjectsPage() {
     });
   }, []);
 
-  const filtered = useMemo(() => {
-    return PROJECTS.filter(p => {
-      const matchCat = filter === 'All' || p.cat === filter;
-      const matchSearch = !search || p.title.toLowerCase().includes(search.toLowerCase()) || p.loc.toLowerCase().includes(search.toLowerCase());
-      return matchCat && matchSearch;
-    });
-  }, [filter, search]);
-
-  const totals = useMemo(() => {
-    const t = {};
-    CATS.forEach(c => { t[c] = c === 'All' ? PROJECTS.length : PROJECTS.filter(p => p.cat === c).length; });
-    return t;
-  }, []);
-
   return (
     <div style={{ paddingTop: 72 }}>
       <SEO
-        title="Projects"
-        description="Browse Chandramukhi Sales project portfolio across roads, RMC, and civil infrastructure projects."
+        title="Building Pune Ring Road | Ongoing Government Project | Chandramukhi Sales"
+        description="Chandramukhi Sales is actively executing road construction for the prestigious Pune Ring Road Government project in Maharashtra."
         path="/projects"
         schema={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
-          name: 'Chandramukhi Sales Projects',
-          about: 'Road, RMC and civil infrastructure portfolio in Maharashtra',
+          name: 'Chandramukhi Sales - Building Pune Ring Road',
+          about: 'Pune Ring Road Government Project road construction in Maharashtra',
           url: 'https://chandramukhi-sales.com/projects',
         }}
       />
       {/* Hero */}
-      <section style={{
-        background: 'var(--navy)',
-        backgroundImage: 'linear-gradient(rgba(7,15,27,0.5), rgba(7,15,27,0.62)), url("/hero-bg.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        padding: '80px 5%',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
-        <div style={{ position: 'absolute', top: '-15%', left: '-5%', width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)' }} />
-        <div className="max-w" style={{ position: 'relative', zIndex: 2 }}>
+      <section
+        style={{
+          background: 'var(--navy)',
+          backgroundImage:
+            'linear-gradient(rgba(7,15,27,0.5), rgba(7,15,27,0.62)), url("/hero-bg.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          padding: '80px 5%',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px)',
+            backgroundSize: '64px 64px',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            top: '-15%',
+            left: '-5%',
+            width: 480,
+            height: 480,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)',
+          }}
+        />
+        <div className="max-w" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
           <Reveal>
-            <div className="eyebrow">Portfolio</div>
-            <h1 className="text-display" style={{ fontSize: 'clamp(56px,9vw,100px)', color: 'var(--white)', marginBottom: 24, lineHeight: 0.9 }}>
-              OUR<br /><span className="gradient-text">PROJECTS</span>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: 'rgba(34,197,94,0.12)',
+                border: '1px solid rgba(34,197,94,0.3)',
+                borderRadius: 99,
+                padding: '6px 18px',
+                color: '#4ADE80',
+                fontFamily: 'var(--font-condensed)',
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: 20,
+              }}
+            >
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: '#22C55E',
+                  display: 'inline-block',
+                  boxShadow: '0 0 10px #22C55E',
+                }}
+              />
+              Active Flagship Project
+            </div>
+            <h1
+              className="text-display"
+              style={{
+                fontSize: 'clamp(50px,8vw,92px)',
+                color: 'var(--white)',
+                marginBottom: 20,
+                lineHeight: 0.95,
+              }}
+            >
+              PUNE RING ROAD <br />
+              <span className="gradient-text">PROJECT</span>
             </h1>
-            <p style={{ color: 'var(--steel-light)', fontSize: 19, maxWidth: 620, lineHeight: 1.8 }}>
-              500+ projects completed across Maharashtra. Here's a curated showcase of our work.
+            <p
+              style={{
+                color: 'var(--steel-light)',
+                fontSize: 19,
+                maxWidth: 700,
+                lineHeight: 1.8,
+                margin: '0 auto',
+              }}
+            >
+              Currently executing and building express highway stretches for
+              the Government of Maharashtra&apos;s landmark express corridor.
             </p>
           </Reveal>
-        </div>
-      </section>
-
-      {/* Filters + search */}
-      <section style={{ background: 'var(--navy-mid)', padding: '32px 5%', borderBottom: '1px solid var(--navy-border)', position: 'sticky', top: 72, zIndex: 100 }}>
-        <div className="max-w" style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            {CATS.map(c => (
-              <button key={c} onClick={() => setFilter(c)}
-                style={{
-                  padding: '10px 20px', borderRadius: 8, border: `1.5px solid ${filter === c ? 'var(--orange)' : 'var(--navy-border)'}`,
-                  background: filter === c ? 'rgba(249,115,22,0.12)' : 'var(--navy)',
-                  color: filter === c ? 'var(--orange)' : 'var(--steel-light)',
-                  fontFamily: 'var(--font-condensed)', fontWeight: 700, fontSize: 13,
-                  letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
-                  display: 'flex', alignItems: 'center', gap: 6,
-                }}
-              >
-                {c}
-                <span style={{ background: filter === c ? 'var(--orange)' : 'var(--navy-light)', color: filter === c ? '#fff' : 'var(--muted)', borderRadius: 99, padding: '1px 7px', fontSize: 11 }}>{totals[c]}</span>
-              </button>
-            ))}
-          </div>
-          <input
-            type="text" placeholder="🔍  Search projects..."
-            value={search} onChange={e => setSearch(e.target.value)}
-            className="form-input"
-            style={{ maxWidth: 260, background: 'var(--navy)', border: '1px solid var(--navy-border)', padding: '10px 16px', fontSize: 14 }}
-          />
         </div>
       </section>
 
@@ -207,36 +472,49 @@ export default function ProjectsPage() {
       <section className="section-pad cv-auto" style={{ background: 'var(--navy)' }}>
         <div className="max-w">
           <Reveal>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 12, marginBottom: 26 }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))',
+                gap: 14,
+                marginBottom: 48,
+              }}
+            >
               {[
-                { k: '500+', l: 'Projects Delivered' },
-                { k: '98%', l: 'On-Time Completion' },
-                { k: '200+', l: 'Repeat Clients' },
-                { k: '24h', l: 'Estimate Turnaround' },
+                { k: 'Govt of MH', l: 'Client Authority' },
+                { k: 'Road Construction', l: 'Active Scope' },
+                { k: 'MSRDC / NHAI', l: 'Quality Standards' },
+                { k: 'Modern Fleet', l: 'Pavers, Rollers & Plants' },
               ].map((item) => (
-                <div key={item.l} className="card" style={{ padding: 14 }}>
-                  <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-display)', fontSize: 24 }}>{item.k}</div>
-                  <div style={{ color: 'var(--steel)', fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: 'var(--font-condensed)' }}>{item.l}</div>
+                <div key={item.l} className="card" style={{ padding: 18, textAlign: 'center' }}>
+                  <div
+                    style={{
+                      color: 'var(--orange)',
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 24,
+                    }}
+                  >
+                    {item.k}
+                  </div>
+                  <div
+                    style={{
+                      color: 'var(--steel)',
+                      fontSize: 12,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      fontFamily: 'var(--font-condensed)',
+                      marginTop: 4,
+                    }}
+                  >
+                    {item.l}
+                  </div>
                 </div>
               ))}
             </div>
           </Reveal>
-          {filtered.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <div style={{ fontSize: 60, marginBottom: 20 }}>🔍</div>
-              <h3 style={{ color: 'var(--steel)', fontFamily: 'var(--font-condensed)', fontSize: 24 }}>No projects match your search.</h3>
-              <button onClick={() => { setSearch(''); setFilter('All'); }} className="btn btn-outline" style={{ marginTop: 20 }}>Clear Filters</button>
-            </div>
-          ) : (
-            <>
-              <div style={{ color: 'var(--muted)', fontFamily: 'var(--font-condensed)', fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 32 }}>
-                Showing {filtered.length} of {PROJECTS.length} projects
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 24 }}>
-                {filtered.map((p, i) => <ProjectCard key={p.id} project={p} delay={i * 60} />)}
-              </div>
-            </>
-          )}
+
+          {/* Project Details Showcase */}
+          <ProjectCard project={PROJECTS[0]} delay={80} />
         </div>
       </section>
 

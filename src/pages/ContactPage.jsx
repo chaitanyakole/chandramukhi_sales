@@ -4,6 +4,7 @@ import SEO from '../components/SEO';
 import { Reveal, SectionHeader, FAQItem } from '../components/UI';
 import { useForm } from '../hooks';
 import { SITE, FAQS, getWhatsAppLink, getGmailComposeLink } from '../data/siteData';
+import PlantNetworkMap from '../components/PlantNetworkMap';
 import { submitLead } from '../utils/leadApi';
 import { trackEvent } from '../utils/analytics';
 
@@ -42,16 +43,17 @@ function getStartingEstimate({ service, projectScale }) {
     Small: 'From Rs 5-15 Lakhs',
     Medium: 'From Rs 15 Lakhs-1 Crore',
     Large: 'From Rs 1 Crore+',
+    'Government / Highway Package': 'Major Infrastructure Package (Custom Schedule of Rates / MoRTH)',
   };
   const serviceLabel = service || 'Your selected service';
   const scaleLabel = projectScale || 'project scale';
   return `${serviceLabel}: ${baseByScale[scaleLabel] || 'Custom quote'} (${scaleLabel})`;
 }
 
-function FormField({ label, error, children }) {
+function FormField({ label, htmlFor, error, children }) {
   return (
     <div>
-      <label className="form-label">{label}</label>
+      <label htmlFor={htmlFor} className="form-label">{label}</label>
       {children}
       {error && <p className="form-error">{error}</p>}
     </div>
@@ -72,6 +74,7 @@ function ContactForm() {
   };
   const { values, errors, touched, submitting, submitted, handleChange, handleBlur, handleSubmit, reset } = useForm(initialValues, validate);
   const [step, setStep] = useState(1);
+  const [inquiryMode, setInquiryMode] = useState('standard'); // 'standard' | 'tender'
   const [stepOneHint, setStepOneHint] = useState('');
 
   const goToStepTwo = useCallback(() => {
@@ -154,18 +157,85 @@ function ContactForm() {
     );
   }
 
+  const handleStepTwoSubmit = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const errs = validate(values);
+    const stepOneFields = ['service', 'city', 'timeline', 'projectScale'];
+    const stepOneError = stepOneFields.find((f) => errs[f]);
+    if (stepOneError) {
+      setStep(1);
+      setStepOneHint(`Please verify ${stepOneError}: ${errs[stepOneError]}`);
+      return;
+    }
+    handleSubmit(onSubmit);
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (step === 1) goToStepTwo();
+        else handleStepTwoSubmit(e);
+      }}
+      style={{ display: 'flex', flexDirection: 'column', gap: 20 }}
+    >
+      {/* Inquiry Mode Toggle */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, background: 'var(--navy-mid)', padding: 4, borderRadius: 'var(--radius-md)', border: '1px solid var(--navy-border)' }}>
+        <button
+          type="button"
+          onClick={() => {
+            setInquiryMode('standard');
+            if (values.projectScale === 'Government / Highway Package') {
+              handleChange({ target: { name: 'projectScale', value: 'Large' } });
+            }
+          }}
+          style={{
+            background: inquiryMode === 'standard' ? 'var(--orange)' : 'transparent',
+            color: inquiryMode === 'standard' ? '#fff' : 'var(--steel-light)',
+            border: 'none',
+            borderRadius: 'var(--radius-sm)',
+            padding: '10px 14px',
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+        >
+          Commercial & Builder Supply
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setInquiryMode('tender');
+            handleChange({ target: { name: 'service', value: 'Road Construction' } });
+            handleChange({ target: { name: 'projectScale', value: 'Government / Highway Package' } });
+          }}
+          style={{
+            background: inquiryMode === 'tender' ? 'var(--orange)' : 'transparent',
+            color: inquiryMode === 'tender' ? '#fff' : 'var(--steel-light)',
+            border: 'none',
+            borderRadius: 'var(--radius-sm)',
+            padding: '10px 14px',
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+        >
+          🏛️ Govt Highway & EPC Tender
+        </button>
+      </div>
+
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
         <span className="badge badge-orange">Step {step} of 2</span>
-        <span style={{ color: 'var(--muted)', fontSize: 13 }}>{step === 1 ? 'Project qualification' : 'Contact details and requirement'}</span>
+        <span style={{ color: 'var(--muted)', fontSize: 13 }}>{step === 1 ? (inquiryMode === 'tender' ? 'Highway Package Qualification' : 'Project qualification') : 'Contact details and requirement'}</span>
       </div>
 
       {step === 1 ? (
         <>
           <div style={TWO_COLUMN_GRID_STYLE}>
-            <FormField label="Service Required *" error={touched.service && errors.service}>
-              <select name="service" value={values.service} onChange={handleChange} onBlur={handleBlur}
+            <FormField label="Service Required *" htmlFor="service" error={touched.service && errors.service}>
+              <select id="service" name="service" value={values.service} onChange={handleChange} onBlur={handleBlur}
                 className={`form-input ${touched.service && errors.service ? 'error' : ''}`} style={SELECT_INPUT_STYLE}>
                 <option value="">Select a service...</option>
                 <option>Ready Mix Concrete (RMC)</option>
@@ -175,15 +245,15 @@ function ContactForm() {
                 <option>Site Consultation</option>
               </select>
             </FormField>
-            <FormField label="Project City *" error={touched.city && errors.city}>
-              <input name="city" value={values.city} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Pune"
+            <FormField label="Project City *" htmlFor="city" error={touched.city && errors.city}>
+              <input id="city" name="city" value={values.city} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Pune"
                 className={`form-input ${touched.city && errors.city ? 'error' : ''}`} />
             </FormField>
           </div>
 
           <div style={TWO_COLUMN_GRID_STYLE}>
-            <FormField label="Expected Timeline *" error={touched.timeline && errors.timeline}>
-              <select name="timeline" value={values.timeline} onChange={handleChange} onBlur={handleBlur}
+            <FormField label="Expected Timeline *" htmlFor="timeline" error={touched.timeline && errors.timeline}>
+              <select id="timeline" name="timeline" value={values.timeline} onChange={handleChange} onBlur={handleBlur}
                 className={`form-input ${touched.timeline && errors.timeline ? 'error' : ''}`} style={SELECT_INPUT_STYLE}>
                 <option value="">Select timeline...</option>
                 <option>Immediate (within 2 weeks)</option>
@@ -192,13 +262,14 @@ function ContactForm() {
                 <option>6+ Months</option>
               </select>
             </FormField>
-            <FormField label="Project Scale *" error={touched.projectScale && errors.projectScale}>
-              <select name="projectScale" value={values.projectScale} onChange={handleChange} onBlur={handleBlur}
+            <FormField label="Project Scale *" htmlFor="projectScale" error={touched.projectScale && errors.projectScale}>
+              <select id="projectScale" name="projectScale" value={values.projectScale} onChange={handleChange} onBlur={handleBlur}
                 className={`form-input ${touched.projectScale && errors.projectScale ? 'error' : ''}`} style={SELECT_INPUT_STYLE}>
                 <option value="">Select scale...</option>
-                <option>Small</option>
-                <option>Medium</option>
-                <option>Large</option>
+                <option value="Small">Small (Residential / Private)</option>
+                <option value="Medium">Medium (Commercial / Mid-Rise)</option>
+                <option value="Large">Large (High-Rise / Industrial)</option>
+                <option value="Government / Highway Package">Government / Highway Package (Tender / EPC)</option>
               </select>
             </FormField>
           </div>
@@ -210,7 +281,7 @@ function ContactForm() {
             </div>
           )}
 
-          <button onClick={goToStepTwo} className="btn btn-primary" style={{ padding: '17px 32px', fontSize: 16, width: '100%', justifyContent: 'center' }}>
+          <button type="submit" className="btn btn-primary" style={{ padding: '17px 32px', fontSize: 16, width: '100%', justifyContent: 'center' }}>
             Continue to Contact Details →
           </button>
           {stepOneHint && <p className="form-error">{stepOneHint}</p>}
@@ -218,23 +289,23 @@ function ContactForm() {
       ) : (
         <>
           <div style={TWO_COLUMN_GRID_STYLE}>
-            <FormField label="Full Name *" error={touched.name && errors.name}>
-              <input name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Rajesh Patil"
+            <FormField label="Full Name *" htmlFor="name" error={touched.name && errors.name}>
+              <input id="name" name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} placeholder="e.g. Rajesh Patil"
                 className={`form-input ${touched.name && errors.name ? 'error' : ''}`} />
             </FormField>
-            <FormField label="Phone Number *" error={touched.phone && errors.phone}>
-              <input name="phone" value={values.phone} onChange={handleChange} onBlur={handleBlur} placeholder="+91 98765 43210"
+            <FormField label="Phone Number *" htmlFor="phone" error={touched.phone && errors.phone}>
+              <input id="phone" name="phone" value={values.phone} onChange={handleChange} onBlur={handleBlur} placeholder="+91 98765 43210"
                 className={`form-input ${touched.phone && errors.phone ? 'error' : ''}`} />
             </FormField>
           </div>
 
-          <FormField label="Email Address *" error={touched.email && errors.email}>
-            <input name="email" type="email" value={values.email} onChange={handleChange} onBlur={handleBlur} placeholder="you@company.com"
+          <FormField label="Email Address *" htmlFor="email" error={touched.email && errors.email}>
+            <input id="email" name="email" type="email" value={values.email} onChange={handleChange} onBlur={handleBlur} placeholder="you@company.com"
               className={`form-input ${touched.email && errors.email ? 'error' : ''}`} />
           </FormField>
 
-          <FormField label="Project Budget (Optional)">
-            <select name="budget" value={values.budget} onChange={handleChange}
+          <FormField label="Project Budget (Optional)" htmlFor="budget">
+            <select id="budget" name="budget" value={values.budget} onChange={handleChange}
               className="form-input" style={SELECT_INPUT_STYLE}>
               <option value="">Select range...</option>
               <option>Under ₹10 Lakhs</option>
@@ -245,15 +316,15 @@ function ContactForm() {
             </select>
           </FormField>
 
-          <FormField label="Project Description *" error={touched.message && errors.message}>
-            <textarea name="message" value={values.message} onChange={handleChange} onBlur={handleBlur} rows={5}
+          <FormField label="Project Description *" htmlFor="message" error={touched.message && errors.message}>
+            <textarea id="message" name="message" value={values.message} onChange={handleChange} onBlur={handleBlur} rows={5}
               placeholder="Describe your project - location, scale, timeline, and any specific requirements..."
               className={`form-input ${touched.message && errors.message ? 'error' : ''}`} style={{ resize: 'vertical', minHeight: 120 }} />
           </FormField>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <button onClick={() => setStep(1)} className="btn btn-outline">← Back</button>
-            <button onClick={() => handleSubmit(onSubmit)} disabled={submitting}
+            <button type="button" onClick={() => setStep(1)} className="btn btn-outline">← Back</button>
+            <button type="submit" disabled={submitting}
               className="btn btn-primary"
               style={{ padding: '17px 32px', fontSize: 16, width: '100%', justifyContent: 'center', opacity: submitting ? 0.7 : 1, transition: 'all 0.25s' }}
             >
@@ -271,7 +342,7 @@ function ContactForm() {
       <p style={{ color: 'var(--muted)', fontSize: 12, textAlign: 'center' }}>
         🔒 Your information is secure and will never be shared.
       </p>
-    </div>
+    </form>
   );
 }
 
@@ -430,6 +501,13 @@ export default function ContactPage() {
               </div>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* Strategic Plant Network & Delivery Radius */}
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy)', borderTop: '1px solid var(--navy-border)' }}>
+        <div className="max-w">
+          <PlantNetworkMap />
         </div>
       </section>
 

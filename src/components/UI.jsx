@@ -142,7 +142,7 @@ export function FloatingButtons() {
             background: bg, opacity: 0.3,
             animation: 'pulse-ring 2s cubic-bezier(0,0,0.2,1) infinite',
           }} />
-          <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}
+          <a href={href} aria-label={label} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}
             style={{
               width: 58, height: 58, borderRadius: '50%',
               background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center',

@@ -45,7 +45,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="nav-brand" aria-label={`${SITE.name} home`}>
             <span className="nav-brand-logo">
-              <img src="/logo.png" alt="Chandramukhi Sales logo" />
+              <img src="/logo.png" alt="Chandramukhi Sales logo" width="48" height="32" />
             </span>
             <span className="nav-brand-text">
               <span className="nav-brand-title">CHANDRAMUKHI SALES</span>

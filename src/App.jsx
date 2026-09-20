@@ -4,7 +4,6 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { FloatingButtons } from './components/UI';
-import LoadingScreen from './components/LoadingScreen';
 import './styles/global.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -20,10 +19,27 @@ const TermsPage = lazy(() => import('./pages/TermsPage'));
 const SitemapPage = lazy(() => import('./pages/SitemapPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
-// Scroll to top on route change
+// Scroll to top or to hash anchor on route change
 function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const timer = setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
   return null;
 }
 
@@ -44,29 +60,36 @@ function PageWrapper({ children }) {
   );
 }
 
-function AppRoutes() {
-  const location = useLocation();
+function ScrollProgressBar() {
   const { scrollY } = useScrollProgress();
   const pageHeight = typeof window !== 'undefined'
     ? Math.max((document.documentElement.scrollHeight - window.innerHeight), 1)
     : 1;
   const progress = Math.min((scrollY / pageHeight) * 100, 100);
+
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        height: 3,
+        width: `${progress}%`,
+        background: 'linear-gradient(90deg, var(--orange), var(--orange-light))',
+        boxShadow: '0 0 16px rgba(249,115,22,0.55)',
+        zIndex: 1001,
+        transition: 'width 0.08s linear',
+      }}
+    />
+  );
+}
+
+function AppRoutes() {
+  const location = useLocation();
   return (
     <>
-      <div
-        aria-hidden
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          height: 3,
-          width: `${progress}%`,
-          background: 'linear-gradient(90deg, var(--orange), var(--orange-light))',
-          boxShadow: '0 0 16px rgba(249,115,22,0.55)',
-          zIndex: 1001,
-          transition: 'width 0.08s linear',
-        }}
-      />
+      <ScrollProgressBar />
       <ScrollToTop />
       <Navbar />
       <main>
@@ -97,7 +120,26 @@ function AppRoutes() {
 
 function RouteLoader() {
   return (
-    <LoadingScreen show />
+    <div
+      aria-hidden
+      style={{
+        minHeight: '60vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          border: '3px solid rgba(249,115,22,0.2)',
+          borderTop: '3px solid var(--orange)',
+          animation: 'spin-slow 0.8s linear infinite',
+        }}
+      />
+    </div>
   );
 }
 
@@ -125,12 +167,8 @@ function useScrollProgress() {
 }
 
 export default function App() {
-  const [bootLoading, setBootLoading] = useState(true);
-  const finishedRef = useRef(false);
-
   useEffect(() => {
     // Apply a global reduced-motion class based on user OS/browser preference.
-    // This prevents heavy animation/transition work for accessibility and performance.
     if (typeof window === 'undefined') return;
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const apply = () => {
@@ -145,33 +183,8 @@ export default function App() {
     return () => mq.removeListener(apply);
   }, []);
 
-  useEffect(() => {
-    const finish = () => {
-      if (finishedRef.current) return;
-      finishedRef.current = true;
-      // Let the browser paint once, and give framer-motion a moment to mount.
-      requestAnimationFrame(() => {
-        setTimeout(() => setBootLoading(false), 150);
-      });
-    };
-
-    if (document.readyState === 'complete') {
-      finish();
-      return;
-    }
-
-    window.addEventListener('load', finish, { once: true });
-    // Safety: never block forever if some resource hangs.
-    const safety = window.setTimeout(finish, 8000);
-    return () => {
-      window.removeEventListener('load', finish);
-      window.clearTimeout(safety);
-    };
-  }, []);
-
   return (
     <BrowserRouter>
-      <LoadingScreen show={bootLoading} />
       <AppRoutes />
     </BrowserRouter>
   );

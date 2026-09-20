@@ -7,8 +7,11 @@ const LINKS = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   { label: 'Services', to: '/services' },
-  { label: 'Projects', to: '/projects' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'Projects (Building Pune Ring Road)', to: '/projects' },
+  { label: 'Contact & Tender Inquiries', to: '/contact' },
+  { label: 'Ready Mix Concrete (RMC) in Pune', to: '/rmc-pune' },
+  { label: 'Road Contractor in Pune', to: '/road-contractor-pune' },
+  { label: 'Civil Contractor in Maharashtra', to: '/civil-contractor-maharashtra' },
   { label: 'Privacy Policy', to: '/privacy-policy' },
   { label: 'Terms of Service', to: '/terms' },
 ];

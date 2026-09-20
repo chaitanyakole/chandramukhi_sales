@@ -7,13 +7,14 @@ import { FaAward, FaFlask, FaHandshake, FaIndustry, FaMapMarkedAlt, FaRegClipboa
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, StatCard, CTABanner, Ticker } from '../components/UI';
 import { useReveal, useIsMobile } from '../hooks';
-import { STATS, SERVICES, TESTIMONIALS, PROCESS, INDUSTRIES, SITE, getWhatsAppLink } from '../data/siteData';
+import { STATS, SERVICES, PROJECTS, TESTIMONIALS, PROCESS, INDUSTRIES, SITE, getWhatsAppLink } from '../data/siteData';
+import PlantNetworkMap from '../components/PlantNetworkMap';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
-  const words = ['Roads', 'Bridges', 'Townships', 'Highways', 'Futures'];
+  const words = ['Towers', 'Flyovers', 'Highways', 'Ring Road', 'Foundations'];
   const [typed, setTyped] = useState(words[0]);
   const [wordIdx, setWordIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
@@ -65,35 +66,32 @@ function Hero() {
           <Reveal>
             <div className="hero__badge">
               <span className="hero__badge-dot" aria-hidden />
-              <span className="hero__badge-text">Trusted Construction Partner · Pune, MH</span>
+              <span className="hero__badge-text">Govt Contractor · Building the Pune Ring Road</span>
             </div>
           </Reveal>
 
           {/* Main headline */}
           <Reveal delay={100}>
-            <h1 className="text-display hero__h1 hero__h1--animate hero__h1--line1">
-              WE BUILD
-            </h1>
-          </Reveal>
-          <Reveal delay={200}>
-            <h1 className="text-display gradient-text hero__h1 hero__h1--animate hero__h1--line2">
-              STRONG
-            </h1>
-          </Reveal>
-          <Reveal delay={300}>
-            <h1 className="text-display hero__h1 hero__h1--wrap hero__h1--animate hero__h1--line3">
-              <span className="hero__h1-muted">BETTER</span>
-              <span className="hero__typed">
-                {typed}
-                <span className="hero__caret" aria-hidden>|</span>
+            <h1 className="text-display hero__h1" style={{ margin: 0, lineHeight: 0.95 }}>
+              <span className="hero__h1--animate hero__h1--line1" style={{ display: 'block' }}>
+                WE BUILD
+              </span>
+              <span className="gradient-text hero__h1--animate hero__h1--line2" style={{ display: 'block' }}>
+                STRONG
+              </span>
+              <span className="hero__h1--wrap hero__h1--animate hero__h1--line3" style={{ display: 'block' }}>
+                <span className="hero__h1-muted">BETTER </span>
+                <span className="hero__typed">
+                  {typed}
+                  <span className="hero__caret" aria-hidden>|</span>
+                </span>
               </span>
             </h1>
           </Reveal>
 
           <Reveal delay={420}>
             <p className="hero__lead">
-              Pune&apos;s leading provider of <strong>Ready Mix Concrete</strong>, <strong>Road Construction</strong>, and{' '}
-              <strong>Civil Contracting</strong> since 2002. Quality-driven, deadline-committed.
+              Trusted infrastructure & road contractor since 2002. Proudly executing road construction for the Government of Maharashtra&apos;s landmark <strong>Pune Ring Road Project</strong>.
             </p>
           </Reveal>
 
@@ -115,8 +113,11 @@ function Hero() {
           {/* CTAs */}
           <Reveal delay={520}>
             <div className="hero__ctas">
-              <Link to="/contact" className="btn btn-primary btn-lg">
-                Get Free Quote <FiArrowRight aria-hidden />
+              <Link to="/projects" className="btn btn-primary btn-lg" style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)', boxShadow: '0 8px 24px rgba(249,115,22,0.35)' }}>
+                Pune Ring Road Project <FiArrowRight aria-hidden />
+              </Link>
+              <Link to="/contact" className="btn btn-outline btn-lg">
+                Get Free Quote
               </Link>
               <a href={`tel:${SITE.phone}`} className="btn btn-ghost btn-lg">
                 <FiPhone aria-hidden /> {SITE.phone}
@@ -141,32 +142,73 @@ function Hero() {
         </div>
 
         <Reveal delay={220} direction="scale">
-          <div className="hero__visual card noise-overlay">
-            <div className="hero__visual-top">
-              <div className="hero__visual-title">
-                <span className="badge badge-orange">Since {SITE.established}</span>
-                <div className="text-display" style={{ fontSize: 34, lineHeight: 1, marginTop: 12 }}>Built for Scale</div>
-                <div style={{ color: 'var(--steel)', marginTop: 10, lineHeight: 1.7 }}>
-                  RMC • Roads • Civil contracting across Maharashtra
-                </div>
+          <div className="hero__visual card noise-overlay" style={{ border: '1.5px solid rgba(249,115,22,0.45)', background: 'linear-gradient(145deg, rgba(19,39,66,0.95), rgba(10,23,44,0.98))', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', height: 135, margin: '-22px -22px 14px -22px', overflow: 'hidden' }}>
+              <img
+                src="/pune-ring-road.jpg"
+                alt="Pune Ring Road Active Road Construction"
+                width="520"
+                height="135"
+                fetchPriority="high"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.88) contrast(1.06)' }}
+              />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(10,23,44,0.15) 0%, rgba(10,23,44,0.92) 100%)' }} />
+              <div style={{ position: 'absolute', top: 10, left: 12 }}>
+                <span className="badge badge-orange" style={{ fontSize: 11, background: 'rgba(249,115,22,0.92)', color: '#fff' }}>
+                  🏛️ Landmark Govt Project
+                </span>
               </div>
-              <div className="hero__visual-mark" aria-hidden>
-                <img src="/logo.png" alt="" />
+              <div style={{ position: 'absolute', bottom: 8, left: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  background: 'rgba(34,197,94,0.22)',
+                  color: '#4ADE80',
+                  border: '1px solid rgba(34,197,94,0.45)',
+                  borderRadius: 99,
+                  padding: '2px 9px',
+                  fontSize: 10,
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E', display: 'inline-block', boxShadow: '0 0 6px #22C55E' }} />
+                  Under Active Construction
+                </span>
               </div>
             </div>
 
-            <div className="hero__visual-grid">
+            <div className="hero__visual-top" style={{ borderBottom: 'none', paddingBottom: 0 }}>
+              <div className="hero__visual-title">
+                <div className="text-display" style={{ fontSize: 28, lineHeight: 1.15, color: 'var(--white)' }}>
+                  BUILDING PUNE RING ROAD
+                </div>
+                <div style={{ color: 'var(--steel-light)', marginTop: 6, fontSize: 13, lineHeight: 1.6 }}>
+                  Turnkey road contractor executing multi-lane express highway sections for Govt of Maharashtra.
+                </div>
+              </div>
+            </div>
+
+            <div className="hero__visual-grid" style={{ marginTop: 12 }}>
               {[
-                { k: 'RMC', v: 'M15–M60 Grade' },
-                { k: 'Roads', v: 'IRC compliant' },
-                { k: 'Quality', v: 'IS standards' },
-                { k: 'Support', v: 'Post-handover' },
+                { k: 'PROJECT', v: 'Pune Ring Road' },
+                { k: 'ROLE', v: 'Road Contractor' },
+                { k: 'SCOPE', v: 'Earthwork & PQC Paving' },
+                { k: 'STANDARDS', v: 'MSRDC / IRC Compliant' },
               ].map((x) => (
                 <div key={x.k} className="hero__pill">
-                  <div className="hero__pill-k">{x.k}</div>
-                  <div className="hero__pill-v">{x.v}</div>
+                  <div className="hero__pill-k" style={{ color: 'var(--orange)' }}>{x.k}</div>
+                  <div className="hero__pill-v" style={{ color: 'var(--white)', fontWeight: 600 }}>{x.v}</div>
                 </div>
               ))}
+            </div>
+
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 12, color: 'var(--steel-light)' }}>📍 Pune District Corridor</span>
+              <Link to="/projects" style={{ color: 'var(--orange)', fontSize: 13, fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                View Project Details <FiArrowRight aria-hidden />
+              </Link>
             </div>
           </div>
         </Reveal>
@@ -351,6 +393,256 @@ export default function HomePage() {
       <Hero />
       <Ticker />
 
+      {/* ── Featured Flagship Project: Pune Ring Road (First Page Spotlight) ── */}
+      <section id="ring-road" className="section-pad cv-auto" style={{ background: 'linear-gradient(180deg, var(--navy) 0%, #0c1a2d 50%, var(--navy-mid) 100%)', borderBottom: '1px solid var(--navy-border)' }}>
+        <div className="max-w">
+          <SectionHeader
+            eyebrow="🏛️ Landmark Government Infrastructure Project"
+            title="BUILDING THE PUNE RING ROAD"
+            subtitle="Chandramukhi Sales is actively executing and building express highway stretches for Maharashtra's premier economic corridor."
+          />
+          <Reveal>
+            <div
+              style={{
+                background: 'linear-gradient(145deg, #132742, #0b1728)',
+                borderRadius: 'var(--radius-xl)',
+                border: '1.5px solid rgba(249,115,22,0.45)',
+                overflow: 'hidden',
+                boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
+                marginBottom: 32,
+              }}
+            >
+              {/* Top Grid: Image + Executive Summary */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                  alignItems: 'stretch',
+                }}
+              >
+                {/* Visual Image Column */}
+                <div style={{ position: 'relative', minHeight: 380, overflow: 'hidden' }}>
+                  <img
+                    src="/pune-ring-road.jpg"
+                    alt="Pune Ring Road Active Road Construction"
+                    width="600"
+                    height="380"
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      filter: 'contrast(1.05) brightness(0.92)',
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg, rgba(7,15,27,0.2) 0%, rgba(7,15,27,0.85) 100%)',
+                    }}
+                  />
+                  {/* Badges on Image */}
+                  <div style={{ position: 'absolute', top: 20, left: 20, right: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                    <span className="badge badge-orange" style={{ backdropFilter: 'blur(8px)', background: 'rgba(249,115,22,0.92)', color: '#fff' }}>
+                      🏛️ Govt Highway Construction
+                    </span>
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        background: 'rgba(7,15,27,0.8)',
+                        backdropFilter: 'blur(8px)',
+                        color: '#4ADE80',
+                        border: '1px solid rgba(34,197,94,0.45)',
+                        borderRadius: 99,
+                        padding: '5px 14px',
+                        fontSize: 12,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                      }}
+                    >
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22C55E', display: 'inline-block', boxShadow: '0 0 8px #22C55E' }} />
+                      Currently Ongoing
+                    </span>
+                  </div>
+
+                  {/* Caption on Image */}
+                  <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20 }}>
+                    <div style={{ color: 'var(--orange)', fontSize: 11, fontFamily: 'var(--font-condensed)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 800 }}>
+                      Live Site Paving Operations
+                    </div>
+                    <div style={{ color: 'var(--white)', fontSize: 16, fontWeight: 700, marginTop: 4, textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+                      Multi-Lane Rigid PQC Concrete Expressway Corridor
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Info Column */}
+                <div style={{ padding: '40px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 20 }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8, marginBottom: 8 }}>
+                      <span style={{ color: 'var(--steel-light)', fontSize: 13, fontFamily: 'var(--font-condensed)', letterSpacing: '0.1em' }}>
+                        📍 Pune District Corridor · MSRDC
+                      </span>
+                      <span style={{ color: 'var(--orange)', fontSize: 13, fontFamily: 'var(--font-condensed)', fontWeight: 700 }}>
+                        Active Execution (2025–2026)
+                      </span>
+                    </div>
+
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 38px)', color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.03em', lineHeight: 1.15, margin: '0 0 12px 0' }}>
+                      PUNE RING ROAD PROJECT
+                    </h3>
+
+                    <div style={{ marginBottom: 16 }}>
+                      <span style={{ display: 'inline-block', background: 'rgba(249,115,22,0.12)', color: 'var(--orange)', border: '1px solid rgba(249,115,22,0.3)', borderRadius: 6, padding: '4px 12px', fontSize: 12, fontFamily: 'var(--font-condensed)', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                        Role: Turnkey Road Construction Contractor
+                      </span>
+                    </div>
+
+                    <p style={{ color: 'var(--steel-light)', fontSize: 15, lineHeight: 1.8, margin: 0 }}>
+                      Prestigious Government of Maharashtra express corridor. Chandramukhi Sales is actively executing and building express highway stretches of the Pune Ring Road — managing earthwork, subgrade preparation, heavy machinery grading, and automated slipform concrete paving.
+                    </p>
+                  </div>
+
+                  {/* Specs Mini-Grid */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    {[
+                      { l: 'Pavement Type', v: 'Rigid PQC M40 & DLC' },
+                      { l: 'Design Standards', v: 'IRC:15, IRC:58, MoRTH' },
+                      { l: 'Batching Supply', v: 'Twin 60 m³/hr Plants' },
+                      { l: 'Transit Fleet', v: '15+ GPS Transit Mixers' },
+                    ].map((sp) => (
+                      <div key={sp.l} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 'var(--radius-md)', padding: '10px 14px' }}>
+                        <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'var(--font-condensed)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{sp.l}</div>
+                        <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 13, marginTop: 2 }}>{sp.v}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 18, borderTop: '1px solid var(--navy-border)', flexWrap: 'wrap', gap: 14 }}>
+                    <div>
+                      <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'var(--font-condensed)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Contractor Scope</div>
+                      <div style={{ color: 'var(--orange)', fontFamily: 'var(--font-display)', fontSize: 20 }}>Turnkey Road Construction</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                      <Link to="/projects" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+                        View Project Scope & Gallery →
+                      </Link>
+                      <Link to="/contact" className="btn btn-outline" style={{ textDecoration: 'none' }}>
+                        Contact Infrastructure Team
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress Milestones Strip */}
+              <div style={{ borderTop: '1px solid var(--navy-border)', background: 'rgba(7,15,27,0.65)', padding: '28px 32px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8, marginBottom: 18 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontSize: 18 }}>📊</span>
+                    <span style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 14, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                      Live Construction Milestones & Execution Phases
+                    </span>
+                  </div>
+                  <span style={{ color: 'var(--steel)', fontSize: 12 }}>
+                    Updated Weekly · Field Engineering Oversight
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+                  {(PROJECTS[0]?.stages || [
+                    { name: 'Earthwork & Subgrade Preparation', status: '100% Completed', badge: 'Completed', color: '#22c55e', desc: 'Heavy excavation, subgrade grading & vibratory soil stabilization.' },
+                    { name: 'Granular Sub-Base (GSB & WMM)', status: '90% Completed', badge: 'Near Complete', color: '#38bdf8', desc: 'Dense mechanical grading and sub-base compaction to IRC load standards.' },
+                    { name: 'Rigid PQC Concrete Paving', status: 'Active Pours (In Progress)', badge: 'Active Execution', color: '#f97316', desc: 'Precision slipform automated paving with high-grade M40 concrete mix.' },
+                    { name: 'Cross-Drainage & Highway Structures', status: 'In Execution', badge: 'Underway', color: '#a855f7', desc: 'Box culverts, roadside drainage channels, and reinforced median barriers.' },
+                  ]).map((st, i) => (
+                    <div
+                      key={st.name}
+                      style={{
+                        background: 'var(--navy)',
+                        border: '1px solid var(--navy-border)',
+                        borderRadius: 'var(--radius-md)',
+                        padding: 16,
+                        position: 'relative',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <span style={{ color: 'var(--orange)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 800 }}>
+                          Phase 0{i + 1}
+                        </span>
+                        <span style={{ background: `${st.color}18`, color: st.color, border: `1px solid ${st.color}40`, borderRadius: 99, padding: '2px 8px', fontSize: 10, fontWeight: 700, textTransform: 'uppercase' }}>
+                          {st.badge}
+                        </span>
+                      </div>
+                      <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 14, marginBottom: 6, lineHeight: 1.3 }}>
+                        {st.name}
+                      </div>
+                      <div style={{ color: 'var(--steel)', fontSize: 12, lineHeight: 1.5 }}>
+                        {st.desc}
+                      </div>
+                      <div style={{ marginTop: 10, height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', background: st.color, width: st.status.includes('100%') ? '100%' : st.status.includes('90%') ? '90%' : st.status.includes('Active') ? '65%' : '35%' }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Heavy Machinery & Equipment Deployed */}
+              <div style={{ borderTop: '1px solid var(--navy-border)', background: 'rgba(10,23,44,0.4)', padding: '24px 32px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                  <span style={{ fontSize: 18 }}>🚜</span>
+                  <span style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    Heavy Highway Fleet & Batching Infrastructure Deployed
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+                  {(PROJECTS[0]?.fleet || [
+                    { icon: '🚜', name: 'Automated Concrete Slipform Paver', role: 'Precision PQC Paving to IRC:15 Tolerances' },
+                    { icon: '🏗️', name: 'Vibratory Soil Compactors & Graders', role: 'Subgrade Compaction & Density Compliance' },
+                    { icon: '🏭', name: 'Twin 60 m³/hr Batching Plants', role: 'High-Volume Continuous M40 Mix Output' },
+                    { icon: '🚚', name: '15+ GPS Transit Mixers', role: 'Real-Time Rapid Site Delivery Fleet' },
+                  ]).map((eq) => (
+                    <div key={eq.name} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+                      <span style={{ fontSize: 24, flexShrink: 0 }}>{eq.icon}</span>
+                      <div>
+                        <div style={{ color: 'var(--white)', fontSize: 13, fontWeight: 700 }}>{eq.name}</div>
+                        <div style={{ color: 'var(--steel)', fontSize: 11, marginTop: 2 }}>{eq.role}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quality Standards Strip */}
+              <div style={{ borderTop: '1px solid var(--navy-border)', background: 'rgba(7,15,27,0.85)', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+                <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                  <span style={{ color: 'var(--steel-light)', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <FiCheckCircle style={{ color: 'var(--orange)' }} /> IRC:15 & IRC:58 Rigid Concrete Compliance
+                  </span>
+                  <span style={{ color: 'var(--steel-light)', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <FiCheckCircle style={{ color: 'var(--orange)' }} /> 100% In-House Compressive Cube Press Testing
+                  </span>
+                  <span style={{ color: 'var(--steel-light)', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <FiCheckCircle style={{ color: 'var(--orange)' }} /> MSRDC Express Corridor Package Specification
+                  </span>
+                </div>
+                <Link to="/projects" style={{ color: 'var(--orange)', fontSize: 13, fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  Learn More About Our Highway Standards →
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── Services ─────────────────────────────────────────── */}
       <section className="section-pad" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w">
@@ -443,6 +735,13 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Strategic Plant Network & Delivery Radius ── */}
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)', borderTop: '1px solid var(--navy-border)' }}>
+        <div className="max-w">
+          <PlantNetworkMap />
+        </div>
+      </section>
+
       {/* ── Process ────────────────────────────────────────────── */}
       <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))', gap: 72, alignItems: 'flex-start' }}>
@@ -488,41 +787,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Recent Projects Preview ─────────────────────────────── */}
-      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)' }}>
-        <div className="max-w">
-          <SectionHeader eyebrow="Portfolio" title="RECENT PROJECTS" subtitle="A glimpse of what we've built — from city roads to towering structures." />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 24, marginBottom: 48 }}>
-            {[
-              { icon: <FaRoad aria-hidden />, title: 'Pune–Nashik Expressway Stretch', cat: 'Roads', year: 2023, val: '₹8.2 Cr' },
-              { icon: <FaIndustry aria-hidden />, title: 'Amanora Township Phase 3', cat: 'RMC', year: 2023, val: '₹3.4 Cr' },
-              { icon: <FaMapMarkedAlt aria-hidden />, title: 'MIDC Industrial Shed Complex', cat: 'Civil', year: 2022, val: '₹5.1 Cr' },
-            ].map((p, i) => (
-              <Reveal key={p.title} delay={i * 120}>
-                <div style={{
-                  background: 'var(--navy)', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
-                  border: '1px solid var(--navy-border)', transition: 'all 0.46s cubic-bezier(0.22,1,0.36,1)',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.borderColor = 'rgba(249,115,22,0.3)'; e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'var(--navy-border)'; e.currentTarget.style.boxShadow = 'none'; }}
-                >
-                  <div style={{ background: 'linear-gradient(135deg, var(--navy-light), var(--navy-mid))', height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72, position: 'relative' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.88)', filter: 'drop-shadow(0 16px 30px rgba(0,0,0,0.45))' }}>{p.icon}</span>
-                    <span className="badge badge-orange" style={{ position: 'absolute', top: 14, right: 14 }}>{p.cat}</span>
-                  </div>
-                  <div style={{ padding: 24 }}>
-                    <div style={{ color: 'var(--steel)', fontSize: 12, fontFamily: 'var(--font-condensed)', letterSpacing: '0.1em', marginBottom: 8 }}>PROJECT VALUE: {p.val} · {p.year}</div>
-                    <h3 style={{ fontFamily: 'var(--font-condensed)', fontWeight: 700, fontSize: 18, color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{p.title}</h3>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal style={{ textAlign: 'center' }}>
-            <Link to="/projects" className="btn btn-outline" style={{ textDecoration: 'none', fontSize: 15 }}>View All Projects →</Link>
-          </Reveal>
-        </div>
-      </section>
+
 
       <section className="section-pad-sm cv-auto" style={{ background: 'var(--navy)' }}>
         <div className="max-w">

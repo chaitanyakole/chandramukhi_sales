@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
 import { SITE, COMPANY_PROFILE, GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS } from '../data/siteData';
+import PlantNetworkMap from '../components/PlantNetworkMap';
 
 const VALUES = [
   { icon: '🏆', title: 'Quality First',  desc: 'Every batch, every road, every structure — meets the highest industry benchmarks without compromise.' },
@@ -16,18 +17,18 @@ const VALUES = [
 const TIMELINE = [
   { year: '2006', event: 'Aggregate Plant Started', desc: 'Aggregate manufacturing started in March 2006 at Lonikand.' },
   { year: '2015', event: 'RMC Division Started', desc: 'Ready Mix Concrete plant started in December 2015 at Wagholi & Nande (Sus), Pune.' },
-  { year: '2017', event: 'Expanded Capacity', desc: 'Expanded fleet and plant capacity to serve major developers across Pune.' },
-  { year: '2019', event: 'Road Division Launched', desc: 'Invested in asphalt paving machinery and formed our dedicated road construction division.' },
-  { year: '2021', event: 'NHAI Empanelment', desc: 'Achieved NHAI empanelment, qualifying us for national highway projects across India.' },
-  { year: '2022', event: '500th Project Milestone', desc: 'Celebrated 500+ completed projects and expanded operations to Nashik and Solapur.' },
-  { year: '2024', event: 'Pan-Maharashtra Operations', desc: 'Now serving all 36 districts of Maharashtra with an expanded team of 100+ professionals.' },
+  { year: '2017', event: 'Fleet & Plant Expansion', desc: 'Expanded fleet of transit mixers and automated computerized batching to serve major developers across Pune.' },
+  { year: '2019', event: '1 Lac+ m³ Production Milestone', desc: 'Produced over 1 Lac cubic meters of quality concrete (M7.5 to M60), supplying landmark residential towers and flyovers.' },
+  { year: '2021', event: 'Government Empanelment', desc: 'Empanelled with PWD, MSRDC, and municipal corporations for state infrastructure works.' },
+  { year: '2023', event: '500+ Projects Milestone', desc: 'Celebrated 500+ landmark projects supplied with precision-mixed RMC across Pune and Western Maharashtra.' },
+  { year: '2025–2026', event: 'Building Pune Ring Road', desc: 'Awarded prestigious Maharashtra Government highway contract for building express road sections of the landmark Pune Ring Road.' },
 ];
 
 const TEAM = [
-  { emoji: '👷', name: 'Founder & Director', title: 'Chandramukhi Sales', desc: 'A civil engineering veteran with 20+ years of experience in infrastructure development across Western India.' },
-  { emoji: '🏗️', name: 'Head of RMC Operations', title: 'Plant Management', desc: 'Oversees all batching plant operations, quality control, and fleet logistics for RMC delivery.' },
-  { emoji: '🛣️', name: 'Roads Division Head', title: 'Road Engineering', desc: 'Leads the road construction team with IRC compliance, surveying, and project execution excellence.' },
-  { emoji: '📐', name: 'Chief Engineer — Civil', title: 'Structural Engineering', desc: 'Manages structural design review, site supervision, and quality assurance for all civil projects.' },
+  { emoji: '👷', name: 'Founder & Director', title: 'Chandramukhi Sales', desc: 'Industry veteran with 20+ years of expertise in concrete manufacturing, aggregate production, and infrastructure material logistics.' },
+  { emoji: '🏗️', name: 'Head of Plant Operations', title: 'Batching Plant Operations', desc: 'Oversees fully automated batching plants at Wagholi & Nande, computerised mix designs, and fleet logistics.' },
+  { emoji: '🔬', name: 'Quality Control Lead', title: 'Concrete Technology & Testing', desc: 'Directs concrete mix designs from M7.5 to M60, slump retention, and strict adherence to IS 456 & IRC specifications.' },
+  { emoji: '🏛️', name: 'Govt Projects Division', title: 'Highway Construction & Execution', desc: 'Leads project execution, heavy paving fleet operations, and quality engineering for the landmark Pune Ring Road project.' },
 ];
 
 function LogoTile({ item, dark = false }) {
@@ -139,10 +140,10 @@ export default function AboutPage() {
               Chandramukhi Sales was born from a simple belief: the construction industry in Maharashtra deserved a partner that combined world-class quality with the reliability of a local contractor who understood the terrain, the weather, and the demands of the region.
             </p>
             <p style={{ color: 'var(--steel)', fontSize: 16, lineHeight: 1.9, marginBottom: 20 }}>
-              Starting with aggregate manufacturing in Lonikand and later launching our RMC plants in Pune, we grew steadily — adding capacity, transit mixers, and dedicated site support. Every step of the way, our guiding principle has been simple: deliver what we promise.
+              Starting with aggregate manufacturing in Lonikand and later launching our automated RMC plants in Wagholi and Nande, we grew steadily — adding batching capacity, transit mixers, and dedicated on-site concrete pumping. Every step of the way, our guiding principle has been simple: deliver benchmarked concrete quality without compromise.
             </p>
             <p style={{ color: 'var(--steel)', fontSize: 16, lineHeight: 1.9, marginBottom: 36 }}>
-              Today, Chandramukhi Sales serves government agencies, leading developers, and individual project owners across Maharashtra — with the same commitment to quality, whether the project is worth ₹10 lakh or ₹50 crore.
+              Today, Chandramukhi Sales is trusted by leading developers and government authorities across Maharashtra. We are proud to be actively building express highway sections of the landmark <strong>Pune Ring Road Government Project</strong>.
             </p>
             <Link to="/contact" className="btn btn-primary" style={{ textDecoration: 'none' }}>Start Your Project</Link>
           </div>
@@ -173,8 +174,41 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── Operational Facilities & Sites Gallery ────────────── */}
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy-mid)', borderTop: '1px solid var(--navy-border)' }}>
+        <div className="max-w">
+          <SectionHeader eyebrow="Operations" title="FACILITIES & ACTIVE SITES" subtitle="Modern computerized batching plants, heavy paving fleet, and landmark infrastructure builds." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+            {[
+              { img: '/rmc-batching-plant.jpg', title: 'Twin Automated Batching Plants', sub: 'Wagholi & Mulshi (60 m³/hr each)', badge: 'RMC Production' },
+              { img: '/pune-ring-road.jpg', title: 'Pune Ring Road Project', sub: 'Turnkey Road Construction Contractor', badge: 'Active Govt Highway' },
+              { img: '/concrete-pumping.jpg', title: 'Vertical Concrete Pumping Fleet', sub: '42 cum/hr Pumps & 15+ Transit Mixers', badge: 'High-Rise Logistics' },
+            ].map((f) => (
+              <div key={f.title} className="card" style={{ padding: 0, overflow: 'hidden', border: '1px solid var(--navy-border)' }}>
+                <div style={{ height: 220, position: 'relative', overflow: 'hidden' }}>
+                  <img src={f.img} alt={f.title} width="400" height="220" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(7,15,27,0.1) 0%, rgba(7,15,27,0.8) 100%)' }} />
+                  <span className="badge badge-orange" style={{ position: 'absolute', top: 14, left: 14 }}>{f.badge}</span>
+                </div>
+                <div style={{ padding: '20px 22px' }}>
+                  <h4 style={{ color: 'var(--white)', fontSize: 17, margin: '0 0 6px 0' }}>{f.title}</h4>
+                  <p style={{ color: 'var(--steel-light)', fontSize: 13, margin: 0 }}>{f.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Strategic Plant Network ── */}
+      <section className="section-pad cv-auto" style={{ background: 'var(--navy)', borderTop: '1px solid var(--navy-border)' }}>
+        <div className="max-w">
+          <PlantNetworkMap />
+        </div>
+      </section>
+
       {/* ── Timeline ───────────────────────────────────────────── */}
-      <section className="section-pad" style={{ background: 'var(--navy)' }}>
+      <section className="section-pad" style={{ background: 'var(--navy-mid)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Journey" title="OUR MILESTONES" subtitle="From a single batching plant to pan-Maharashtra operations — our growth story." />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 28 }}>
