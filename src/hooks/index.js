@@ -124,3 +124,5 @@ export function useIsMobile() {
   }, []);
   return mobile;
 }
+
+export { useTheme } from '../context/ThemeContext';

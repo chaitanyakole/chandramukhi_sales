@@ -11,14 +11,13 @@ function ProjectCard({ project, delay }) {
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        className="card project-feature-card"
         style={{
-          background: 'linear-gradient(180deg, #132742, #0d1b2e)',
           borderRadius: 'var(--radius-xl)',
           overflow: 'hidden',
-          border: `1.5px solid ${hovered ? 'var(--orange)' : 'rgba(249,115,22,0.4)'}`,
+          borderColor: hovered ? 'var(--orange)' : undefined,
           transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
           transform: hovered ? 'translateY(-6px)' : 'none',
-          boxShadow: hovered ? '0 24px 60px rgba(0,0,0,0.5)' : '0 12px 36px rgba(0,0,0,0.3)',
           maxWidth: 860,
           margin: '0 auto',
           display: 'flex',
@@ -27,11 +26,11 @@ function ProjectCard({ project, delay }) {
       >
         {/* Thumb / Banner */}
         <div
+          className="project-banner-thumb"
           style={{
             height: 320,
             position: 'relative',
             overflow: 'hidden',
-            background: 'linear-gradient(135deg, #182f50, #0a172c)',
           }}
         >
           {project.image ? (
@@ -201,12 +200,10 @@ function ProjectCard({ project, delay }) {
               {project.proof.map((item) => (
                 <span
                   key={item}
+                  className="project-proof-pill"
                   style={{
-                    border: '1px solid var(--navy-border)',
-                    background: 'var(--navy)',
                     borderRadius: 999,
                     padding: '6px 14px',
-                    color: 'var(--steel-light)',
                     fontSize: 12,
                     fontFamily: 'var(--font-condensed)',
                     letterSpacing: '0.05em',
@@ -220,12 +217,10 @@ function ProjectCard({ project, delay }) {
 
           {project.outcome && (
             <div
+              className="project-outcome-box"
               style={{
-                background: 'rgba(249,115,22,0.06)',
-                border: '1px solid rgba(249,115,22,0.18)',
                 borderRadius: 'var(--radius-md)',
                 padding: '14px 18px',
-                color: 'var(--steel-light)',
                 fontSize: 14,
                 lineHeight: 1.7,
                 marginBottom: 24,
@@ -238,7 +233,7 @@ function ProjectCard({ project, delay }) {
 
           {/* Live Construction Milestones */}
           {Array.isArray(project.stages) && project.stages.length > 0 && (
-            <div style={{ marginBottom: 24, background: 'var(--navy)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+            <div className="project-stage-box" style={{ marginBottom: 24, borderRadius: 'var(--radius-lg)', padding: 22 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
                 <div style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   📊 Execution Phases & Milestone Status
@@ -247,7 +242,7 @@ function ProjectCard({ project, delay }) {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
                 {project.stages.map((st, i) => (
-                  <div key={st.name} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', padding: 12 }}>
+                  <div key={st.name} className="project-phase-pill" style={{ borderRadius: 'var(--radius-md)', padding: 12 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
                       <span style={{ color: 'var(--orange)', fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-condensed)' }}>Phase 0{i + 1}</span>
                       <span style={{ color: st.color, fontSize: 10, fontWeight: 700, background: `${st.color}15`, padding: '2px 6px', borderRadius: 99 }}>{st.badge}</span>
@@ -262,13 +257,13 @@ function ProjectCard({ project, delay }) {
 
           {/* Heavy Equipment & Fleet */}
           {Array.isArray(project.fleet) && project.fleet.length > 0 && (
-            <div style={{ marginBottom: 24, background: 'rgba(10,23,44,0.5)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+            <div className="project-fleet-box" style={{ marginBottom: 24, borderRadius: 'var(--radius-lg)', padding: 22 }}>
               <div style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
                 🚜 Dedicated Equipment & Batching Fleet Deployed
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 10 }}>
                 {project.fleet.map((eq) => (
-                  <div key={eq.name} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', padding: '10px 12px' }}>
+                  <div key={eq.name} className="project-equipment-pill" style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 'var(--radius-md)', padding: '10px 12px' }}>
                     <span style={{ fontSize: 20 }}>{eq.icon}</span>
                     <div>
                       <div style={{ color: 'var(--white)', fontSize: 12, fontWeight: 700 }}>{eq.name}</div>

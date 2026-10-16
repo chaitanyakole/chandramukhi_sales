@@ -24,16 +24,13 @@ export default function PlantNetworkMap() {
 
   return (
     <div
-      className="card noise-overlay"
+      className="card noise-overlay plant-network-card"
       style={{
-        background: 'linear-gradient(145deg, #102137, #0a172c)',
-        border: '1.5px solid rgba(249,115,22,0.4)',
         borderRadius: 'var(--radius-xl)',
         padding: '36px 32px',
-        boxShadow: '0 24px 60px rgba(0,0,0,0.45)',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 28, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: 18 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 28, borderBottom: '1px solid var(--navy-border)', paddingBottom: 18 }}>
         <div>
           <span className="badge badge-orange" style={{ marginBottom: 6 }}>
             🗺️ Strategic Infrastructure Network
@@ -48,7 +45,7 @@ export default function PlantNetworkMap() {
 
         <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: 99, padding: '6px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
-          <span style={{ color: '#4ADE80', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span style={{ color: 'var(--green)', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Guaranteed Fresh Pour &lt;45 Min Transit
           </span>
         </div>
@@ -57,7 +54,7 @@ export default function PlantNetworkMap() {
       {/* Facilities Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 28 }}>
         {/* Plant 1 */}
-        <div style={{ background: 'var(--navy)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+        <div className="plant-facility-card" style={{ borderRadius: 'var(--radius-lg)', padding: 22 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span className="badge badge-orange" style={{ fontSize: 11 }}>East Pune Hub</span>
             <span style={{ color: 'var(--steel)', fontSize: 12 }}>Sr.No. 511 Wagholi</span>
@@ -70,7 +67,7 @@ export default function PlantNetworkMap() {
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {['60 cum/hr Capacity', 'Automated Lab', '15+ Mixers Fleet', 'Nagar Road Corridor'].map(t => (
-              <span key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 4, padding: '3px 8px', fontSize: 11, color: 'var(--steel)' }}>
+              <span key={t} className="plant-feature-pill">
                 ✓ {t}
               </span>
             ))}
@@ -78,9 +75,9 @@ export default function PlantNetworkMap() {
         </div>
 
         {/* Plant 2 */}
-        <div style={{ background: 'var(--navy)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+        <div className="plant-facility-card" style={{ borderRadius: 'var(--radius-lg)', padding: 22 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span className="badge" style={{ background: 'rgba(56,189,248,0.15)', color: '#38BDF8', border: '1px solid rgba(56,189,248,0.3)', fontSize: 11 }}>West Pune Hub</span>
+            <span className="badge badge-blue" style={{ fontSize: 11 }}>West Pune Hub</span>
             <span style={{ color: 'var(--steel)', fontSize: 12 }}>Nandegaon, Mulshi</span>
           </div>
           <h4 style={{ color: 'var(--white)', fontSize: 18, margin: '6px 0', fontFamily: 'var(--font-condensed)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -91,7 +88,7 @@ export default function PlantNetworkMap() {
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {['60 cum/hr Capacity', 'Hinjawadi Expressway', 'Vertical Pumping Pumps', 'Fast-Track Pour'].map(t => (
-              <span key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 4, padding: '3px 8px', fontSize: 11, color: 'var(--steel)' }}>
+              <span key={t} className="plant-feature-pill">
                 ✓ {t}
               </span>
             ))}
@@ -99,9 +96,9 @@ export default function PlantNetworkMap() {
         </div>
 
         {/* Aggregate Plant & Highway Package */}
-        <div style={{ background: 'var(--navy)', border: '1px solid var(--navy-border)', borderRadius: 'var(--radius-lg)', padding: 22 }}>
+        <div className="plant-facility-card" style={{ borderRadius: 'var(--radius-lg)', padding: 22 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span className="badge" style={{ background: 'rgba(168,85,247,0.15)', color: '#C084FC', border: '1px solid rgba(168,85,247,0.3)', fontSize: 11 }}>Raw Material Security</span>
+            <span className="badge" style={{ background: 'rgba(168,85,247,0.15)', color: 'var(--purple)', border: '1px solid rgba(168,85,247,0.3)', fontSize: 11 }}>Raw Material Security</span>
             <span style={{ color: 'var(--steel)', fontSize: 12 }}>Since 2006</span>
           </div>
           <h4 style={{ color: 'var(--white)', fontSize: 18, margin: '6px 0', fontFamily: 'var(--font-condensed)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -112,7 +109,7 @@ export default function PlantNetworkMap() {
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {['10mm & 20mm Aggregates', 'Zero Material Shortage', 'Tested Flakiness Index', 'IS:383 Compliant'].map(t => (
-              <span key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 4, padding: '3px 8px', fontSize: 11, color: 'var(--steel)' }}>
+              <span key={t} className="plant-feature-pill">
                 ✓ {t}
               </span>
             ))}
@@ -122,9 +119,8 @@ export default function PlantNetworkMap() {
 
       {/* Interactive Locality Delivery Checker */}
       <div
+        className="locality-checker-box"
         style={{
-          background: 'linear-gradient(135deg, rgba(7,15,27,0.9), rgba(10,23,44,0.95))',
-          border: '1.5px solid rgba(249,115,22,0.4)',
           borderRadius: 'var(--radius-lg)',
           padding: '24px 28px',
         }}
@@ -150,17 +146,7 @@ export default function PlantNetworkMap() {
                 key={loc.name}
                 type="button"
                 onClick={() => setSelectedLocality(loc)}
-                style={{
-                  background: isSel ? 'var(--orange)' : 'rgba(255,255,255,0.04)',
-                  color: isSel ? '#fff' : 'var(--steel-light)',
-                  border: `1px solid ${isSel ? 'var(--orange)' : 'rgba(255,255,255,0.1)'}`,
-                  borderRadius: 99,
-                  padding: '6px 14px',
-                  fontSize: 12,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                }}
+                className={`locality-btn ${isSel ? 'is-selected' : ''}`}
               >
                 📍 {loc.name}
               </button>
@@ -169,21 +155,9 @@ export default function PlantNetworkMap() {
         </div>
 
         {/* Selected Zone Result Banner */}
-        <div
-          style={{
-            background: 'rgba(249,115,22,0.08)',
-            border: '1px solid rgba(249,115,22,0.25)',
-            borderRadius: 'var(--radius-md)',
-            padding: '16px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: 16,
-          }}
-        >
+        <div className="locality-result-banner">
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(34,197,94,0.18)', border: '1px solid rgba(34,197,94,0.4)', display: 'grid', placeItems: 'center', color: '#4ADE80', fontSize: 20 }}>
+            <div className="locality-truck-icon">
               <FiTruck />
             </div>
             <div>
@@ -191,7 +165,7 @@ export default function PlantNetworkMap() {
                 Site Location: <span style={{ color: 'var(--orange)' }}>{selectedLocality.name}</span> ({selectedLocality.zone})
               </div>
               <div style={{ color: 'var(--steel-light)', fontSize: 13, marginTop: 2 }}>
-                Supplied via: <strong style={{ color: '#fff' }}>{selectedLocality.plant}</strong> · Estimated Transit: <strong style={{ color: '#4ADE80' }}>{selectedLocality.time}</strong>
+                Supplied via: <strong className="locality-result-plant">{selectedLocality.plant}</strong> · Estimated Transit: <strong className="locality-result-time">{selectedLocality.time}</strong>
               </div>
             </div>
           </div>

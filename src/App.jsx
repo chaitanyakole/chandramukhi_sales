@@ -1,9 +1,11 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { FloatingButtons } from './components/UI';
+import LoadingScreen from './components/LoadingScreen';
+import { ThemeProvider } from './context/ThemeContext';
 import './styles/global.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -92,7 +94,7 @@ function AppRoutes() {
       <ScrollProgressBar />
       <ScrollToTop />
       <Navbar />
-      <main>
+      <main id="main">
         <Suspense fallback={<RouteLoader />}>
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
@@ -167,6 +169,8 @@ function useScrollProgress() {
 }
 
 export default function App() {
+  const [bootLoading, setBootLoading] = useState(true);
+
   useEffect(() => {
     // Apply a global reduced-motion class based on user OS/browser preference.
     if (typeof window === 'undefined') return;
@@ -183,9 +187,40 @@ export default function App() {
     return () => mq.removeListener(apply);
   }, []);
 
+  useEffect(() => {
+    // Keep branded loader visible on initial page load for a smooth entrance,
+    // avoiding rapid 50ms flickers while ensuring it never hangs indefinitely.
+    const minDisplayTime = 1000;
+    const startTime = Date.now();
+
+    const finish = () => {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, minDisplayTime - elapsed);
+      setTimeout(() => {
+        setBootLoading(false);
+      }, remaining);
+    };
+
+    if (document.readyState === 'complete') {
+      finish();
+    } else {
+      window.addEventListener('load', finish, { once: true });
+    }
+
+    const timer = setTimeout(finish, 2800);
+
+    return () => {
+      window.removeEventListener('load', finish);
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <LoadingScreen show={bootLoading} />
+        <AppRoutes />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

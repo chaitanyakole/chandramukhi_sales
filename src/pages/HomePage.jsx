@@ -142,7 +142,7 @@ function Hero() {
         </div>
 
         <Reveal delay={220} direction="scale">
-          <div className="hero__visual card noise-overlay" style={{ border: '1.5px solid rgba(249,115,22,0.45)', background: 'linear-gradient(145deg, rgba(19,39,66,0.95), rgba(10,23,44,0.98))', overflow: 'hidden' }}>
+          <div className="hero__visual card noise-overlay" style={{ overflow: 'hidden' }}>
             <div style={{ position: 'relative', height: 135, margin: '-22px -22px 14px -22px', overflow: 'hidden' }}>
               <img
                 src="/pune-ring-road.jpg"
@@ -394,7 +394,7 @@ export default function HomePage() {
       <Ticker />
 
       {/* ── Featured Flagship Project: Pune Ring Road (First Page Spotlight) ── */}
-      <section id="ring-road" className="section-pad cv-auto" style={{ background: 'linear-gradient(180deg, var(--navy) 0%, #0c1a2d 50%, var(--navy-mid) 100%)', borderBottom: '1px solid var(--navy-border)' }}>
+      <section id="ring-road" className="section-pad cv-auto ring-road-section" style={{ borderBottom: '1px solid var(--navy-border)' }}>
         <div className="max-w">
           <SectionHeader
             eyebrow="🏛️ Landmark Government Infrastructure Project"
@@ -403,12 +403,10 @@ export default function HomePage() {
           />
           <Reveal>
             <div
+              className="card noise-overlay ring-road-card"
               style={{
-                background: 'linear-gradient(145deg, #132742, #0b1728)',
                 borderRadius: 'var(--radius-xl)',
-                border: '1.5px solid rgba(249,115,22,0.45)',
                 overflow: 'hidden',
-                boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
                 marginBottom: 32,
               }}
             >
@@ -516,7 +514,7 @@ export default function HomePage() {
                       { l: 'Batching Supply', v: 'Twin 60 m³/hr Plants' },
                       { l: 'Transit Fleet', v: '15+ GPS Transit Mixers' },
                     ].map((sp) => (
-                      <div key={sp.l} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 'var(--radius-md)', padding: '10px 14px' }}>
+                      <div key={sp.l} className="ring-road-spec-pill" style={{ borderRadius: 'var(--radius-md)', padding: '10px 14px' }}>
                         <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'var(--font-condensed)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{sp.l}</div>
                         <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 13, marginTop: 2 }}>{sp.v}</div>
                       </div>
@@ -541,7 +539,7 @@ export default function HomePage() {
               </div>
 
               {/* Progress Milestones Strip */}
-              <div style={{ borderTop: '1px solid var(--navy-border)', background: 'rgba(7,15,27,0.65)', padding: '28px 32px' }}>
+              <div className="ring-road-strip ring-road-strip--milestones" style={{ padding: '28px 32px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8, marginBottom: 18 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span style={{ fontSize: 18 }}>📊</span>
@@ -563,9 +561,8 @@ export default function HomePage() {
                   ]).map((st, i) => (
                     <div
                       key={st.name}
+                      className="ring-road-phase-card"
                       style={{
-                        background: 'var(--navy)',
-                        border: '1px solid var(--navy-border)',
                         borderRadius: 'var(--radius-md)',
                         padding: 16,
                         position: 'relative',
@@ -595,7 +592,7 @@ export default function HomePage() {
               </div>
 
               {/* Heavy Machinery & Equipment Deployed */}
-              <div style={{ borderTop: '1px solid var(--navy-border)', background: 'rgba(10,23,44,0.4)', padding: '24px 32px' }}>
+              <div className="ring-road-strip ring-road-strip--fleet" style={{ padding: '24px 32px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
                   <span style={{ fontSize: 18 }}>🚜</span>
                   <span style={{ color: 'var(--white)', fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
@@ -610,7 +607,7 @@ export default function HomePage() {
                     { icon: '🏭', name: 'Twin 60 m³/hr Batching Plants', role: 'High-Volume Continuous M40 Mix Output' },
                     { icon: '🚚', name: '15+ GPS Transit Mixers', role: 'Real-Time Rapid Site Delivery Fleet' },
                   ]).map((eq) => (
-                    <div key={eq.name} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+                    <div key={eq.name} className="ring-road-fleet-card" style={{ display: 'flex', alignItems: 'center', gap: 12, borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
                       <span style={{ fontSize: 24, flexShrink: 0 }}>{eq.icon}</span>
                       <div>
                         <div style={{ color: 'var(--white)', fontSize: 13, fontWeight: 700 }}>{eq.name}</div>
@@ -622,7 +619,7 @@ export default function HomePage() {
               </div>
 
               {/* Quality Standards Strip */}
-              <div style={{ borderTop: '1px solid var(--navy-border)', background: 'rgba(7,15,27,0.85)', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+              <div className="ring-road-strip ring-road-strip--quality" style={{ padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
                 <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                   <span style={{ color: 'var(--steel-light)', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                     <FiCheckCircle style={{ color: 'var(--orange)' }} /> IRC:15 & IRC:58 Rigid Concrete Compliance

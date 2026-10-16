@@ -102,16 +102,13 @@ export default function ConcreteGradeMatrix() {
 
   return (
     <div
-      className="card noise-overlay"
+      className="card noise-overlay concrete-matrix-card"
       style={{
-        background: 'linear-gradient(145deg, #102137, #0a172c)',
-        border: '1.5px solid rgba(249,115,22,0.4)',
         borderRadius: 'var(--radius-xl)',
         padding: '36px 32px',
-        boxShadow: '0 24px 60px rgba(0,0,0,0.45)',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 24, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: 18 }}>
+      <div className="matrix-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 24, paddingBottom: 18 }}>
         <div>
           <span className="badge badge-orange" style={{ marginBottom: 6 }}>
             🔬 Technical Mix Design Specifications
@@ -141,17 +138,7 @@ export default function ConcreteGradeMatrix() {
             key={c.id}
             type="button"
             onClick={() => setActiveCat(c.id)}
-            style={{
-              background: activeCat === c.id ? 'var(--orange)' : 'rgba(255,255,255,0.04)',
-              color: activeCat === c.id ? '#fff' : 'var(--steel-light)',
-              border: `1px solid ${activeCat === c.id ? 'var(--orange)' : 'rgba(255,255,255,0.1)'}`,
-              borderRadius: 99,
-              padding: '8px 16px',
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-            }}
+            className={`matrix-tab-btn ${activeCat === c.id ? 'is-active' : ''}`}
           >
             {c.label}
           </button>
@@ -163,9 +150,8 @@ export default function ConcreteGradeMatrix() {
         {filteredGrades.map((item) => (
           <div
             key={item.grade}
+            className="matrix-grade-card"
             style={{
-              background: 'var(--navy)',
-              border: '1.5px solid var(--navy-border)',
               borderRadius: 'var(--radius-lg)',
               padding: 22,
               display: 'flex',
@@ -184,14 +170,14 @@ export default function ConcreteGradeMatrix() {
                 </span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', marginBottom: 12 }}>
+              <div className="matrix-spec-box" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, borderRadius: 'var(--radius-sm)', padding: '8px 12px', marginBottom: 12 }}>
                 <div>
                   <div style={{ color: 'var(--muted)', fontSize: 10, textTransform: 'uppercase' }}>28-Day Strength</div>
-                  <div style={{ color: '#4ADE80', fontWeight: 700, fontSize: 13 }}>{item.strength}</div>
+                  <div className="matrix-spec-strength">{item.strength}</div>
                 </div>
                 <div>
                   <div style={{ color: 'var(--muted)', fontSize: 10, textTransform: 'uppercase' }}>Design Slump</div>
-                  <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 13 }}>{item.slump}</div>
+                  <div className="matrix-spec-slump">{item.slump}</div>
                 </div>
               </div>
 
@@ -201,7 +187,7 @@ export default function ConcreteGradeMatrix() {
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
                 {item.features.map(f => (
-                  <span key={f} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 4, padding: '3px 8px', fontSize: 11, color: 'var(--steel)' }}>
+                  <span key={f} className="matrix-feature-pill" style={{ borderRadius: 4, padding: '3px 8px', fontSize: 11 }}>
                     ✓ {f}
                   </span>
                 ))}
