@@ -28,7 +28,7 @@ export default function RoadContractorPunePage() {
             name: 'Chandramukhi Sales',
             telephone: SITE.phone,
           },
-          url: 'https://chandramukhi-sales.com/road-contractor-pune',
+          url: 'https://chandramukhisales.com/road-contractor-pune',
         }}
       />
 

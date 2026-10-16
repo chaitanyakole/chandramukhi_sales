@@ -97,7 +97,7 @@ export default function AboutPage() {
           '@context': 'https://schema.org',
           '@type': 'AboutPage',
           name: 'About Chandramukhi Sales',
-          url: 'https://chandramukhi-sales.com/about',
+          url: 'https://chandramukhisales.com/about',
           about: {
             '@type': 'Organization',
             name: 'Chandramukhi Sales',

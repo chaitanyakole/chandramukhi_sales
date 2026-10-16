@@ -385,7 +385,7 @@ export default function HomePage() {
           '@context': 'https://schema.org',
           '@type': 'Organization',
           name: 'Chandramukhi Sales',
-          url: 'https://chandramukhi-sales.com/',
+          url: 'https://chandramukhisales.com/',
           areaServed: 'Maharashtra',
           serviceType: ['Ready Mix Concrete', 'Road Construction', 'Civil Contracting'],
         }}

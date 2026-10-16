@@ -370,7 +370,7 @@ export default function ContactPage() {
           '@context': 'https://schema.org',
           '@type': 'ContactPage',
           name: 'Contact Chandramukhi Sales',
-          url: 'https://chandramukhi-sales.com/contact',
+          url: 'https://chandramukhisales.com/contact',
           about: {
             '@type': 'Organization',
             name: 'Chandramukhi Sales',

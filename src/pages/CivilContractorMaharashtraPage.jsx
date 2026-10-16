@@ -28,7 +28,7 @@ export default function CivilContractorMaharashtraPage() {
             name: 'Chandramukhi Sales',
             telephone: SITE.phone,
           },
-          url: 'https://chandramukhi-sales.com/civil-contractor-maharashtra',
+          url: 'https://chandramukhisales.com/civil-contractor-maharashtra',
         }}
       />
 

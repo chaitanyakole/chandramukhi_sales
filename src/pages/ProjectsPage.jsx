@@ -366,7 +366,7 @@ export default function ProjectsPage() {
           '@type': 'CollectionPage',
           name: 'Chandramukhi Sales - Building Pune Ring Road',
           about: 'Pune Ring Road Government Project road construction in Maharashtra',
-          url: 'https://chandramukhi-sales.com/projects',
+          url: 'https://chandramukhisales.com/projects',
         }}
       />
       {/* Hero */}

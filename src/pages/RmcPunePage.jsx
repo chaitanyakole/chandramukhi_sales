@@ -37,7 +37,7 @@ export default function RmcPunePage() {
             },
             telephone: SITE.phone,
           },
-          url: 'https://chandramukhi-sales.com/rmc-pune',
+          url: 'https://chandramukhisales.com/rmc-pune',
         }}
       />
 
