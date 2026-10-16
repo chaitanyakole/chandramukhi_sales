@@ -28,10 +28,11 @@ function validate(values) {
   if (!values.timeline) errors.timeline = 'Please select a timeline.';
   if (!values.projectScale) errors.projectScale = 'Please select project scale.';
   if (!values.name.trim()) errors.name = 'Full name is required.';
+  const cleanPhone = values.phone.trim().replace(/[\s\-()]/g, '');
   if (!values.phone.trim()) errors.phone = 'Phone number is required.';
-  else if (!/^[+\d][\d\s\-]{7,}$/.test(values.phone)) errors.phone = 'Please enter a valid phone number.';
+  else if (!/^[+]?\d{10,14}$/.test(cleanPhone)) errors.phone = 'Please enter a valid 10-digit phone number.';
   if (!values.email.trim()) errors.email = 'Email address is required.';
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errors.email = 'Please enter a valid email address.';
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) errors.email = 'Please enter a valid email address.';
   if (!values.service) errors.service = 'Please select a service.';
   if (!values.message.trim()) errors.message = 'Please describe your requirement.';
   else if (values.message.trim().length < 20) errors.message = 'Please provide a bit more detail (min 20 chars).';
@@ -76,6 +77,7 @@ function ContactForm() {
   const [step, setStep] = useState(1);
   const [inquiryMode, setInquiryMode] = useState('standard'); // 'standard' | 'tender'
   const [stepOneHint, setStepOneHint] = useState('');
+  const [submittedWaUrl, setSubmittedWaUrl] = useState(getWhatsAppLink());
 
   const goToStepTwo = useCallback(() => {
     if (!values.city.trim() || !values.timeline || !values.projectScale || !values.service) {
@@ -101,7 +103,7 @@ function ContactForm() {
       `Requirement: ${vals.message}`,
     ].join('\n');
     const waUrl = getWhatsAppLink(message);
-    const waWindow = window.open(waUrl, '_blank', 'noopener,noreferrer');
+    setSubmittedWaUrl(waUrl);
 
     const payload = {
       source: 'website-contact-form',
@@ -121,17 +123,14 @@ function ContactForm() {
     try {
       const result = await submitLead(payload);
       trackEvent('lead_submit', {
-        method: result.skipped ? 'whatsapp_only' : 'webhook_and_whatsapp',
+        method: result.skipped ? 'whatsapp_ready' : 'webhook_and_whatsapp',
         service: vals.service,
         projectScale: vals.projectScale,
       });
     } catch (_) {
       trackEvent('lead_submit_error', { service: vals.service });
-      if (!waWindow || waWindow.closed || typeof waWindow.closed === 'undefined') {
-        window.location.href = waUrl;
-      }
     }
-    await new Promise((r) => setTimeout(r, 250));
+    await new Promise((r) => setTimeout(r, 200));
   }, []);
 
   if (submitted) {
@@ -149,9 +148,9 @@ function ContactForm() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button onClick={() => { reset(); setStep(1); }} className="btn btn-outline">Send Another</button>
-          <a href={`tel:${SITE.phone}`} className="btn btn-primary">📞 Call Sales Now</a>
-          <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn btn-green">💬 Chat on WhatsApp</a>
+          <button type="button" onClick={() => { reset(); setStep(1); }} className="btn btn-outline">Send Another</button>
+          <a href={`tel:${SITE.phoneRaw || SITE.phone.replace(/[^\d+]/g, '')}`} className="btn btn-primary">📞 Call Sales Now</a>
+          <a href={submittedWaUrl} target="_blank" rel="noreferrer" className="btn btn-green">💬 Chat on WhatsApp</a>
         </div>
       </div>
     );
@@ -183,6 +182,7 @@ function ContactForm() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, background: 'var(--navy-mid)', padding: 4, borderRadius: 'var(--radius-md)', border: '1px solid var(--navy-border)' }}>
         <button
           type="button"
+          aria-pressed={inquiryMode === 'standard'}
           onClick={() => {
             setInquiryMode('standard');
             if (values.projectScale === 'Government / Highway Package') {
@@ -205,6 +205,7 @@ function ContactForm() {
         </button>
         <button
           type="button"
+          aria-pressed={inquiryMode === 'tender'}
           onClick={() => {
             setInquiryMode('tender');
             handleChange({ target: { name: 'service', value: 'Road Construction' } });
@@ -348,12 +349,12 @@ function ContactForm() {
 
 export default function ContactPage() {
   const emailPrimary = SITE.emails?.[0] || SITE.email;
-  const emailSecondary = SITE.emails?.[1];
+  const emailSecondary = SITE.emails?.[1] || (SITE.email && SITE.email !== emailPrimary ? SITE.email : null);
   const salesPhones = SITE.salesPhones?.length ? SITE.salesPhones : [SITE.phone];
+  const primaryPhoneRaw = SITE.phoneRaw || salesPhones[0].replace(/[^\d+]/g, '');
 
   const QUICK_CONTACTS = [
-    // { icon: '☎️', label: 'Office Tel', value: SITE.officeTel, sub: 'Mon–Sat, 9AM–6PM', href: `tel:${SITE.officeTel}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
-    { icon: '📞', label: 'Sales', value: salesPhones[0], sub: 'For quotations & orders', href: `tel:${salesPhones[0]}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
+    { icon: '📞', label: 'Sales', value: salesPhones[0], sub: 'For quotations & orders', href: `tel:${primaryPhoneRaw}`, color: 'var(--orange)', shadow: 'rgba(249,115,22,0.3)' },
     { icon: '💬', label: 'WhatsApp', value: 'Chat Now', sub: 'Instant response', href: getWhatsAppLink(), color: '#25D366', shadow: 'rgba(37,211,102,0.3)', external: true },
     { icon: '✉️', label: 'Email', value: emailPrimary, sub: 'Sales inquiries', href: getGmailComposeLink(emailPrimary), color: '#818CF8', shadow: 'rgba(129,140,248,0.3)', external: true },
     ...(emailSecondary ? [{ icon: '✉️', label: 'Alt Email', value: emailSecondary, sub: 'RMC Division', href: getGmailComposeLink(emailSecondary), color: '#818CF8', shadow: 'rgba(129,140,248,0.3)', external: true }] : []),

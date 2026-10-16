@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
-import { PROJECTS, SERVICES, SITE, getWhatsAppLink } from '../data/siteData';
+import { SERVICES, SITE, getWhatsAppLink } from '../data/siteData';
 import ConcreteGradeMatrix from '../components/ConcreteGradeMatrix';
 import { trackEvent } from '../utils/analytics';
 
@@ -241,12 +241,12 @@ export default function ServicesPage() {
                 </thead>
                 <tbody>
                   {[
-                    ['Min Order / Scale', '5 m³', 'Up to 50 KM', '₹10L – ₹50Cr'],
-                    ['Delivery Time', '4–6 Hours', 'Per project plan', 'Per project plan'],
-                    ['Grade / Standard', 'M15 – M60', 'IRC / NHAI', 'IS / BIS'],
+                    ['Min Order / Scale', '5 m³', 'Turnkey Highway Package', 'Per pour schedule'],
+                    ['Delivery Time', '4–6 Hours', 'Per project schedule', 'On-call dispatch'],
+                    ['Grade / Standard', 'M7.5 – M60 (IS:456)', 'IRC:15 / MoRTH / MSRDC', 'IS:10262 / High-Strength PQC'],
                     ['Free Site Visit', '✓', '✓', '✓'],
-                    ['Govt. Projects', '✓', '✓ (NHAI)', '✓'],
-                    ['AMC Available', '—', '✓', '✓'],
+                    ['High-Rise Pumping', '—', '—', '✓ (Up to G+30)'],
+                    ['Self-Compacting (SCC)', '✓ (On request)', '—', '✓'],
                   ].map((row, ri) => (
                     <tr key={ri} style={{ background: ri % 2 === 0 ? 'var(--navy)' : 'var(--navy-mid)' }}>
                       {row.map((cell, ci) => (

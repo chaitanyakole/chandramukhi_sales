@@ -17,11 +17,11 @@ function RevealDiv({ children, delay = 0, style = {} }) {
 export default function Footer() {
   const estText = `Sales · Est. ${SITE.established}`;
   const emailPrimary = SITE.emails?.[0] || SITE.email;
-  const emailSecondary = SITE.emails?.[1];
+  const emailSecondary = SITE.emails?.[1] || (SITE.email && SITE.email !== emailPrimary ? SITE.email : null);
   const salesPhones = SITE.salesPhones?.length ? SITE.salesPhones : [SITE.phone];
 
   const socials = [
-    { label: 'WhatsApp', short: 'WA', href: 'https://wa.me/919923157599' },
+    { label: 'WhatsApp', short: 'WA', href: getWhatsAppLink() },
     { label: 'Email', short: 'EM', href: getGmailComposeLink(emailPrimary) },
     { label: 'Maps', short: 'MP', href: 'https://maps.app.goo.gl/eHSnNXzGvpGAL1RQA' },
   ];
@@ -77,7 +77,7 @@ export default function Footer() {
             </p>
             <div style={{ display: 'flex', gap: 10 }}>
               {socials.map(({ short, href, label }) => (
-                <a key={label} href={href} aria-label={label} style={{
+                <a key={label} href={href} aria-label={label} target={href.startsWith('https://') ? '_blank' : undefined} rel={href.startsWith('https://') ? 'noreferrer' : undefined} style={{
                   width: 36, height: 36, borderRadius: 8,
                   background: 'var(--navy-light)', border: '1px solid var(--navy-border)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -109,11 +109,29 @@ export default function Footer() {
           {/* Services */}
           <RevealDiv delay={160}>
             <h4 style={{ fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white)', marginBottom: 20 }}>SERVICES</h4>
-            {[...SERVICES.map(s => s.title), 'Project Consultation', 'AMC Services'].map(s => (
-              <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--steel)', fontSize: 14, padding: '6px 0', borderBottom: '1px solid var(--navy-light)' }}>
-                <span style={{ color: 'var(--orange)', fontSize: 10 }}>▶</span> {s}
-              </div>
+            {SERVICES.map(s => (
+              <Link key={s.id} to={`/services#${s.id}`}
+                style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--steel)', fontSize: 14, padding: '6px 0', textDecoration: 'none', transition: 'color 0.2s', borderBottom: '1px solid var(--navy-light)' }}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--orange)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'var(--steel)'}
+              >
+                <span style={{ color: 'var(--orange)', fontSize: 10 }}>▶</span> {s.title}
+              </Link>
             ))}
+            <Link to="/contact"
+              style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--steel)', fontSize: 14, padding: '6px 0', textDecoration: 'none', transition: 'color 0.2s', borderBottom: '1px solid var(--navy-light)' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--orange)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'var(--steel)'}
+            >
+              <span style={{ color: 'var(--orange)', fontSize: 10 }}>▶</span> Project Consultation
+            </Link>
+            <Link to="/contact"
+              style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--steel)', fontSize: 14, padding: '6px 0', textDecoration: 'none', transition: 'color 0.2s', borderBottom: '1px solid var(--navy-light)' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--orange)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'var(--steel)'}
+            >
+              <span style={{ color: 'var(--orange)', fontSize: 10 }}>▶</span> AMC Services
+            </Link>
           </RevealDiv>
 
           {/* Contact */}
@@ -121,9 +139,8 @@ export default function Footer() {
             <h4 style={{ fontFamily: 'var(--font-condensed)', fontSize: 13, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white)', marginBottom: 20 }}>CONTACT</h4>
             {[
               { icon: '📍', text: SITE.address },
-              // { icon: '☎️', text: `Office: ${SITE.officeTel}`, href: `tel:${SITE.officeTel}` },
-              { icon: '📞', text: `Sales: ${salesPhones[0]}`, href: `tel:${salesPhones[0]}` },
-              ...(salesPhones.length > 1 ? [{ icon: '📞', text: `Sales (Alt): ${salesPhones[1]}`, href: `tel:${salesPhones[1]}` }] : []),
+              { icon: '📞', text: `Sales: ${salesPhones[0]}`, href: `tel:${salesPhones[0].replace(/[^\d+]/g, '')}` },
+              ...(salesPhones.length > 1 ? [{ icon: '📞', text: `Sales (Alt): ${salesPhones[1]}`, href: `tel:${salesPhones[1].replace(/[^\d+]/g, '')}` }] : []),
               { icon: '✉️', text: emailPrimary, href: getGmailComposeLink(emailPrimary) },
               ...(emailSecondary ? [{ icon: '✉️', text: emailSecondary, href: getGmailComposeLink(emailSecondary) }] : []),
               { icon: '⏰', text: 'Mon – Sat: 9:00 AM – 6:00 PM' },

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiMapPin, FiCheckCircle, FiClock, FiPhone, FiTruck, FiNavigation } from 'react-icons/fi';
-import { SITE, PLANTS } from '../data/siteData';
+import { SITE } from '../data/siteData';
 
 const LOCALITIES = [
   { name: 'Wagholi', plant: 'Plant 1 (Wagholi)', time: '10–15 Mins', zone: 'East Pune Hub', status: 'Priority Zone' },
@@ -145,6 +145,7 @@ export default function PlantNetworkMap() {
               <button
                 key={loc.name}
                 type="button"
+                aria-pressed={isSel}
                 onClick={() => setSelectedLocality(loc)}
                 className={`locality-btn ${isSel ? 'is-selected' : ''}`}
               >

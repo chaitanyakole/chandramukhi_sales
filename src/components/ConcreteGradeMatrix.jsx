@@ -137,6 +137,7 @@ export default function ConcreteGradeMatrix() {
           <button
             key={c.id}
             type="button"
+            aria-pressed={activeCat === c.id}
             onClick={() => setActiveCat(c.id)}
             className={`matrix-tab-btn ${activeCat === c.id ? 'is-active' : ''}`}
           >

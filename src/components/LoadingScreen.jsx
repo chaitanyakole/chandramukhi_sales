@@ -226,9 +226,9 @@ export default function LoadingScreen({ show }) {
             </svg>
 
             {/* Brand */}
-            <h1 style={{ ...styles.brandName, color: brandColor }}>
+            <div role="heading" aria-level={2} style={{ ...styles.brandName, color: brandColor }}>
               Chandramukhi <span style={{ color: orange }}>Sales</span>
-            </h1>
+            </div>
             <p style={{ ...styles.tagline, color: taglineColor }}>
               {SITE.tagline || 'Building Strong Foundations Since 2002'}
             </p>

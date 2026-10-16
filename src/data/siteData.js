@@ -7,9 +7,8 @@ export const SITE = {
   phone: '+91 99231 57599',
   phoneRaw: '+919923157599',
   salesPhones: ['+91 99231 57599'],
-  // officeTel: '020-65422422',
   whatsapp: '919923157599',
-  emails: ['chandramukhisales99@gmail.com'],
+  emails: ['chandramukhisales99@gmail.com', 'chandramukhisales.pune@gmail.com'],
   email: 'chandramukhisales.pune@gmail.com',
   address:
     'Sr.No.511, Pune–Nagar Road, Opp. John Deere Training Center, Wagholi, Tal.: Haveli, Dist. Pune – 412207',

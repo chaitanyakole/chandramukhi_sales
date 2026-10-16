@@ -5,11 +5,15 @@ export async function submitLead(payload) {
     return { ok: false, skipped: true };
   }
 
-  const response = await fetch(WEBHOOK_ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+  try {
+    const response = await fetch(WEBHOOK_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
 
-  return { ok: response.ok, skipped: false };
+    return { ok: response.ok, skipped: false };
+  } catch (err) {
+    return { ok: false, skipped: false, error: err.message };
+  }
 }

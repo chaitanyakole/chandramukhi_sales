@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, CTABanner } from '../components/UI';
-import { GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS, PROJECTS, SITE, getWhatsAppLink } from '../data/siteData';
+import { GOVERNMENT_WORKS_CONTRACTOR, MAJOR_CLIENTS, PARTNERS, PROJECTS, getWhatsAppLink } from '../data/siteData';
 import { trackEvent } from '../utils/analytics';
 
 function ProjectCard({ project, delay }) {
@@ -509,7 +509,11 @@ export default function ProjectsPage() {
           </Reveal>
 
           {/* Project Details Showcase */}
-          <ProjectCard project={PROJECTS[0]} delay={80} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            {PROJECTS.map((project, idx) => (
+              <ProjectCard key={project.id || idx} project={project} delay={80 + idx * 60} />
+            ))}
+          </div>
         </div>
       </section>
 

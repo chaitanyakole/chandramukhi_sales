@@ -31,14 +31,22 @@ export function useScroll() {
   const prevY = useRef(0);
 
   useEffect(() => {
+    let rafId = null;
     const handler = () => {
-      const y = window.scrollY;
-      setDirection(y > prevY.current ? 'down' : 'up');
-      prevY.current = y;
-      setScrollY(y);
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        const y = window.scrollY || 0;
+        setDirection(y > prevY.current ? 'down' : 'up');
+        prevY.current = y;
+        setScrollY(y);
+      });
     };
     window.addEventListener('scroll', handler, { passive: true });
-    return () => window.removeEventListener('scroll', handler);
+    return () => {
+      if (rafId) window.cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handler);
+    };
   }, []);
 
   return { scrollY, direction, scrolled: scrollY > 60 };
@@ -97,9 +105,12 @@ export function useForm(initialValues, validate) {
     setTouched(Object.keys(values).reduce((a, k) => ({ ...a, [k]: true }), {}));
     if (Object.keys(errs).length > 0) return;
     setSubmitting(true);
-    await onSubmit(values);
-    setSubmitting(false);
-    setSubmitted(true);
+    try {
+      await onSubmit(values);
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   }, [values, validate]);
 
   const reset = useCallback(() => {

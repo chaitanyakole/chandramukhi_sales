@@ -27,16 +27,26 @@ function ScrollToTop() {
 
   useEffect(() => {
     if (hash) {
-      const timer = setTimeout(() => {
-        const id = hash.replace('#', '');
+      const id = hash.replace('#', '');
+      let attempts = 0;
+      let timer = null;
+
+      const tryScroll = () => {
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
+        } else if (attempts < 15) {
+          attempts += 1;
+          timer = setTimeout(tryScroll, 60);
         } else {
           window.scrollTo(0, 0);
         }
-      }, 100);
-      return () => clearTimeout(timer);
+      };
+
+      timer = setTimeout(tryScroll, 50);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
     } else {
       window.scrollTo(0, 0);
     }
@@ -192,11 +202,12 @@ export default function App() {
     // avoiding rapid 50ms flickers while ensuring it never hangs indefinitely.
     const minDisplayTime = 1000;
     const startTime = Date.now();
+    let innerTimer = null;
 
     const finish = () => {
       const elapsed = Date.now() - startTime;
       const remaining = Math.max(0, minDisplayTime - elapsed);
-      setTimeout(() => {
+      innerTimer = setTimeout(() => {
         setBootLoading(false);
       }, remaining);
     };
@@ -212,6 +223,7 @@ export default function App() {
     return () => {
       window.removeEventListener('load', finish);
       clearTimeout(timer);
+      if (innerTimer) clearTimeout(innerTimer);
     };
   }, []);
 

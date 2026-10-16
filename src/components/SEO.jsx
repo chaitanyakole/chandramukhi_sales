@@ -7,9 +7,10 @@ export default function SEO({
   path = '/',
   image = '/hero-bg.png',
   schema = null,
+  noindex = false,
 }) {
   const siteName = 'Chandramukhi Sales';
-  const baseUrl = 'https://chandramukhi-sales.com';
+  const baseUrl = 'https://chandramukhisales.com';
   const url = `${baseUrl}${path}`;
   const imageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
   const fullTitle = `${title} | ${siteName}`;
@@ -34,7 +35,7 @@ export default function SEO({
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      <meta name="robots" content="index,follow" />
+      <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow'} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:title" content={fullTitle} />

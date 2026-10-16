@@ -81,7 +81,7 @@ export function CTABanner({ title = "LET'S BUILD YOUR PROJECT", subtitle = 'Talk
             <Link to="/contact" className="btn" style={{ background: '#fff', color: 'var(--orange)', fontWeight: 800, padding: '16px 36px', fontSize: 15 }}>
               <FiTool aria-hidden /> {btnText}
             </Link>
-            <a href={`tel:${SITE.phone}`} className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '2px solid rgba(255,255,255,0.5)', padding: '16px 32px' }}>
+            <a href={`tel:${SITE.phoneRaw || SITE.phone.replace(/[^\d+]/g, '')}`} className="btn" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '2px solid rgba(255,255,255,0.5)', padding: '16px 32px' }}>
               <FiPhone aria-hidden /> {SITE.phone}
             </a>
             <a href={getWhatsAppLink()} target="_blank" rel="noreferrer" className="btn" style={{ background: 'rgba(37,211,102,0.2)', color: '#fff', border: '2px solid rgba(37,211,102,0.5)', padding: '16px 32px' }}>
@@ -120,7 +120,7 @@ export function FloatingButtons() {
   const [tooltip, setTooltip] = useState(null);
   const buttons = [
     { id: 'wa',   icon: <FiMessageCircle aria-hidden />, label: 'WhatsApp Us', href: getWhatsAppLink(), bg: '#25D366', shadow: 'rgba(37,211,102,0.5)', external: true },
-    { id: 'call', icon: <FiPhone aria-hidden />, label: 'Call Us',     href: `tel:${SITE.phone}`, bg: 'var(--orange)', shadow: 'rgba(249,115,22,0.5)' },
+    { id: 'call', icon: <FiPhone aria-hidden />, label: 'Call Us',     href: `tel:${SITE.phoneRaw || SITE.phone.replace(/[^\d+]/g, '')}`, bg: 'var(--orange)', shadow: 'rgba(249,115,22,0.5)' },
   ];
   return (
     <div style={{ position: 'fixed', bottom: 28, right: 22, zIndex: 800, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -169,7 +169,10 @@ export function FAQItem({ q, a, delay = 0 }) {
         border: `1px solid ${open ? 'rgba(249,115,22,0.35)' : 'var(--navy-border)'}`,
         overflow: 'hidden', transition: 'border-color 0.25s', marginBottom: 12,
       }}>
-        <button onClick={() => setOpen(!open)}
+        <button
+          type="button"
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
           style={{
             width: '100%', background: 'none', border: 'none', cursor: 'pointer',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',

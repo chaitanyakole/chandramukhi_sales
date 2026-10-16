@@ -9,6 +9,7 @@ export default function NotFoundPage() {
         title="Page Not Found"
         description="The page you requested could not be found. Return to Chandramukhi Sales homepage."
         path="/404"
+        noindex={true}
       />
       <div className="card" style={{ maxWidth: 700, width: '100%', padding: 40, textAlign: 'center' }}>
         <div style={{ fontSize: 72, marginBottom: 12 }}>🏗️</div>

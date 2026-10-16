@@ -39,9 +39,12 @@ export default function Navbar() {
         setOpen(false);
         toggleRef.current?.focus();
       }
-      // Simple focus trap inside the open menu (plus the toggle button)
-      if (e.key === 'Tab' && panelRef.current) {
-        const focusable = panelRef.current.querySelectorAll('a[href], button:not([disabled])');
+      // Focus trap inside the open menu plus the toggle button
+      if (e.key === 'Tab') {
+        const panelFocusables = panelRef.current
+          ? Array.from(panelRef.current.querySelectorAll('a[href], button:not([disabled])'))
+          : [];
+        const focusable = toggleRef.current ? [toggleRef.current, ...panelFocusables] : panelFocusables;
         if (!focusable.length) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
@@ -67,8 +70,12 @@ export default function Navbar() {
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP_QUERY);
     const onChange = (e) => { if (e.matches) setOpen(false); };
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    if (mq.addEventListener) {
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    }
+    mq.addListener(onChange);
+    return () => mq.removeListener(onChange);
   }, []);
 
   const phoneHref = `tel:${String(SITE.phone).replace(/[^\d+]/g, '')}`;

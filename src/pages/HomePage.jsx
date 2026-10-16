@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiCheckCircle, FiMessageCircle, FiPhone } from 'react-icons/fi';
-import { FaAward, FaFlask, FaHandshake, FaIndustry, FaMapMarkedAlt, FaRegClipboard, FaRoad, FaTruck, FaWarehouse } from 'react-icons/fa';
+import { FaAward, FaFlask, FaHandshake, FaIndustry, FaRegClipboard, FaRoad, FaTruck, FaWarehouse } from 'react-icons/fa';
 import SEO from '../components/SEO';
 import { Reveal, SectionHeader, StatCard, CTABanner, Ticker } from '../components/UI';
 import { useReveal, useIsMobile } from '../hooks';
@@ -277,32 +277,30 @@ function ServiceCard({ service, index }) {
 }
 
 // ─── Testimonial Card ─────────────────────────────────────────────────────────
-function TestimonialCard({ t, delay }) {
+function TestimonialCard({ t }) {
   return (
-    <Reveal delay={delay}>
-      <div style={{
-        background: 'var(--navy-mid)', borderRadius: 'var(--radius-xl)', padding: 36,
-        border: '1px solid var(--navy-border)', height: '100%',
-        display: 'flex', flexDirection: 'column',
-      }}>
-        {/* Stars */}
-        <div style={{ display: 'flex', gap: 2, marginBottom: 20 }}>
-          {Array(t.rating).fill(0).map((_, i) => (
-            <span key={i} style={{ color: '#FBBF24', fontSize: 16 }}>★</span>
-          ))}
-        </div>
-        {/* Big quote */}
-        <div style={{ fontFamily: 'Georgia, serif', fontSize: 64, color: 'var(--orange)', lineHeight: 0.7, marginBottom: 20, opacity: 0.5 }}>"</div>
-        <p style={{ color: 'var(--steel-light)', fontSize: 16, lineHeight: 1.9, fontStyle: 'italic', flex: 1, marginBottom: 28 }}>{t.text}</p>
-        <div style={{ display: 'flex', gap: 14, alignItems: 'center', borderTop: '1px solid var(--navy-border)', paddingTop: 20 }}>
-          <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'linear-gradient(135deg, var(--orange), var(--orange-light))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 900, fontSize: 20, flexShrink: 0 }}>{t.initial}</div>
-          <div>
-            <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 15 }}>{t.name}</div>
-            <div style={{ color: 'var(--steel)', fontSize: 13 }}>{t.role} · {t.company}</div>
-          </div>
+    <div style={{
+      background: 'var(--navy-mid)', borderRadius: 'var(--radius-xl)', padding: 36,
+      border: '1px solid var(--navy-border)', height: '100%',
+      display: 'flex', flexDirection: 'column',
+    }}>
+      {/* Stars */}
+      <div style={{ display: 'flex', gap: 2, marginBottom: 20 }}>
+        {Array(t.rating).fill(0).map((_, i) => (
+          <span key={i} style={{ color: '#FBBF24', fontSize: 16 }}>★</span>
+        ))}
+      </div>
+      {/* Big quote */}
+      <div style={{ fontFamily: 'Georgia, serif', fontSize: 64, color: 'var(--orange)', lineHeight: 0.7, marginBottom: 20, opacity: 0.5 }}>"</div>
+      <p style={{ color: 'var(--steel-light)', fontSize: 16, lineHeight: 1.9, fontStyle: 'italic', flex: 1, marginBottom: 28 }}>{t.text}</p>
+      <div style={{ display: 'flex', gap: 14, alignItems: 'center', borderTop: '1px solid var(--navy-border)', paddingTop: 20 }}>
+        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'linear-gradient(135deg, var(--orange), var(--orange-light))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 900, fontSize: 20, flexShrink: 0 }}>{t.initial}</div>
+        <div>
+          <div style={{ color: 'var(--white)', fontWeight: 700, fontSize: 15 }}>{t.name}</div>
+          <div style={{ color: 'var(--steel)', fontSize: 13 }}>{t.role} · {t.company}</div>
         </div>
       </div>
-    </Reveal>
+    </div>
   );
 }
 
@@ -778,9 +776,11 @@ export default function HomePage() {
       <section className="section-pad cv-auto" style={{ background: 'var(--navy)' }}>
         <div className="max-w">
           <SectionHeader eyebrow="Testimonials" title="WHAT OUR CLIENTS SAY" subtitle="Words from the developers, engineers, and contractors who trust us with their most critical projects." />
-          <div className="card" style={{ padding: '28px 20px 8px', borderRadius: 'var(--radius-xl)' }}>
-            <TestimonialsCarousel />
-          </div>
+          <Reveal>
+            <div className="card" style={{ padding: '28px 20px 8px', borderRadius: 'var(--radius-xl)' }}>
+              <TestimonialsCarousel />
+            </div>
+          </Reveal>
         </div>
       </section>
 
