@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SITE, NAV_LINKS, SERVICES, getGmailComposeLink } from '../data/siteData';
+import { SITE, NAV_LINKS, SERVICES, getGmailComposeLink, getWhatsAppLink } from '../data/siteData';
 import { useReveal } from '../hooks';
 
 function RevealDiv({ children, delay = 0, style = {} }) {
